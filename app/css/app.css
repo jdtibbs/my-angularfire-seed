@@ -1,0 +1,46 @@
+/* app css stylesheet */
+body {
+    min-height: 100%;
+    padding-top: 70px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+}
+
+p.status {
+    color: red;
+}
+
+p.status.good, p.good {
+    color: green;
+}
+
+form label {
+    display: block;
+    margin: 15px 0;
+}
+
+form label span {
+    display: block;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+}
+
+fieldset {
+    float: left;
+    margin-right: 25px;
+    padding: 25px;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
