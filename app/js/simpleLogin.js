@@ -14,8 +14,9 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
   .factory('simpleLogin', ['$firebaseSimpleLogin', 'fbutil', 'createProfile', 'changeEmail', '$q', '$rootScope',
     function($firebaseSimpleLogin, fbutil, createProfile, changeEmail, $q, $rootScope) {
       var auth = $firebaseSimpleLogin(fbutil.ref());
+      var fbref = fbutil.ref();
       var listeners = [];
-
+      
       function statusChange() {
         fns.getUser().then(function(user) {
           fns.user = user || null;
@@ -29,7 +30,12 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
         user: null,
 
         getUser: function() {
-          return auth.$getCurrentUser();
+          // return auth.$getCurrentUser();
+          var deferred = $q.defer();
+          setTimeout(function(){
+              deferred.resolve(fbref.getAuth());              
+          }, 10);
+          return deferred.promise;
         },
 
         /**
@@ -38,11 +44,27 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
          * @returns {*}
          */
         login: function(email, pass) {
+            /*
           return auth.$login('password', {
             email: email,
             password: pass,
             rememberMe: true
-          });
+          });*/
+            var deferred = $q.defer();
+            setTimeout(function(){
+                deferred.notify('about to signin.');
+                fbref.authWithPassword({'email': email, 'password':pass}, 
+                function(error, authData){
+                    if (error === null){
+                        console.log('userId: ' + authData.uid + ' password.email: ' + authData.password.email);
+                        deferred.resolve(authData);
+                    }else{
+                        console.log('login error: ' + error);
+                        deferred.reject(error);
+                    }
+                });    
+            }, 10);
+            return deferred.promise;
         },
 
         logout: function() {

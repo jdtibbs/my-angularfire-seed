@@ -24,7 +24,7 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
                     "selected": "x"
                 };
                 $scope.menu.select = function (item) {
-                    console.log("selected menu item: " + item);
+                    // console.log("selected menu item: " + item);
                     $scope.menu.selected = item;
                 };
             }])
