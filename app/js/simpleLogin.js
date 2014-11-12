@@ -32,9 +32,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
         getUser: function() {
           // return auth.$getCurrentUser();
           var deferred = $q.defer();
-          setTimeout(function(){
-              deferred.resolve(fbref.getAuth());              
-          }, 10);
+          deferred.resolve(fbref.getAuth());              
           return deferred.promise;
         },
 
@@ -51,19 +49,17 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
             rememberMe: true
           });*/
             var deferred = $q.defer();
-            setTimeout(function(){
-                deferred.notify('about to signin.');
-                fbref.authWithPassword({'email': email, 'password':pass}, 
-                function(error, authData){
-                    if (error === null){
-                        console.log('userId: ' + authData.uid + ' password.email: ' + authData.password.email);
-                        deferred.resolve(authData);
-                    }else{
-                        console.log('login error: ' + error);
-                        deferred.reject(error);
-                    }
-                });    
-            }, 10);
+            deferred.notify('about to signin.');
+            fbref.authWithPassword({'email': email, 'password':pass}, 
+            function(error, authData){
+                if (error === null){
+                    console.log('userId: ' + authData.uid + ' password.email: ' + authData.password.email);
+                    deferred.resolve(authData);
+                }else{
+                    console.log('login error: ' + error);
+                    deferred.reject(error);
+                }
+            });    
             return deferred.promise;
         },
 

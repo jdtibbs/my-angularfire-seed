@@ -15,5 +15,8 @@
     "firebase-simple-login": "1.6.x",
     "angularfire": "0.8.x",
     "mockfirebase": "0.2.x"
+  },
+  "resolutions": {
+    "firebase": "2.0.x"
   }
 }
