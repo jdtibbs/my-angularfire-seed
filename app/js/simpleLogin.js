@@ -11,8 +11,8 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                 }
             }])
 
-        .factory('simpleLogin', ['$firebaseSimpleLogin', 'fbutil', 'createProfile', 'changeEmail', '$q', '$rootScope',
-            function ($firebaseSimpleLogin, fbutil, createProfile, changeEmail, $q, $rootScope) {
+        .factory('simpleLogin', ['fbutil', 'createProfile', 'changeEmail', '$q', '$rootScope',
+            function (fbutil, createProfile, changeEmail, $q, $rootScope) {
                 var fbref = fbutil.ref();
                 var listeners = [];
 
@@ -44,9 +44,11 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                         function (error, authData) {
                             if (error === null) {
                                 console.log('userId: ' + authData.uid + ' password.email: ' + authData.password.email);
+                                $rootScope.$broadcast('login:login', authData);
                                 deferred.resolve(authData);
                             } else {
                                 console.log('login error: ' + error);
+                                $rootScope.$broadcast('login:error', null);
                                 deferred.reject(error);
                             }
                         });
@@ -54,6 +56,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                     },
                     logout: function () {
                         fbref.unauth();
+                        $rootScope.$broadcast('login:logout', null);
                     },
                     createAccount: function (email, pass, name) {
                         return fns.createUser(email, pass)
@@ -150,9 +153,9 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                     }
                 };
 
-                $rootScope.$on('$firebaseSimpleLogin:login', statusChange);
-                $rootScope.$on('$firebaseSimpleLogin:logout', statusChange);
-                $rootScope.$on('$firebaseSimpleLogin:error', statusChange);
+                $rootScope.$on('login:login', statusChange);
+                $rootScope.$on('login:logout', statusChange);
+                $rootScope.$on('login:error', statusChange);
                 statusChange();
 
                 return fns;
