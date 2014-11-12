@@ -39,23 +39,23 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
             }])
 
         .controller('LoginCtrl', ['$scope', 'simpleLogin', '$location', function ($scope, simpleLogin, $location) {
-                $scope.email = null;
-                $scope.pass = null;
-                $scope.confirm = null;
+                $scope.confirmEmail = null;
+                $scope.password = null;
+                $scope.confirmPassword = null;
                 $scope.createMode = false;
-                $scope.login = function (email, pass) {
+                $scope.login = function (user) {
                     $scope.err = null;
-                    simpleLogin.login(email, pass)
+                    simpleLogin.login(user.email, $scope.password)
                             .then(function (/* user */) {
                                 $location.path('/account');
                             }, function (err) {
                                 $scope.err = errMessage(err);
                             });
                 };
-                $scope.createAccount = function () {
+                $scope.createAccount = function (user) {
                     $scope.err = null;
-                    if (assertValidAccountProps()) {
-                        simpleLogin.createAccount($scope.email, $scope.pass)
+                    if (assertValidAccountProps(user)) {
+                        simpleLogin.createAccount(user, $scope.password)
                                 .then(function (/* user */) {
                                     $location.path('/account');
                                 }, function (err) {
@@ -63,14 +63,45 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
                                 });
                     }
                 };
-                function assertValidAccountProps() {
-                    if (!$scope.email) {
+                function assertValidAccountProps(user) {
+                    if (!user.name) {
+                        $scope.err = 'Please enter a name.';
+                    }
+                    else if (!user.businessName) {
+                        $scope.err = 'Please enter a business name.';
+                    }
+                    else if (!user.address) {
+                        $scope.err = 'Please enter an address.';
+                    }
+                    else if (!user.city) {
+                        $scope.err = 'Please enter a city.';
+                    }
+                    else if (!user.state) {
+                        $scope.err = 'Please enter a state.';
+                    }
+                    else if (!user.zip) {
+                        $scope.err = 'Please enter a zip.';
+                    }
+                    else if (!user.email) {
                         $scope.err = 'Please enter an email address';
                     }
-                    else if (!$scope.pass || !$scope.confirm) {
+                    else if (!user.businessPhone) {
+                        $scope.err = 'Please enter a business phone.';
+                    }
+                    else if (!user.mobilePhone) {
+                        $scope.err = 'Please enter a mobile phone.';
+                    }
+                    else
+                    if (!user.email) {
+                        $scope.err = 'Please enter an email address';
+                    }
+                    else if (!$scope.confirmEmail || (user.email !== $scope.confirmEmail)) {
+                        $scope.err = 'Email and confirm email address do not match.';
+                    }
+                    else if (!$scope.password || !$scope.confirmPassword) {
                         $scope.err = 'Please enter a password';
                     }
-                    else if ($scope.createMode && $scope.pass !== $scope.confirm) {
+                    else if ($scope.createMode && $scope.password !== $scope.confirmPassword) {
                         $scope.err = 'Passwords do not match';
                     }
                     return !$scope.err;
