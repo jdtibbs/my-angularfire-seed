@@ -1,12 +1,19 @@
 /* app css stylesheet */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
     min-height: 100%;
     padding-top: 70px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
 
 .footer {
     position: absolute;
-    bottom: 0;
+    bottom: -20px;
     width: 100%;
     /* Set the fixed height of the footer here */
     height: 60px;
