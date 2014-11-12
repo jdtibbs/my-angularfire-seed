@@ -111,7 +111,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
         },
 
         changeEmail: function(password, newEmail) {
-          return changeEmail(password, fns.user.email, newEmail, this);
+          return changeEmail(password, fns.user.password.email, newEmail, this);
         },
 
         removeUser: function(email, pass) {
