@@ -115,7 +115,25 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
         },
 
         removeUser: function(email, pass) {
-          return auth.$removeUser(email, pass);
+          // return auth.$removeUser(email, pass);
+          var def = $q.defer();
+          fbref.removeUser({'email' : email, 'password' : pass}, function(error){
+                if (error === null) {  
+                    def.resolve();
+                } else {
+                    switch (error.code) {
+                      case 'INVALID_PASSWORD':
+                        // The specified user account password is incorrect.
+                        def.reject('invalid password');
+                      case 'INVALID_USER':
+                        // The specified user account does not exist.
+                        def.reject('invalid user');
+                      default:
+                        def.reject(error);
+                    }
+                }
+          });
+          return def.promise;
         },
 
         watch: function(cb, $scope) {
