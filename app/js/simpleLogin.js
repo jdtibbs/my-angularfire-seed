@@ -88,7 +88,26 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
         },
 
         changePassword: function(email, oldpass, newpass) {
-          return auth.$changePassword(email, oldpass, newpass);
+          // return auth.$changePassword(email, oldpass, newpass);
+          var def = $q.defer();
+          fbref.changePassword({'email' : email, 'oldPassword' : oldpass, 'newPassword' : newpass}, 
+            function(error){                 
+                if (error === null) {  
+                    def.resolve();
+                } else {
+                    switch (error.code) {
+                      case 'INVALID_PASSWORD':
+                        // The specified user account password is incorrect.
+                        def.reject('invalid password');
+                      case 'INVALID_USER':
+                        // The specified user account does not exist.
+                        def.reject('invalid user');
+                      default:
+                        def.reject(error);
+                    }
+                }
+            });
+            return def.promise;
         },
 
         changeEmail: function(password, newEmail) {
