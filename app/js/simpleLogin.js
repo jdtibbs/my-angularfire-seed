@@ -32,12 +32,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
         getUser: function() {
           // return auth.$getCurrentUser();
           var deferred = $q.defer();
-          var auth = fbref.getAuth();
-          if (auth === null){
-                deferred.reject('');
-            } else {
-                deferred.resolve(auth);              
-            }
+          deferred.resolve(fbref.getAuth());              
           return deferred.promise;
         },
 
