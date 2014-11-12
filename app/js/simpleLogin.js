@@ -69,7 +69,8 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
         },
 
         logout: function() {
-          auth.$logout();
+          // auth.$logout();
+          fbref.unauth();
         },
 
         createAccount: function(email, pass, name) {
