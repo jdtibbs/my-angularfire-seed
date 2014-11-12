@@ -69,7 +69,8 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
         },
 
         createAccount: function(email, pass, name) {
-          return auth.$createUser(email, pass)
+          //return auth.$createUser(email, pass)
+          return fns.createUser(email, pass)
             .then(function() {
               // authenticate so we have permission to write to Firebase
               return fns.login(email, pass);
@@ -81,7 +82,28 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
               })
             });
         },
-
+        
+        createUser: function(email, pass) {
+            var def = $q.defer();
+            fbref.createUser({'email':email, 'password':pass}, 
+            function(error){
+                if (error) {
+                    switch (error.code) {
+                      case 'EMAIL_TAKEN':
+                        def.reject('The new user account cannot be created because the email is already in use.');
+                      case 'INVALID_EMAIL':
+                        def.reject('The specified email is not a valid email.');
+                      default:
+                        def.reject(error)  
+                    }
+                  } else {      
+                    // User account created successfully!
+                    def.resolve();
+                  }
+            });
+            return def.promise;
+        },
+        
         changePassword: function(email, oldpass, newpass) {
           // return auth.$changePassword(email, oldpass, newpass);
           var def = $q.defer();
