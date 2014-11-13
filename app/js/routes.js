@@ -21,7 +21,7 @@ angular.module('myApp.routes', ['ngRoute', 'loginModule'])
       controller: 'ChatCtrl'
     },
     '/login': {
-      templateUrl: 'login/login.html',
+      templateUrl: 'components/login/login.html',
       controller: 'LoginCtrl'
     },
     '/account': {
