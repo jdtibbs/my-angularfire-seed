@@ -11,8 +11,7 @@ angular.module('myApp', [
     'myApp.decorators',
     'myApp.directives',
     'myApp.filters',
-    'myApp.routes',
-    'myApp.services'
+    'myApp.routes'
 ])
 
         .run(['loginFactory', function (loginFactory) {
