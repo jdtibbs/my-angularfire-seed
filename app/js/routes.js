@@ -25,8 +25,8 @@ angular.module('myApp.routes', ['ngRoute', 'loginModule'])
       controller: 'LoginCtrl'
     },
     '/account': {
-      templateUrl: 'partials/account.html',
-      controller: 'AccountCtrl',
+      templateUrl: 'components/account/account.html',
+      controller: 'accountController',
       // require user to be logged in to view this route
       // the whenAuthenticated method below will resolve the current user
       // before this controller loads and redirect if necessary
