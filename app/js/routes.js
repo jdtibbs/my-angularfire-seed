@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('myApp.routes', ['ngRoute', 'simpleLogin'])
+angular.module('myApp.routes', ['ngRoute', 'loginModule'])
 
   .constant('ROUTES', {
     '/home': {
@@ -11,8 +11,8 @@ angular.module('myApp.routes', ['ngRoute', 'simpleLogin'])
         // the controller can then inject `user` as a dependency. This could also be done
         // in the controller, but this makes things cleaner (controller doesn't need to worry
         // about auth status or timing of displaying its UI components)
-        user: ['simpleLogin', function(simpleLogin) {
-          return simpleLogin.getUser();
+        user: ['loginFactory', function(loginFactory) {
+          return loginFactory.getUser();
         }]
       }
     },
@@ -21,7 +21,7 @@ angular.module('myApp.routes', ['ngRoute', 'simpleLogin'])
       controller: 'ChatCtrl'
     },
     '/login': {
-      templateUrl: 'partials/login.html',
+      templateUrl: 'login/login.html',
       controller: 'LoginCtrl'
     },
     '/account': {
@@ -36,7 +36,7 @@ angular.module('myApp.routes', ['ngRoute', 'simpleLogin'])
 
   /**
    * Adds a special `whenAuthenticated` method onto $routeProvider. This special method,
-   * when called, invokes the requireUser() service (see simpleLogin.js).
+   * when called, invokes the requireUser() service (see login/login.js).
    *
    * The promise either resolves to the authenticated user object and makes it available to
    * dependency injection (see AuthCtrl), or rejects the promise if user is not logged in,
@@ -81,10 +81,10 @@ angular.module('myApp.routes', ['ngRoute', 'simpleLogin'])
    * for changes in auth status which might require us to navigate away from a path
    * that we can no longer view.
    */
-  .run(['$rootScope', '$location', 'simpleLogin', 'ROUTES', 'loginRedirectPath',
-    function($rootScope, $location, simpleLogin, ROUTES, loginRedirectPath) {
+  .run(['$rootScope', '$location', 'loginFactory', 'ROUTES', 'loginRedirectPath',
+    function($rootScope, $location, loginFactory, ROUTES, loginRedirectPath) {
       // watch for login status changes and redirect if appropriate
-      simpleLogin.watch(check, $rootScope);
+      loginFactory.watch(check, $rootScope);
 
       // some of our routes may reject resolve promises with the special {authRequired: true} error
       // this redirects to the login page whenever that is encountered

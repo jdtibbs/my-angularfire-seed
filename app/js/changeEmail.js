@@ -1,6 +1,6 @@
 angular.module('changeEmail', ['firebase.utils'])
   .factory('changeEmail', ['fbutil', '$q', function(fbutil, $q) {
-    return function(password, oldEmail, newEmail, simpleLogin) {
+    return function(password, oldEmail, newEmail, loginFactory) {
       var ctx = { old: { email: oldEmail }, curr: { email: newEmail } };
 
       // execute activities in order; first we authenticate the user
@@ -21,7 +21,7 @@ angular.module('changeEmail', ['firebase.utils'])
         .catch(function(err) { console.error(err); return $q.reject(err); });
 
       function authOldAccount() {
-        return simpleLogin.login(ctx.old.email, password).then(function(user) {
+        return loginFactory.login(ctx.old.email, password).then(function(user) {
           ctx.old.uid = user.uid;
         });
       }
@@ -47,7 +47,7 @@ angular.module('changeEmail', ['firebase.utils'])
       }
 
       function createNewAccount() {
-        return simpleLogin.createAccount(ctx.curr.email, password, ctx.old.name).then(function(user) {
+        return loginFactory.createAccount(ctx.curr.email, password, ctx.old.name).then(function(user) {
           ctx.curr.uid = user.uid;
         });
       }
@@ -80,7 +80,7 @@ angular.module('changeEmail', ['firebase.utils'])
 
       function removeOldLogin() {
         var def = $q.defer();
-        simpleLogin.removeUser(ctx.old.email, password).then(function() {
+        loginFactory.removeUser(ctx.old.email, password).then(function() {
           def.resolve();
         }, function(err) {
           def.reject(err);
@@ -89,7 +89,7 @@ angular.module('changeEmail', ['firebase.utils'])
       }
 
       function authNewAccount() {
-        return simpleLogin.login(ctx.curr.email, password);
+        return loginFactory.login(ctx.curr.email, password);
       }
     };
   }]);

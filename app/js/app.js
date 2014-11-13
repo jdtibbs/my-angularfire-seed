@@ -3,6 +3,7 @@
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
     'myApp.config',
+    'loginModule',
     'myApp.controllers',
     'myApp.decorators',
     'myApp.directives',
@@ -11,7 +12,7 @@ angular.module('myApp', [
     'myApp.services'
   ])
 
-  .run(['simpleLogin', function(simpleLogin) {
+  .run(['loginFactory', function(loginFactory) {
     console.log('run'); //debug
-    simpleLogin.getUser();
+    loginFactory.getUser();
   }])
