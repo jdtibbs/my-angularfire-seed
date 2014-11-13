@@ -43,7 +43,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                         fbref.authWithPassword({'email': email, 'password': pass},
                         function (error, authData) {
                             if (error === null) {
-                                console.log('authData: ' + JSON.stringify(authData));
+                                console.log('userId: ' + authData.uid + ' password.email: ' + authData.password.email);
                                 $rootScope.$broadcast('login:login', authData);
                                 deferred.resolve(authData);
                             } else {
@@ -58,17 +58,16 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                         fbref.unauth();
                         $rootScope.$broadcast('login:logout', null);
                     },
-                    createAccount: function (account, password) {
-                        console.log(JSON.stringify(account));
-                        return fns.createUser(account.email, password)
+                    createAccount: function (email, pass, name) {
+                        return fns.createUser(email, pass)
                                 .then(function () {
                                     // authenticate so we have permission to write to Firebase
-                                    return fns.login(account.email, password);
+                                    return fns.login(email, pass);
                                 })
-                                .then(function (authData) {
+                                .then(function (user) {
                                     // store user data in Firebase after creating account
-                                    return createProfile(authData.uid, account).then(function () {
-                                        return authData;
+                                    return createProfile(user.uid, email, name).then(function () {
+                                        return user;
                                     })
                                 });
                     },
@@ -163,9 +162,9 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
             }])
 
         .factory('createProfile', ['fbutil', '$q', '$timeout', function (fbutil, $q, $timeout) {
-                return function (id, account) {
+                return function (id, email, name) {
                     var ref = fbutil.ref('users', id), def = $q.defer();
-                    ref.set(account, function (err) {
+                    ref.set({email: email, name: name || firstPartOfEmail(email)}, function (err) {
                         $timeout(function () {
                             if (err) {
                                 def.reject(err);
