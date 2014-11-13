@@ -1,7 +1,7 @@
 angular.module('changeEmail', ['firebase.utils'])
   .factory('changeEmail', ['fbutil', '$q', function(fbutil, $q) {
-    return function(password, account, newEmail, simpleLogin) {
-      var ctx = { old: { email: account.email }, curr: { email: newEmail } };
+    return function(password, oldEmail, newEmail, simpleLogin) {
+      var ctx = { old: { email: oldEmail }, curr: { email: newEmail } };
 
       // execute activities in order; first we authenticate the user
       return authOldAccount()
@@ -47,8 +47,7 @@ angular.module('changeEmail', ['firebase.utils'])
       }
 
       function createNewAccount() {
-          // todo jdtibbs, update with new param to pass the new account object.
-        return simpleLogin.createAccount(account, password).then(function(user) {
+        return simpleLogin.createAccount(ctx.curr.email, password, ctx.old.name).then(function(user) {
           ctx.curr.uid = user.uid;
         });
       }

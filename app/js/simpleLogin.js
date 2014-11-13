@@ -8,13 +8,14 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                     return simpleLogin.getUser().then(function (user) {
                         return user ? user : $q.reject({authRequired: true});
                     });
-                };
+                }
             }])
 
-        .factory('simpleLogin', ['fbutil', 'createProfile', 'changeEmail', '$q', '$timeout', '$rootScope',
-            function (fbutil, createProfile, changeEmail, $q, $timeout, $rootScope) {
+        .factory('simpleLogin', ['fbutil', 'createProfile', 'changeEmail', '$q', '$rootScope',
+            function (fbutil, createProfile, changeEmail, $q, $rootScope) {
                 var fbref = fbutil.ref();
                 var listeners = [];
+
                 function statusChange() {
                     fns.getUser().then(function (user) {
                         fns.user = user || null;
@@ -28,8 +29,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                     user: null,
                     getUser: function () {
                         var deferred = $q.defer();
-                        var auth = fbref.getAuth();
-                        deferred.resolve(auth);
+                        deferred.resolve(fbref.getAuth());
                         return deferred.promise;
                     },
                     /**
@@ -42,17 +42,15 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                         deferred.notify('about to signin.');
                         fbref.authWithPassword({'email': email, 'password': pass},
                         function (error, authData) {
-                            $timeout(function () {
-                                if (error === null) {
-                                    console.log('authData: ' + JSON.stringify(authData));
-                                    $rootScope.$broadcast('login:login', authData);
-                                    deferred.resolve(authData);
-                                } else {
-                                    console.log('login error: ' + error);
-                                    $rootScope.$broadcast('login:error', null);
-                                    deferred.reject(error);
-                                }
-                            });
+                            if (error === null) {
+                                console.log('authData: ' + JSON.stringify(authData));
+                                $rootScope.$broadcast('login:login', authData);
+                                deferred.resolve(authData);
+                            } else {
+                                console.log('login error: ' + error);
+                                $rootScope.$broadcast('login:error', null);
+                                deferred.reject(error);
+                            }
                         });
                         return deferred.promise;
                     },
@@ -71,28 +69,26 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                                     // store user data in Firebase after creating account
                                     return createProfile(authData.uid, account).then(function () {
                                         return authData;
-                                    });
+                                    })
                                 });
                     },
                     createUser: function (email, pass) {
                         var def = $q.defer();
                         fbref.createUser({'email': email, 'password': pass},
                         function (error) {
-                            $timeout(function () {
-                                if (error) {
-                                    switch (error.code) {
-                                        case 'EMAIL_TAKEN':
-                                            def.reject('The new user account cannot be created because the email is already in use.');
-                                        case 'INVALID_EMAIL':
-                                            def.reject('The specified email is not a valid email.');
-                                        default:
-                                            def.reject(error);
-                                    }
-                                } else {
-                                    // User account created successfully!
-                                    def.resolve();
+                            if (error) {
+                                switch (error.code) {
+                                    case 'EMAIL_TAKEN':
+                                        def.reject('The new user account cannot be created because the email is already in use.');
+                                    case 'INVALID_EMAIL':
+                                        def.reject('The specified email is not a valid email.');
+                                    default:
+                                        def.reject(error)
                                 }
-                            });
+                            } else {
+                                // User account created successfully!
+                                def.resolve();
+                            }
                         });
                         return def.promise;
                     },
@@ -100,48 +96,43 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                         var def = $q.defer();
                         fbref.changePassword({'email': email, 'oldPassword': oldpass, 'newPassword': newpass},
                         function (error) {
-                            $timeout(function () {
-                                if (error === null) {
-                                    def.resolve();
-                                } else {
-                                    switch (error.code) {
-                                        case 'INVALID_PASSWORD':
-                                            // The specified user account password is incorrect.
-                                            def.reject('invalid password');
-                                        case 'INVALID_USER':
-                                            // The specified user account does not exist.
-                                            def.reject('invalid user');
-                                        default:
-                                            def.reject(error);
-                                    }
+                            if (error === null) {
+                                def.resolve();
+                            } else {
+                                switch (error.code) {
+                                    case 'INVALID_PASSWORD':
+                                        // The specified user account password is incorrect.
+                                        def.reject('invalid password');
+                                    case 'INVALID_USER':
+                                        // The specified user account does not exist.
+                                        def.reject('invalid user');
+                                    default:
+                                        def.reject(error);
                                 }
-                            });
+                            }
                         });
                         return def.promise;
                     },
-                    changeEmail: function (account, password, newEmail) {
-                        // return changeEmail(password, fns.user.password.email, newEmail, this);
-                        return changeEmail(password, account, newEmail, this);
+                    changeEmail: function (password, newEmail) {
+                        return changeEmail(password, fns.user.password.email, newEmail, this);
                     },
                     removeUser: function (email, pass) {
                         var def = $q.defer();
                         fbref.removeUser({'email': email, 'password': pass}, function (error) {
-                            $timeout(function () {
-                                if (error === null) {
-                                    def.resolve();
-                                } else {
-                                    switch (error.code) {
-                                        case 'INVALID_PASSWORD':
-                                            // The specified user account password is incorrect.
-                                            def.reject('invalid password');
-                                        case 'INVALID_USER':
-                                            // The specified user account does not exist.
-                                            def.reject('invalid user');
-                                        default:
-                                            def.reject(error);
-                                    }
+                            if (error === null) {
+                                def.resolve();
+                            } else {
+                                switch (error.code) {
+                                    case 'INVALID_PASSWORD':
+                                        // The specified user account password is incorrect.
+                                        def.reject('invalid password');
+                                    case 'INVALID_USER':
+                                        // The specified user account does not exist.
+                                        def.reject('invalid user');
+                                    default:
+                                        def.reject(error);
                                 }
-                            });
+                            }
                         });
                         return def.promise;
                     },
@@ -162,17 +153,18 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                         return unbind;
                     }
                 };
+
                 $rootScope.$on('login:login', statusChange);
                 $rootScope.$on('login:logout', statusChange);
                 $rootScope.$on('login:error', statusChange);
                 statusChange();
+
                 return fns;
             }])
 
         .factory('createProfile', ['fbutil', '$q', '$timeout', function (fbutil, $q, $timeout) {
                 return function (id, account) {
-                    var ref = fbutil.ref('users', id);
-                    var def = $q.defer();
+                    var ref = fbutil.ref('users', id), def = $q.defer();
                     ref.set(account, function (err) {
                         $timeout(function () {
                             if (err) {
@@ -181,9 +173,20 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
                             else {
                                 def.resolve(ref);
                             }
-                        });
+                        })
                     });
 
+                    function firstPartOfEmail(email) {
+                        return ucfirst(email.substr(0, email.indexOf('@')) || '');
+                    }
+
+                    function ucfirst(str) {
+                        // credits: http://kevin.vanzonneveld.net
+                        str += '';
+                        var f = str.charAt(0).toUpperCase();
+                        return f + str.substr(1);
+                    }
+
                     return def.promise;
-                };
+                }
             }]);
