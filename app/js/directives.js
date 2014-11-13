@@ -3,7 +3,7 @@
 /* Directives */
 
 
-angular.module('myApp.directives', ['login.factories'])
+angular.module('myApp.directives', ['login.factory'])
 
   .directive('appVersion', ['version', function(version) {
     return function(scope, elm) {

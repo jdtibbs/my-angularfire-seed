@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('myApp.routes', ['ngRoute', 'login.factories'])
+angular.module('myApp.routes', ['ngRoute', 'login.factory'])
 
   .constant('ROUTES', {
     '/home': {
