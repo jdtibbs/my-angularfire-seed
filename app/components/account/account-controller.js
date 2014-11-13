@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('accountModule', ['firebase.utils', 'loginModule'])
         .controller('accountController', ['$scope', 'loginFactory', 'fbutil', 'user', '$location',
             function ($scope, loginFactory, fbutil, user, $location) {

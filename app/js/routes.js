@@ -4,8 +4,8 @@ angular.module('myApp.routes', ['ngRoute', 'loginModule'])
 
   .constant('ROUTES', {
     '/home': {
-      templateUrl: 'partials/home.html',
-      controller: 'HomeCtrl',
+      templateUrl: 'home/home.html',
+      controller: 'homeController',
       resolve: {
         // forces the page to wait for this promise to resolve before controller is loaded
         // the controller can then inject `user` as a dependency. This could also be done
@@ -17,12 +17,12 @@ angular.module('myApp.routes', ['ngRoute', 'loginModule'])
       }
     },
     '/chat': {
-      templateUrl: 'partials/chat.html',
-      controller: 'ChatCtrl'
+      templateUrl: 'chat/chat.html',
+      controller: 'chatController'
     },
     '/login': {
       templateUrl: 'components/login/login.html',
-      controller: 'LoginCtrl'
+      controller: 'loginController'
     },
     '/account': {
       templateUrl: 'components/account/account.html',

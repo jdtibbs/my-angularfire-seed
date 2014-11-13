@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('loginModule', ['firebase', 'firebase.utils', 'changeEmail'])
 
         // a simple wrapper on simpleLogin.getUser() that rejects the promise

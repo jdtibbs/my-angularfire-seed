@@ -4,15 +4,18 @@
 angular.module('myApp', [
     'myApp.config',
     'accountModule',
+    'chatModule',
+    'homeModule',
+    'login.controller',
     'myApp.controllers',
     'myApp.decorators',
     'myApp.directives',
     'myApp.filters',
     'myApp.routes',
     'myApp.services'
-  ])
+])
 
-  .run(['loginFactory', function(loginFactory) {
-    console.log('run'); //debug
-    loginFactory.getUser();
-  }])
+        .run(['loginFactory', function (loginFactory) {
+                console.log('run'); //debug
+                loginFactory.getUser();
+            }]);
