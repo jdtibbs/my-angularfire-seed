@@ -3,9 +3,9 @@
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
     'myApp.config',
-    'accountModule',
-    'chatModule',
-    'homeModule',
+    'account.controller',
+    'chat.controller',
+    'home.controller',
     'login.controller',
     'menu.controller',
     'myApp.decorators',

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('homeModule', ['firebase.utils'])
+angular.module('home.controller', ['firebase.utils'])
         .controller('homeController', ['$scope', 'fbutil', 'user', 'FBURL', function ($scope, fbutil, user, FBURL) {
                 $scope.syncedValue = fbutil.syncObject('syncedValue');
                 $scope.user = user;

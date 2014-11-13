@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('loginModule', ['firebase', 'firebase.utils', 'changeEmail'])
+angular.module('login.factories', ['firebase', 'firebase.utils', 'changeEmail'])
 
         // a simple wrapper on simpleLogin.getUser() that rejects the promise
         // if the user does not exists (i.e. makes user required)

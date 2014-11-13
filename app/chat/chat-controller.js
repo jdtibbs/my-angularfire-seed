@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('chatModule', [])
+angular.module('chat.controller', [])
         .controller('chatController', ['$scope', 'messageList', function ($scope, messageList) {
                 $scope.messages = messageList;
                 $scope.addMessage = function (newMessage) {
