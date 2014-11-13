@@ -1,20 +1,7 @@
-'use strict';
-/* Controllers */
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-angular.module('myApp.controllers', ['firebase.utils', 'loginModule'])
-        .controller('menuCtrl', ['$scope', function ($scope) {
-                $scope.menu = {
-                    "items": [{
-                            "value": "Chat",
-                            "url": "#/chat"
-                        }, {
-                            "value": "Login",
-                            "url": "#/login"
-                        }, {
-                            "value": "Account",
-                            "url": "#/account"
-                        }],
-                    "home": "#/home",
-                    "selected": "x"
-                };
-            }]);
+

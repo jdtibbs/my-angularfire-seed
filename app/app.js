@@ -7,7 +7,7 @@ angular.module('myApp', [
     'chatModule',
     'homeModule',
     'login.controller',
-    'myApp.controllers',
+    'menu.controller',
     'myApp.decorators',
     'myApp.directives',
     'myApp.filters',
