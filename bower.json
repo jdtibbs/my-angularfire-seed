@@ -14,7 +14,9 @@
     "firebase": "2.0.x",
     "firebase-simple-login": "1.6.x",
     "angularfire": "0.8.x",
-    "mockfirebase": "0.2.x"
+    "mockfirebase": "0.2.x",
+    "jquery" : "1.11.1",
+    "bootstrap" : "3.3.1"
   },
   "resolutions": {
     "firebase": "2.0.x"

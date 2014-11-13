@@ -23,11 +23,6 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
                     "home": "#/home",
                     "selected": "x"
                 };
-                $scope.menu.select = function (item) {
-                    console.log('>>> TODO do not highlight selected menu item, page title will reflect it.');
-                    // console.log("selected menu item: " + item);
-                    $scope.menu.selected = item;
-                };
             }])
 
         .controller('ChatCtrl', ['$scope', 'messageList', function ($scope, messageList) {
