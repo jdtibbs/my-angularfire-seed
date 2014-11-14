@@ -112,28 +112,28 @@ describe('simpleLogin', function() {
     });
   });
 
-  describe('#createProfile', function() {
+  describe('#usersFactory', function() {
     it('should invoke set on Firebase',
-      inject(function(createProfile, firebaseFactory) {
-        createProfile(123, 'test@test.com');
+      inject(function(usersFactory, firebaseFactory) {
+        usersFactory(123, 'test@test.com');
         flush();
         expect(firebaseFactory.$$ref.set).toHaveBeenCalledWith({email: 'test@test.com', name: 'Test'}, jasmine.any(Function));
       })
     );
 
     it('should return a promise',
-      inject(function(createProfile) {
-        expect(createProfile(456, 'test2@test2.com')).toBeAPromise();
+      inject(function(usersFactory) {
+        expect(usersFactory(456, 'test2@test2.com')).toBeAPromise();
       })
     );
 
     it('should return any error in the reject',
-      inject(function(createProfile, firebaseFactory) {
+      inject(function(usersFactory, firebaseFactory) {
         var cb = jasmine.createSpy();
         firebaseFactory.$$ref.set.andCallFake(function(val, cb) {
           cb && cb('noooooo');
         });
-        createProfile(456, 'test2@test2.com').then(null, cb);
+        usersFactory(456, 'test2@test2.com').then(null, cb);
         flush();
         expect(cb).toHaveBeenCalledWith('noooooo');
       })

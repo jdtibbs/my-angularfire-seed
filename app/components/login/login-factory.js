@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.account.factory', 'changeEmail'])
+angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.users.factory', 'changeEmail'])
 
         // a simple wrapper on simpleLogin.getUser() that rejects the promise
         // if the user does not exists (i.e. makes user required)
@@ -12,8 +12,8 @@ angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.accou
                 };
             }])
 
-        .factory('loginFactory', ['firebaseFactory', 'createProfile', 'changeEmail', '$q', '$rootScope',
-            function (firebaseFactory, createProfile, changeEmail, $q, $rootScope) {
+        .factory('loginFactory', ['firebaseFactory', 'usersFactory', 'changeEmail', '$q', '$rootScope',
+            function (firebaseFactory, usersFactory, changeEmail, $q, $rootScope) {
                 var fbref = firebaseFactory.ref();
                 var listeners = [];
 
@@ -67,7 +67,7 @@ angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.accou
                                 })
                                 .then(function (user) {
                                     // store user data in Firebase after creating account
-                                    return createProfile(user.uid, email, name).then(function () {
+                                    return usersFactory(user.uid, email, name).then(function () {
                                         return user;
                                     })
                                 });

@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('my.account.factory', ['firebase', 'my.firebase.factory', 'changeEmail'])
+angular.module('my.users.factory', ['firebase', 'my.firebase.factory', 'changeEmail'])
 
-        .factory('createProfile', ['firebaseFactory', '$q', '$timeout', function (firebaseFactory, $q, $timeout) {
+        .factory('usersFactory', ['firebaseFactory', '$q', '$timeout', function (firebaseFactory, $q, $timeout) {
                 return function (id, email, name) {
-                    var ref = firebaseFactory.ref('users', id), def = $q.defer();
+                    var ref = firebaseFactory.ref('users', id);
+                    var def = $q.defer();
                     ref.set({email: email, name: name || firstPartOfEmail(email)}, function (err) {
                         $timeout(function () {
                             if (err) {
