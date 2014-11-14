@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('my.account.controller', ['my.firebase.factory', 'my.login.factory'])
-        .controller('accountController', ['$scope', 'loginFactory', 'firebaseFactory', 'user', '$location',
+angular.module('my.user.controller', ['my.firebase.factory', 'my.login.factory'])
+        .controller('userController', ['$scope', 'loginFactory', 'firebaseFactory', 'user', '$location',
             function ($scope, loginFactory, firebaseFactory, user, $location) {
                 // create a 3-way binding with the user profile object in Firebase
                 var profile = firebaseFactory.syncObject(['users', user.uid]);

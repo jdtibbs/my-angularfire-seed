@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('my.users.factory', ['firebase', 'my.firebase.factory', 'changeEmail'])
+angular.module('my.user.factory', ['firebase', 'my.firebase.factory', 'changeEmail'])
 
-        .factory('usersFactory', ['firebaseFactory', '$q', '$timeout', function (firebaseFactory, $q, $timeout) {
+        .factory('userFactory', ['firebaseFactory', '$q', '$timeout', function (firebaseFactory, $q, $timeout) {
                 return function (id, email, name) {
                     var ref = firebaseFactory.ref('users', id);
                     var def = $q.defer();
