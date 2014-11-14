@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('my.login.controller', ['firebase.utils', 'my.login.factory'])
+angular.module('my.login.controller', ['my.firebase.factory', 'my.login.factory'])
         .controller('loginController', ['$scope', 'loginFactory', '$location', function ($scope, loginFactory, $location) {
                 $scope.email = null;
                 $scope.pass = null;

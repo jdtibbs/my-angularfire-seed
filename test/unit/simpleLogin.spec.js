@@ -7,7 +7,7 @@ describe('simpleLogin', function() {
     module(function($provide) {
       // mock dependencies used by our services to isolate testing
       $provide.value('$location', stub('path'));
-      $provide.value('fbutil', fbutilStub());
+      $provide.value('firebaseFactory', firebaseFactoryStub());
       $provide.value('$firebaseSimpleLogin', authStub);
     });
     inject(function(_$q_, _$timeout_) {
@@ -114,10 +114,10 @@ describe('simpleLogin', function() {
 
   describe('#createProfile', function() {
     it('should invoke set on Firebase',
-      inject(function(createProfile, fbutil) {
+      inject(function(createProfile, firebaseFactory) {
         createProfile(123, 'test@test.com');
         flush();
-        expect(fbutil.$$ref.set).toHaveBeenCalledWith({email: 'test@test.com', name: 'Test'}, jasmine.any(Function));
+        expect(firebaseFactory.$$ref.set).toHaveBeenCalledWith({email: 'test@test.com', name: 'Test'}, jasmine.any(Function));
       })
     );
 
@@ -128,9 +128,9 @@ describe('simpleLogin', function() {
     );
 
     it('should return any error in the reject',
-      inject(function(createProfile, fbutil) {
+      inject(function(createProfile, firebaseFactory) {
         var cb = jasmine.createSpy();
-        fbutil.$$ref.set.andCallFake(function(val, cb) {
+        firebaseFactory.$$ref.set.andCallFake(function(val, cb) {
           cb && cb('noooooo');
         });
         createProfile(456, 'test2@test2.com').then(null, cb);
@@ -148,13 +148,13 @@ describe('simpleLogin', function() {
     return out;
   }
 
-  function fbutilStub() {
-    var obj = jasmine.createSpyObj('fbutil', ['syncObject', 'syncArray', 'ref']);
+  function firebaseFactoryStub() {
+    var obj = jasmine.createSpyObj('firebaseFactory', ['syncObject', 'syncArray', 'ref']);
     obj.$$ref = new Firebase();
     obj.syncObject.andCallFake(function() { return {}; });
     obj.syncArray.andCallFake(function() { return []; });
     obj.ref.andCallFake(function() { return obj.$$ref; });
-    fbutilStub.$$last = obj;
+    firebaseFactoryStub.$$last = obj;
     return obj;
   }
 
@@ -183,7 +183,7 @@ describe('simpleLogin', function() {
         // flush until there is nothing left to flush (i.e. $timeout throws an error)
         // this is necessary for createAccount which uses some chained promises that
         // iterate through set/remove/promise calls, all of which have to get flushed
-        fbutilStub.$$last.$$ref.flush();
+        firebaseFactoryStub.$$last.$$ref.flush();
         $timeout.flush();
       }
     }

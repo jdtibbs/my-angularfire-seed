@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('my.login.factory', ['firebase', 'firebase.utils', 'my.account.factory', 'changeEmail'])
+angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.account.factory', 'changeEmail'])
 
         // a simple wrapper on simpleLogin.getUser() that rejects the promise
         // if the user does not exists (i.e. makes user required)
@@ -12,9 +12,9 @@ angular.module('my.login.factory', ['firebase', 'firebase.utils', 'my.account.fa
                 };
             }])
 
-        .factory('loginFactory', ['fbutil', 'createProfile', 'changeEmail', '$q', '$rootScope',
-            function (fbutil, createProfile, changeEmail, $q, $rootScope) {
-                var fbref = fbutil.ref();
+        .factory('loginFactory', ['firebaseFactory', 'createProfile', 'changeEmail', '$q', '$rootScope',
+            function (firebaseFactory, createProfile, changeEmail, $q, $rootScope) {
+                var fbref = firebaseFactory.ref();
                 var listeners = [];
 
                 function statusChange() {

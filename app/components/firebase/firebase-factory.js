@@ -1,7 +1,8 @@
+'use strict';
 
 // a simple wrapper on Firebase and AngularFire to simplify deps and keep things DRY
-angular.module('firebase.utils', ['firebase', 'my.config'])
-   .factory('fbutil', ['$window', 'FBURL', '$firebase', function($window, FBURL, $firebase) {
+angular.module('my.firebase.factory', ['firebase', 'my.config'])
+   .factory('firebaseFactory', ['$window', 'FBURL', '$firebase', function($window, FBURL, $firebase) {
       "use strict";
 
       return {
