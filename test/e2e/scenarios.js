@@ -37,7 +37,7 @@ describe('my app', function() {
 
    describe('account', function() {
       it('should redirect to /login if not logged in', function() {
-         browser.get('index.html#/account');
+         browser.get('index.html#/user');
          expect(browser.getLocationAbsUrl()).toMatch('/login');
       });
 

@@ -10,7 +10,7 @@ angular.module('my.login.controller', ['my.firebase.factory', 'my.login.factory'
                     $scope.err = null;
                     loginFactory.login(email, pass)
                             .then(function (/* user */) {
-                                $location.path('/account');
+                                $location.path('/user');
                             }, function (err) {
                                 $scope.err = errMessage(err);
                             });
@@ -20,7 +20,7 @@ angular.module('my.login.controller', ['my.firebase.factory', 'my.login.factory'
                     if (assertValidAccountProps()) {
                         loginFactory.createAccount($scope.email, $scope.pass)
                                 .then(function (/* user */) {
-                                    $location.path('/account');
+                                    $location.path('/user');
                                 }, function (err) {
                                     $scope.err = errMessage(err);
                                 });

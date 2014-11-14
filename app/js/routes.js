@@ -24,8 +24,8 @@ angular.module('my.routes', ['ngRoute', 'my.login.factory'])
       templateUrl: 'components/login/login.html',
       controller: 'loginController'
     },
-    '/account': {
-      templateUrl: 'components/account/account.html',
+    '/user': {
+      templateUrl: 'components/user/user.html',
       controller: 'accountController',
       // require user to be logged in to view this route
       // the whenAuthenticated method below will resolve the current user

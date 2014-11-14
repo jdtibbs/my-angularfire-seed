@@ -11,7 +11,7 @@ angular.module('my.menu.controller', [])
                             "url": "#/login"
                         }, {
                             "value": "Account",
-                            "url": "#/account"
+                            "url": "#/user"
                         }],
                     "home": "#/home",
                     "selected": "x"
