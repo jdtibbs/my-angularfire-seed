@@ -4,9 +4,9 @@ angular.module('my.login.factory', ['firebase', 'firebase.utils', 'my.account.fa
 
         // a simple wrapper on simpleLogin.getUser() that rejects the promise
         // if the user does not exists (i.e. makes user required)
-        .factory('requireUser', ['loginFactory', '$q', function (simpleLogin, $q) {
+        .factory('loginRequireUserFactory', ['loginFactory', '$q', function (loginFactory, $q) {
                 return function () {
-                    return simpleLogin.getUser().then(function (user) {
+                    return loginFactory.getUser().then(function (user) {
                         return user ? user : $q.reject({authRequired: true});
                     });
                 };

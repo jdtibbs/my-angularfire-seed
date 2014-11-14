@@ -36,7 +36,7 @@ angular.module('my.routes', ['ngRoute', 'my.login.factory'])
 
   /**
    * Adds a special `whenAuthenticated` method onto $routeProvider. This special method,
-   * when called, invokes the requireUser() service (see login/login.js).
+   * when called, invokes the loginRequireUserFactory() service (see login/login.js).
    *
    * The promise either resolves to the authenticated user object and makes it available to
    * dependency injection (see AuthCtrl), or rejects the promise if user is not logged in,
@@ -49,8 +49,8 @@ angular.module('my.routes', ['ngRoute', 'my.login.factory'])
     // to hack it directly onto the $routeProvider object
     $routeProvider.whenAuthenticated = function(path, route) {
       route.resolve = route.resolve || {};
-      route.resolve.user = ['requireUser', function(requireUser) {
-        return requireUser();
+      route.resolve.user = ['loginRequireUserFactory', function(loginRequireUserFactory) {
+        return loginRequireUserFactory();
       }];
       $routeProvider.when(path, route);
     }
