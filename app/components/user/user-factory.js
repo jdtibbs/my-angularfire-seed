@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('my.user.factory', ['firebase', 'my.firebase.factory', 'changeEmail'])
+angular.module('my.user.factory', ['firebase', 'my.firebase.factory'])
 
         .factory('userFactory', ['firebaseFactory', '$q', '$timeout', function (firebaseFactory, $q, $timeout) {
                 return function (id, email, name) {
