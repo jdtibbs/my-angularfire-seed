@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('account.controller', ['firebase.utils', 'login.factory'])
+angular.module('my.account.controller', ['firebase.utils', 'my.login.factory'])
         .controller('accountController', ['$scope', 'loginFactory', 'fbutil', 'user', '$location',
             function ($scope, loginFactory, fbutil, user, $location) {
                 // create a 3-way binding with the user profile object in Firebase

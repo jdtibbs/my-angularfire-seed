@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('menu.controller', [])
+angular.module('my.menu.controller', [])
         .controller('menuController', ['$scope', function ($scope) {
                 $scope.menu = {
                     "items": [{
