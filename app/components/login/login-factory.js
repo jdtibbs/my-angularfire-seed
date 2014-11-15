@@ -67,9 +67,9 @@ angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.user.
                                 })
                                 .then(function (user) {
                                     // store user data in Firebase after creating account
-                                    return userFactory(user.uid, email, name).then(function () {
+                                    return userFactory.createProfile(user.uid, email, name).then(function () {
                                         return user;
-                                    })
+                                    });
                                 });
                     },
                     createUser: function (email, pass) {
