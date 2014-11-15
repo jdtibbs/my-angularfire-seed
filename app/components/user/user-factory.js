@@ -30,10 +30,9 @@ angular.module('my.user.factory', ['firebase', 'my.firebase.factory'])
                         }
                         return def.promise;
                     },
-                    getProfile: function () {
-
+                    getProfile: function (id) {
+                        return firebaseFactory.syncObject(['users', id]);
                     }
-
                 };
                 return ns;
             }]);

@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('my.user.controller', ['my.firebase.factory', 'my.login.factory'])
-        .controller('userController', ['$scope', 'loginFactory', 'firebaseFactory', 'user', '$location',
-            function ($scope, loginFactory, firebaseFactory, user, $location) {
+angular.module('my.user.controller', ['my.login.factory', 'my.user.factory'])
+        .controller('userController', ['$scope', 'loginFactory', 'userFactory', 'user', '$location',
+            function ($scope, loginFactory, userFactory, user, $location) {
                 // create a 3-way binding with the user profile object in Firebase
-                var profile = firebaseFactory.syncObject(['users', user.uid]);
+                var profile = userFactory.getProfile(user.uid);
                 profile.$bindTo($scope, 'profile');
                 // expose logout function to scope
                 $scope.logout = function () {
@@ -35,7 +35,7 @@ angular.module('my.user.controller', ['my.firebase.factory', 'my.login.factory']
                     profile.$destroy();
                     loginFactory.changeEmail(pass, newEmail)
                             .then(function (user) {
-                                profile = firebaseFactory.syncObject(['users', user.uid]);
+                                profile = userFactory.getProfile(user.uid);
                                 profile.$bindTo($scope, 'profile');
                                 $scope.emailmsg = 'Email changed';
                             }, function (err) {
