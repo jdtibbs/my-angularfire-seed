@@ -7,6 +7,7 @@ angular.module('my.user.factory', ['firebase', 'my.firebase.factory'])
                     createProfile: function (id, email, name) {
                         var ref = firebaseFactory.ref('users', id);
                         var def = $q.defer();
+                        // !! set() overwrites existing data.
                         ref.set({email: email, name: name || firstPartOfEmail(email)}, function (err) {
                             $timeout(function () {
                                 if (err) {
@@ -30,9 +31,11 @@ angular.module('my.user.factory', ['firebase', 'my.firebase.factory'])
                         }
                         return def.promise;
                     },
+                    
                     getProfile: function (id) {
                         return firebaseFactory.syncObject(['users', id]);
                     }
                 };
+                
                 return ns;
             }]);
