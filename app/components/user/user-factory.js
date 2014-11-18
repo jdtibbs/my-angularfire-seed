@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('my.user.factory', ['firebase', 'my.firebase.factory'])
+angular.module('my.user.factory', ['my.firebase.factory'])
 
         .factory('userFactory', ['firebaseFactory', '$q', '$timeout', function (firebaseFactory, $q, $timeout) {
                 var ns = {
@@ -18,24 +18,12 @@ angular.module('my.user.factory', ['firebase', 'my.firebase.factory'])
                                 }
                             });
                         });
-
-                        function firstPartOfEmail(email) {
-                            return ucfirst(email.substr(0, email.indexOf('@')) || '');
-                        }
-
-                        function ucfirst(str) {
-                            // credits: http://kevin.vanzonneveld.net
-                            str += '';
-                            var f = str.charAt(0).toUpperCase();
-                            return f + str.substr(1);
-                        }
                         return def.promise;
                     },
-                    
                     getProfile: function (id) {
                         return firebaseFactory.syncObject(['users', id]);
                     }
                 };
-                
+
                 return ns;
             }]);
