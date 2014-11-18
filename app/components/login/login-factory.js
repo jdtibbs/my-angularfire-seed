@@ -13,7 +13,7 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.user.factory'])
 
         .factory('loginFactory', ['firebaseFactory', 'userFactory', 'changeEmailFactory', '$q', '$rootScope',
             function (firebaseFactory, userFactory, changeEmailFactory, $q, $rootScope) {
-                var fbref = firebaseFactory.ref();
+                var INVALID_LOGIN = 'The specified email and or password is incorrect.';
                 var fbauth = firebaseFactory.auth();
                 var listeners = [];
                 function statusChange() {
@@ -29,7 +29,7 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.user.factory'])
                     user: null,
                     getUser: function () {
                         var deferred = $q.defer();
-                        deferred.resolve(fbref.getAuth());
+                        deferred.resolve(fbauth.$getAuth());
                         return deferred.promise;
                     },
                     /**
@@ -52,8 +52,9 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.user.factory'])
                                         def.resolve(authData);
                                     })
                                     .catch(function (error) {
+                                        console.log(error.message);
                                         $rootScope.$broadcast('login:error', null);
-                                        def.reject(error.message);
+                                        def.reject(INVALID_LOGIN);
                                     });
                         }
                         return def.promise;
@@ -82,6 +83,7 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.user.factory'])
                                     def.resolve();
                                 })
                                 .catch(function (error) {
+                                    console.log('Error-createUser: ' + error);
                                     switch (error.code) {
                                         case 'EMAIL_TAKEN':
                                             def.reject('The new user account cannot be created because the email is already in use.');
@@ -101,14 +103,12 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.user.factory'])
                                     def.resolve();
                                 })
                                 .catch(function (error) {
-                                    console.log('change password error: ' + error);
+                                    console.log('Error-changePassword: ' + error);
                                     switch (error.code) {
                                         case 'INVALID_PASSWORD':
-                                            // The specified user account password is incorrect.
-                                            def.reject('invalid password');
+                                            def.reject(INVALID_LOGIN);
                                         case 'INVALID_USER':
-                                            // The specified user account does not exist.
-                                            def.reject('invalid user');
+                                            def.reject(INVALID_LOGIN);
                                         default:
                                             def.reject(error);
                                     }
@@ -121,22 +121,21 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.user.factory'])
                     },
                     removeUser: function (email, pass) {
                         var def = $q.defer();
-                        fbref.removeUser({'email': email, 'password': pass}, function (error) {
-                            if (error === null) {
-                                def.resolve();
-                            } else {
-                                switch (error.code) {
-                                    case 'INVALID_PASSWORD':
-                                        // The specified user account password is incorrect.
-                                        def.reject('invalid password');
-                                    case 'INVALID_USER':
-                                        // The specified user account does not exist.
-                                        def.reject('invalid user');
-                                    default:
-                                        def.reject(error);
-                                }
-                            }
-                        });
+                        fbauth.$removeUser(email, pass)
+                                .then(function () {
+                                    def.resolve();
+                                })
+                                .catch(function (error) {
+                                    console.log('Error-removeUser: ' + error);
+                                    switch (error.code) {
+                                        case 'INVALID_PASSWORD':
+                                            def.reject(INVALID_LOGIN);
+                                        case 'INVALID_USER':
+                                            def.reject(INVALID_LOGIN);
+                                        default:
+                                            def.reject(error);
+                                    }
+                                });
                         return def.promise;
                     },
                     watch: function (cb, $scope) {

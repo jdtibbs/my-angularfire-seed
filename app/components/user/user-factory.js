@@ -3,7 +3,7 @@
 angular.module('my.user.factory', ['my.firebase.factory'])
 
         .factory('userFactory', ['firebaseFactory', '$q', '$timeout', function (firebaseFactory, $q, $timeout) {
-                var ns = {
+                var factory = {
                     createProfile: function (id, profile) {
                         var ref = firebaseFactory.ref('users', id);
                         var def = $q.defer();
@@ -25,5 +25,5 @@ angular.module('my.user.factory', ['my.firebase.factory'])
                     }
                 };
 
-                return ns;
+                return factory;
             }]);
