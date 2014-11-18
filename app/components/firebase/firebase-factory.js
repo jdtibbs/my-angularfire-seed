@@ -2,7 +2,7 @@
 
 // a simple wrapper on Firebase and AngularFire to simplify deps and keep things DRY
 angular.module('my.firebase.factory', ['firebase', 'my.config'])
-   .factory('firebaseFactory', ['$window', 'FBURL', '$firebase', function($window, FBURL, $firebase) {
+   .factory('firebaseFactory', ['$window', 'FBURL', '$firebase', '$firebaseAuth', function($window, FBURL, $firebase, $firebaseAuth) {
       "use strict";
 
       return {
@@ -14,7 +14,11 @@ angular.module('my.firebase.factory', ['firebase', 'my.config'])
           return syncData.apply(null, arguments).$asArray();
         },
 
-        ref: firebaseRef
+        ref: firebaseRef,
+        
+        auth: function(){
+            return $firebaseAuth(this.ref());
+        }
       };
 
       function pathRef(args) {

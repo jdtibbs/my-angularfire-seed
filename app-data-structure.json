@@ -1,0 +1,128 @@
+{
+    "notes": {
+        "note1": "https://www.firebase.com/blog/2013-04-12-denormalizing-is-normal.html"
+    },
+    "users": {
+        "user1": {
+            "email": "doorco@doorco1.com",
+            "name": "sam",
+            "roles": {
+                "seller": true
+            },
+            "generalContractors": {
+                "user2": true
+            }
+        },
+        "user2": {
+            "email": "gc@gc1.com",
+            "name": "jane",
+            "roles": {
+                "generalContractor": true
+            },
+            "sellers": {
+                "user1": true,
+                "user3": true
+            }
+        },
+        "user3": {
+            "email": "doorco@doorco2.com",
+            "name": "sam",
+            "roles": {
+                "seller": true
+            },
+            "generalContractors": {
+                "user2": true
+            }
+        }
+    },
+    "roles": {
+        "seller": {
+            "description": "sells doors."
+        },
+        "sales": {
+            "description": "sales rep at seller"
+        },
+        "generalContractor": {
+            "description": "buys doors from seller."
+        },
+        "system": {
+            "description": "system admin"
+        }
+    },
+    "quoteRequests": {
+        "request1": {
+            "request": {
+                "data": "data"
+            },
+            "generalContractor": {
+                "user2": true
+            },
+            "seller": {
+                "user1": true,
+                "user3": true
+            },
+            "quotes": {
+                "quote1": true,
+                "quote2": true
+            }
+        },
+        "request2": {
+            "request": {
+                "data": "data"
+            },
+            "generalContractor": {
+                "user2": true
+            },
+            "seller": {
+                "user3": true
+            },
+            "quotes": {
+                "quote3": true
+            }
+        }
+    },
+    "quotes": {
+        "quote1": {
+            "quote": {
+                "data": "data"
+            },
+            "request": {
+                "request1": true
+            },
+            "generalContractor": {
+                "user2": true
+            },
+            "seller": {
+                "user1": true
+            }
+        },
+        "quote2": {
+            "quote": {
+                "data": "data"
+            },
+            "request": {
+                "request1": true
+            },
+            "generalContractor": {
+                "user2": true
+            },
+            "seller": {
+                "user3": true
+            }
+        },
+        "quote3": {
+            "quote": {
+                "data": "data"
+            },
+            "request": {
+                "request2": true
+            },
+            "generalContractor": {
+                "user2": true
+            },
+            "seller": {
+                "user3": true
+            }
+        }
+    }
+}

@@ -1,6 +1,5 @@
 'use strict';
-
-angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.user.factory'])
+angular.module('my.login.factory', ['my.firebase.factory', 'my.user.factory'])
 
         // a simple wrapper on simpleLogin.getUser() that rejects the promise
         // if the user does not exists (i.e. makes user required)
@@ -15,8 +14,8 @@ angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.user.
         .factory('loginFactory', ['firebaseFactory', 'userFactory', 'changeEmailFactory', '$q', '$rootScope',
             function (firebaseFactory, userFactory, changeEmailFactory, $q, $rootScope) {
                 var fbref = firebaseFactory.ref();
+                var fbauth = firebaseFactory.auth();
                 var listeners = [];
-
                 function statusChange() {
                     fns.getUser().then(function (user) {
                         fns.user = user || null;
@@ -39,35 +38,39 @@ angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.user.
                      * @returns {*}
                      */
                     login: function (email, pass) {
-                        var deferred = $q.defer();
-                        deferred.notify('about to signin.');
-                        fbref.authWithPassword({'email': email, 'password': pass},
-                        function (error, authData) {
-                            if (error === null) {
-                                console.log('userId: ' + authData.uid + ' password.email: ' + authData.password.email);
-                                $rootScope.$broadcast('login:login', authData);
-                                deferred.resolve(authData);
-                            } else {
-                                console.log('login error: ' + error);
-                                $rootScope.$broadcast('login:error', null);
-                                deferred.reject(error);
-                            }
-                        });
-                        return deferred.promise;
+                        var def = $q.defer();
+                        if (!email) {
+                            $rootScope.$broadcast('login:error', null);
+                            def.reject('Email is required to login.');
+                        } else if (!pass) {
+                            $rootScope.$broadcast('login:error', null);
+                            def.reject('Password is required to login.');
+                        } else {
+                            fbauth.$authWithPassword({'email': email, 'password': pass})
+                                    .then(function (authData) {
+                                        $rootScope.$broadcast('login:login', authData);
+                                        def.resolve(authData);
+                                    })
+                                    .catch(function (error) {
+                                        $rootScope.$broadcast('login:error', null);
+                                        def.reject(error.message);
+                                    });
+                        }
+                        return def.promise;
                     },
                     logout: function () {
-                        fbref.unauth();
+                        fbauth.$unauth();
                         $rootScope.$broadcast('login:logout', null);
                     },
-                    createAccount: function (email, pass, name) {
-                        return fns.createUser(email, pass)
+                    createAccount: function (profile, pass) {
+                        return fns.createUser(profile.email, pass)
                                 .then(function () {
                                     // authenticate so we have permission to write to Firebase
-                                    return fns.login(email, pass);
+                                    return fns.login(profile.email, pass);
                                 })
                                 .then(function (user) {
                                     // store user data in Firebase after creating account
-                                    return userFactory.createProfile(user.uid, email, name).then(function () {
+                                    return userFactory.createProfile(user.uid, profile).then(function () {
                                         return user;
                                     });
                                 });
@@ -83,7 +86,7 @@ angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.user.
                                     case 'INVALID_EMAIL':
                                         def.reject('The specified email is not a valid email.');
                                     default:
-                                        def.reject(error)
+                                        def.reject(error);
                                 }
                             } else {
                                 // User account created successfully!
@@ -94,23 +97,25 @@ angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.user.
                     },
                     changePassword: function (email, oldpass, newpass) {
                         var def = $q.defer();
-                        fbref.changePassword({'email': email, 'oldPassword': oldpass, 'newPassword': newpass},
-                        function (error) {
-                            if (error === null) {
-                                def.resolve();
-                            } else {
-                                switch (error.code) {
-                                    case 'INVALID_PASSWORD':
-                                        // The specified user account password is incorrect.
-                                        def.reject('invalid password');
-                                    case 'INVALID_USER':
-                                        // The specified user account does not exist.
-                                        def.reject('invalid user');
-                                    default:
-                                        def.reject(error);
-                                }
-                            }
-                        });
+                        //fbauth.$changePassword({email: email, oldPassword: oldpass, newPassword: newpass})
+                        fbauth.$changePassword(email, oldpass, newpass)
+                                .then(function () {
+                                    def.resolve();
+                                })
+                                .catch(function (error) {
+                                    console.log('change password error: ' + error);
+                                    switch (error.code) {
+                                        case 'INVALID_PASSWORD':
+                                            // The specified user account password is incorrect.
+                                            def.reject('invalid password');
+                                        case 'INVALID_USER':
+                                            // The specified user account does not exist.
+                                            def.reject('invalid user');
+                                        default:
+                                            def.reject(error);
+                                    }
+                                    // def.reject(error)
+                                });
                         return def.promise;
                     },
                     changeEmail: function (password, newEmail) {
@@ -153,19 +158,18 @@ angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.user.
                         return unbind;
                     }
                 };
-
                 $rootScope.$on('login:login', statusChange);
                 $rootScope.$on('login:logout', statusChange);
                 $rootScope.$on('login:error', statusChange);
                 statusChange();
-
                 return fns;
             }])
 
         .factory('changeEmailFactory', ['firebaseFactory', '$q', function (firebaseFactory, $q) {
                 return function (password, oldEmail, newEmail, loginFactory) {
                     var ctx = {old: {email: oldEmail}, curr: {email: newEmail}};
-
+                    var oldProfile = {};
+                    var newProfile = {};
                     // execute activities in order; first we authenticate the user
                     return authOldAccount()
                             // then we fetch old account details
@@ -173,7 +177,7 @@ angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.user.
                             // then we create a new account
                             .then(createNewAccount)
                             // then we copy old account info
-                            .then(copyProfile)
+                            //.then(copyProfile) this is done in createNewAccount!!!
                             // and once they safely exist, then we can delete the old ones
                             // we have to authenticate as the old user again
                             .then(authOldAccount)
@@ -185,11 +189,20 @@ angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.user.
                                 console.error(err);
                                 return $q.reject(err);
                             });
-
                     function authOldAccount() {
-                        return loginFactory.login(ctx.old.email, password).then(function (user) {
-                            ctx.old.uid = user.uid;
-                        });
+                        // return 
+                        var def = $q.defer();
+                        loginFactory.login(ctx.old.email, password)
+                                .then(function (user) {
+                                    ctx.old.uid = user.uid;
+                                    console.log('authOldAccount ctx.old.uid ' + ctx.old.uid);
+                                    def.resolve();
+                                })
+                                .catch(function (err) {
+                                    console.error('authOldAccount ' + err);
+                                    def.reject(err);
+                                });
+                        return def.promise;
                     }
 
                     function loadOldProfile() {
@@ -202,7 +215,7 @@ angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.user.
                                         def.reject(oldEmail + ' not found');
                                     }
                                     else {
-                                        ctx.old.name = dat.name;
+                                        oldProfile = dat;
                                         def.resolve();
                                     }
                                 },
@@ -213,16 +226,21 @@ angular.module('my.login.factory', ['firebase', 'my.firebase.factory', 'my.user.
                     }
 
                     function createNewAccount() {
-                        return loginFactory.createAccount(ctx.curr.email, password, ctx.old.name).then(function (user) {
+                        newProfile = oldProfile;
+                        newProfile.email = ctx.curr.email;
+                        return loginFactory.createAccount(newProfile, password).then(function (user) {
                             ctx.curr.uid = user.uid;
+                            console.log('createNewAccount ctx.curr.uid ' + ctx.curr.uid);
                         });
                     }
 
                     function copyProfile() {
+                        // not used anymore since adding user profile properties.
                         var d = $q.defer();
                         ctx.curr.ref = firebaseFactory.ref('users', ctx.curr.uid);
-                        var profile = {email: ctx.curr.email, name: ctx.old.name || ''};
-                        ctx.curr.ref.set(profile, function (err) {
+                        newProfile = oldProfile;
+                        newProfile.email = ctx.email;
+                        ctx.curr.ref.set(newProfile, function (err) {
                             if (err) {
                                 d.reject(err);
                             } else {

@@ -2,7 +2,7 @@
 
 angular.module('my.login.controller', ['my.firebase.factory', 'my.login.factory'])
         .controller('loginController', ['$scope', 'loginFactory', '$location', function ($scope, loginFactory, $location) {
-                $scope.email = null;
+                $scope.profile = null;
                 $scope.pass = null;
                 $scope.confirm = null;
                 $scope.createMode = false;
@@ -18,7 +18,7 @@ angular.module('my.login.controller', ['my.firebase.factory', 'my.login.factory'
                 $scope.createAccount = function () {
                     $scope.err = null;
                     if (assertValidAccountProps()) {
-                        loginFactory.createAccount($scope.email, $scope.pass)
+                        loginFactory.createAccount($scope.profile, $scope.pass)
                                 .then(function (/* user */) {
                                     $location.path('/user');
                                 }, function (err) {
@@ -27,8 +27,12 @@ angular.module('my.login.controller', ['my.firebase.factory', 'my.login.factory'
                     }
                 };
                 function assertValidAccountProps() {
-                    if (!$scope.email) {
+                    if (!$scope.profile.email) {
                         $scope.err = 'Please enter an email address';
+                    } else if ($scope.createMode && !$scope.profile.name) {
+                        $scope.err = 'Please enter a name';
+                    } else if ($scope.createMode && !$scope.profile.businessPhone) {
+                        $scope.err = 'Please enter a business phone';
                     }
                     else if (!$scope.pass || !$scope.confirm) {
                         $scope.err = 'Please enter a password';

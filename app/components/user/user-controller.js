@@ -24,6 +24,10 @@ angular.module('my.user.controller', ['my.login.factory', 'my.user.factory'])
                         loginFactory.changePassword(profile.email, pass, newPass)
                                 .then(function () {
                                     $scope.msg = 'Password changed';
+                                    // clear form after successful completion.
+                                    $scope.pass = null;
+                                    $scope.confirm = null;
+                                    $scope.newPass = null;
                                 }, function (err) {
                                     $scope.err = err;
                                 });
@@ -32,15 +36,24 @@ angular.module('my.user.controller', ['my.login.factory', 'my.user.factory'])
                 $scope.clear = resetMessages;
                 $scope.changeEmail = function (pass, newEmail) {
                     resetMessages();
-                    profile.$destroy();
-                    loginFactory.changeEmail(pass, newEmail)
-                            .then(function (user) {
-                                profile = userFactory.getProfile(user.uid);
-                                profile.$bindTo($scope, 'profile');
-                                $scope.emailmsg = 'Email changed';
-                            }, function (err) {
-                                $scope.emailerr = err;
-                            });
+                    if (!newEmail) {
+                        $scope.emailerr = 'Please enter new email.';
+                    } else if (!pass) {
+                        $scope.emailerr = 'Please enter password.';
+                    } else {
+                        profile.$destroy();
+                        loginFactory.changeEmail(pass, newEmail)
+                                .then(function (user) {
+                                    profile = userFactory.getProfile(user.uid);
+                                    profile.$bindTo($scope, 'profile');
+                                    $scope.emailmsg = 'Email changed';
+                                    // clear form after successful completion.
+                                    $scope.pass = null;
+                                    $scope.newEmail = null;
+                                }, function (err) {
+                                    $scope.emailerr = err;
+                                });
+                    }
                 };
                 function resetMessages() {
                     $scope.err = null;
