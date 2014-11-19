@@ -51,14 +51,14 @@ angular.module('my.user.factory', ['my.firebase.factory'])
                         fbauth.$unauth();
                     },
                     createAccount: function (profile, pass) {
-                        return fns.createUser(profile.email, pass)
+                        return factory.createUser(profile.email, pass)
                                 .then(function () {
                                     // authenticate so we have permission to write to Firebase
-                                    return fns.login(profile.email, pass);
+                                    return factory.login(profile.email, pass);
                                 })
                                 .then(function (user) {
                                     // store user data in Firebase after creating account
-                                    return userFactory.createUserProfile(user.uid, profile).then(function () {
+                                    return factory.createUserProfile(user.uid, profile).then(function () {
                                         return user;
                                     });
                                 });
@@ -103,7 +103,20 @@ angular.module('my.user.factory', ['my.firebase.factory'])
                         return def.promise;
                     },
                     changeEmail: function (password, newEmail) {
-                        return changeEmailFactory(password, fns.user.password.email, newEmail, this);
+                        var def = $q.defer();
+                        // TODO is this the only way to nest these calls!?
+                        factory.getAuth().then(function (auth) {
+                            return auth;
+                        }).then(function (auth) {
+                            changeEmailFactory(password, auth.password.email, newEmail, factory).then(function (auth) {
+                                def.resolve(auth);
+                            }).catch(function (error) {
+                                def.reject(error);
+                            });
+                        }).catch(function (error) {
+                            def.reject(error);
+                        });
+                        return def.promise;
                     },
                     removeUser: function (email, pass) {
                         var def = $q.defer();
@@ -148,7 +161,7 @@ angular.module('my.user.factory', ['my.firebase.factory'])
                 return factory;
             }])
         .factory('changeEmailFactory', ['firebaseFactory', '$q', function (firebaseFactory, $q) {
-                return function (password, oldEmail, newEmail, loginFactory) {
+                return function (password, oldEmail, newEmail, userFactory) {
                     var ctx = {old: {email: oldEmail}, curr: {email: newEmail}};
                     var oldProfile = {};
                     var newProfile = {};
@@ -172,7 +185,7 @@ angular.module('my.user.factory', ['my.firebase.factory'])
                     function authOldAccount() {
                         // return 
                         var def = $q.defer();
-                        loginFactory.login(ctx.old.email, password)
+                        userFactory.login(ctx.old.email, password)
                                 .then(function (user) {
                                     ctx.old.uid = user.uid;
                                     console.log('authOldAccount ctx.old.uid ' + ctx.old.uid);
@@ -208,7 +221,7 @@ angular.module('my.user.factory', ['my.firebase.factory'])
                     function createNewAccount() {
                         newProfile = oldProfile;
                         newProfile.email = ctx.curr.email;
-                        return loginFactory.createAccount(newProfile, password).then(function (user) {
+                        return userFactory.createAccount(newProfile, password).then(function (user) {
                             ctx.curr.uid = user.uid;
                             console.log('createNewAccount ctx.curr.uid ' + ctx.curr.uid);
                         });
@@ -228,7 +241,7 @@ angular.module('my.user.factory', ['my.firebase.factory'])
 
                     function removeOldLogin() {
                         var def = $q.defer();
-                        loginFactory.removeUser(ctx.old.email, password).then(function () {
+                        userFactory.removeUser(ctx.old.email, password).then(function () {
                             def.resolve();
                         }, function (err) {
                             def.reject(err);
@@ -237,7 +250,7 @@ angular.module('my.user.factory', ['my.firebase.factory'])
                     }
 
                     function authNewAccount() {
-                        return loginFactory.login(ctx.curr.email, password);
+                        return userFactory.login(ctx.curr.email, password);
                     }
                 };
             }]);

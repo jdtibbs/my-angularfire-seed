@@ -32,9 +32,9 @@ angular.module('my.user.controller', ['my.user.factory'])
                                 .then(function () {
                                     $scope.msg = 'Password changed';
                                     // clear form after successful completion.
-                                    $scope.pass = null;
+                                    $scope.oldpass = null;
                                     $scope.confirm = null;
-                                    $scope.newPass = null;
+                                    $scope.newpass = null;
                                 }, function (err) {
                                     $scope.err = err;
                                 });

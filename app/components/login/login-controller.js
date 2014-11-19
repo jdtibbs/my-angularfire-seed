@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('my.login.controller', ['my.firebase.factory', 'my.user.factory', 'my.login.factory'])
-        .controller('loginController', ['$scope', 'userFactory', 'loginFactory', '$location', function ($scope, userFactory, loginFactory, $location) {
+angular.module('my.login.controller', ['my.firebase.factory', 'my.user.factory'])
+        .controller('loginController', ['$scope', 'userFactory', '$location', function ($scope, userFactory, $location) {
                 $scope.profile = null;
                 $scope.pass = null;
                 $scope.confirm = null;
@@ -18,7 +18,7 @@ angular.module('my.login.controller', ['my.firebase.factory', 'my.user.factory',
                 $scope.createAccount = function () {
                     $scope.err = null;
                     if (assertValidAccountProps()) {
-                        loginFactory.createAccount($scope.profile, $scope.pass)
+                        userFactory.createAccount($scope.profile, $scope.pass)
                                 .then(function (/* user */) {
                                     $location.path('/user');
                                 }, function (err) {
