@@ -3,7 +3,7 @@
 /* Directives */
 
 
-angular.module('my.directives', ['my.login.factory'])
+angular.module('my.directives', [])
 
   .directive('appVersion', ['version', function(version) {
     return function(scope, elm) {
@@ -13,7 +13,7 @@ angular.module('my.directives', ['my.login.factory'])
 
   /**
    * A directive that shows elements only when user is logged in.
-   */
+   *
   .directive('ngShowAuth', ['loginFactory', '$timeout', function (loginFactory, $timeout) {
     var isLoggedIn;
     loginFactory.watch(function(user) {
@@ -38,10 +38,10 @@ angular.module('my.directives', ['my.login.factory'])
       }
     };
   }])
-
+*/
   /**
    * A directive that shows elements only when user is logged out.
-   */
+   *
   .directive('ngHideAuth', ['loginFactory', '$timeout', function (loginFactory, $timeout) {
     var isLoggedIn;
     loginFactory.watch(function(user) {
@@ -65,4 +65,5 @@ angular.module('my.directives', ['my.login.factory'])
         loginFactory.watch(update, scope);
       }
     };
-  }]);
+  }])
+  */;

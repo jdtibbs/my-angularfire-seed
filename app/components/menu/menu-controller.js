@@ -1,6 +1,6 @@
 'use strict';
+angular.module('my.menu.controller', ['my.user.factory'])
 
-angular.module('my.menu.controller', [])
         .controller('menuController', ['$scope', function ($scope) {
                 $scope.menu = {
                     "items": [{

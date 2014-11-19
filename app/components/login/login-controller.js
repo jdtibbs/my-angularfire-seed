@@ -1,14 +1,14 @@
 'use strict';
 
-angular.module('my.login.controller', ['my.firebase.factory', 'my.login.factory'])
-        .controller('loginController', ['$scope', 'loginFactory', '$location', function ($scope, loginFactory, $location) {
+angular.module('my.login.controller', ['my.firebase.factory', 'my.user.factory', 'my.login.factory'])
+        .controller('loginController', ['$scope', 'userFactory', 'loginFactory', '$location', function ($scope, userFactory, loginFactory, $location) {
                 $scope.profile = null;
                 $scope.pass = null;
                 $scope.confirm = null;
                 $scope.createMode = false;
                 $scope.login = function (email, pass) {
                     $scope.err = null;
-                    loginFactory.login(email, pass)
+                    userFactory.login(email, pass)
                             .then(function (/* user */) {
                                 $location.path('/user');
                             }, function (err) {

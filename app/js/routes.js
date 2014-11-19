@@ -1,5 +1,7 @@
 "use strict";
 
+// TODO deprecated !!!!!!
+
 angular.module('my.routes', ['ngRoute', 'my.login.factory'])
 
   .constant('ROUTES', {

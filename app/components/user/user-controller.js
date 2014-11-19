@@ -1,15 +1,22 @@
 'use strict';
 
-angular.module('my.user.controller', ['my.login.factory', 'my.user.factory'])
-        .controller('userController', ['$scope', 'loginFactory', 'userFactory', 'user', '$location',
-            function ($scope, loginFactory, userFactory, user, $location) {
+angular.module('my.user.controller', ['my.user.factory'])
+        .controller('userController', ['$scope', 'userFactory', '$location',
+            function ($scope, userFactory, $location) {
+
                 // create a 3-way binding with the user profile object in Firebase
-                var profile = userFactory.getProfile(user.uid);
-                profile.$bindTo($scope, 'profile');
+                var profile = {};
+                userFactory.getUid().then(function (uid) {
+                    profile = userFactory.getUserProfile(uid);
+                    profile.$bindTo($scope, 'profile');
+                }).catch(function (error) {
+                    // $location.path('/login');
+                });
+
                 // expose logout function to scope
                 $scope.logout = function () {
                     profile.$destroy();
-                    loginFactory.logout();
+                    userFactory.logout();
                     $location.path('/login');
                 };
                 $scope.changePassword = function (pass, confirm, newPass) {
@@ -21,7 +28,7 @@ angular.module('my.user.controller', ['my.login.factory', 'my.user.factory'])
                         $scope.err = 'New pass and confirm do not match';
                     }
                     else {
-                        loginFactory.changePassword(profile.email, pass, newPass)
+                        userFactory.changePassword(profile.email, pass, newPass)
                                 .then(function () {
                                     $scope.msg = 'Password changed';
                                     // clear form after successful completion.
@@ -42,9 +49,9 @@ angular.module('my.user.controller', ['my.login.factory', 'my.user.factory'])
                         $scope.emailerr = 'Please enter password.';
                     } else {
                         profile.$destroy();
-                        loginFactory.changeEmail(pass, newEmail)
+                        userFactory.changeEmail(pass, newEmail)
                                 .then(function (user) {
-                                    profile = userFactory.getProfile(user.uid);
+                                    profile = userFactory.getUserProfile(user.uid);
                                     profile.$bindTo($scope, 'profile');
                                     $scope.emailmsg = 'Email changed';
                                     // clear form after successful completion.
