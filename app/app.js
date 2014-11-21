@@ -61,6 +61,7 @@ angular.module('my.app', [
                     }
                 });
                 firebaseFactory.auth().$onAuth(function (auth) {
+                    // placing into rootscope so can use everywhere.
                     $rootScope.auth = auth;
                 });
                 $rootScope.$on('$destroy', function () {
