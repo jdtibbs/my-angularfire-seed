@@ -14,22 +14,6 @@ angular.module('my.app', [
     'my.filters',
     'ngRoute'
 ])
-        .run(["$rootScope", "$location", 'userFactory', function ($rootScope, $location, userFactory) {
-                $rootScope.$on("$routeChangeError", function (event, next, previous, error) {
-                    // We can catch the error thrown when the $requireAuth promise is rejected
-                    // and redirect the user back to the home page
-                    if (error === "AUTH_REQUIRED") {
-                        $location.path("/home");
-                    }
-                });
-                userFactory.firebaseAuth().$onAuth(function (auth) {
-                    $rootScope.auth = auth;
-                });
-
-                $rootScope.$on('$destroy', function () {
-                    userFactory.getAuth().$offAuth();
-                });
-            }])
 
         .config(["$routeProvider", function ($routeProvider) {
                 $routeProvider.when("/home", {
@@ -65,5 +49,22 @@ angular.module('my.app', [
                                 return userFactory.firebaseAuth().$requireAuth();
                             }]
                     }
+                }).otherwise({
+                    redirectTo: '/home'});
+            }])
+
+        .run(["$rootScope", "$location", 'userFactory', function ($rootScope, $location, userFactory) {
+                $rootScope.$on("$routeChangeError", function (event, next, previous, error) {
+                    // We can catch the error thrown when the $requireAuth promise is rejected
+                    // and redirect the user back to the home page
+                    if (error === "AUTH_REQUIRED") {
+                        $location.path("/home");
+                    }
+                });
+                userFactory.firebaseAuth().$onAuth(function (auth) {
+                    $rootScope.auth = auth;
+                });
+                $rootScope.$on('$destroy', function () {
+                    userFactory.getAuth().$offAuth();
                 });
             }]);
