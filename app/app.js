@@ -58,7 +58,7 @@ angular.module('my.app', [
                     // We can catch the error thrown when the $requireAuth promise is rejected
                     // and redirect the user back to the home page
                     if (error === "AUTH_REQUIRED") {
-                        $location.path("/home");
+                        $location.path("/login");
                     }
                 });
                 userFactory.firebaseAuth().$onAuth(function (auth) {
