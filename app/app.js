@@ -3,7 +3,6 @@
 // Declare app level module which depends on filters, and services
 angular.module('my.app', [
     'my.config',
-    'my.user.factory',
     'my.user.controller',
     'my.chat.controller',
     'my.home.controller',
@@ -23,9 +22,9 @@ angular.module('my.app', [
                     resolve: {
                         // controller will not be loaded until $waitForAuth resolves
                         // Auth refers to our $firebaseAuth wrapper in the example above
-                        "currentAuth": ['userFactory', function (userFactory) {
+                        "currentAuth": ['firebaseFactory', function (firebaseFactory) {
                                 // $waitForAuth returns a promise so the resolve waits for it to complete
-                                return userFactory.firebaseAuth().$waitForAuth();
+                                return firebaseFactory.auth().$waitForAuth();
                             }]
                     }
                 }).when("/login", {
@@ -43,17 +42,17 @@ angular.module('my.app', [
                     resolve: {
                         // controller will not be loaded until $requireAuth resolves
                         // Auth refers to our $firebaseAuth wrapper in the example above
-                        "currentAuth": ['userFactory', function (userFactory) {
+                        "currentAuth": ['firebaseFactory', function (firebaseFactory) {
                                 // $requireAuth returns a promise so the resolve waits for it to complete
                                 // If the promise is rejected, it will throw a $stateChangeError (see above)
-                                return userFactory.firebaseAuth().$requireAuth();
+                                return firebaseFactory.auth().$requireAuth();
                             }]
                     }
                 }).otherwise({
                     redirectTo: '/home'});
             }])
 
-        .run(["$rootScope", "$location", 'userFactory', function ($rootScope, $location, userFactory) {
+        .run(["$rootScope", "$location", 'firebaseFactory', function ($rootScope, $location, firebaseFactory) {
                 $rootScope.$on("$routeChangeError", function (event, next, previous, error) {
                     // We can catch the error thrown when the $requireAuth promise is rejected
                     // and redirect the user back to the home page
@@ -61,10 +60,10 @@ angular.module('my.app', [
                         $location.path("/login");
                     }
                 });
-                userFactory.firebaseAuth().$onAuth(function (auth) {
+                firebaseFactory.auth().$onAuth(function (auth) {
                     $rootScope.auth = auth;
                 });
                 $rootScope.$on('$destroy', function () {
-                    userFactory.getAuth().$offAuth();
+                    firebaseFactory.auth().$offAuth();
                 });
             }]);
