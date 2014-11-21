@@ -2,7 +2,7 @@
 
 angular.module('my.user.factory', ['my.firebase.factory'])
 
-        .factory('userFactory', ['firebaseFactory', 'changeEmailFactory', '$q', '$timeout', function (firebaseFactory, changeEmailFactory, $q, $timeout) {
+        .factory('userFactory', ['firebaseFactory', 'changeEmailFactory', '$q', function (firebaseFactory, changeEmailFactory, $q) {
                 var INVALID_LOGIN = 'The specified email and or password is incorrect.';
                 var fbauth = firebaseFactory.auth();
 
