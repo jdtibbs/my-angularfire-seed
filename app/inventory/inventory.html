@@ -1,0 +1,9 @@
+<h2>Inventory</h2>
+
+<p ng-hide="inventory.length">No items in inventory</p>
+
+<a href="" ng-click="add()">Add</a>
+<br/>
+<ul ng-show="inventory.length">
+    <li ng-repeat="item in inventory"><span>{{item.name}}</span>&nbsp;<span>{{item.quantity}}</span>&nbsp<span><a href="#/inventoryDetail/{{item.$id}}">Edit</a></span></li>
+</ul>

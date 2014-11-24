@@ -6,6 +6,8 @@ angular.module('my.app', [
     'my.user.controller',
     'my.chat.controller',
     'my.home.controller',
+    'my.inventory.controller',
+    'my.inventoryDetail.controller',
     'my.login.controller',
     'my.menu.controller',
     'my.decorators',
@@ -35,6 +37,33 @@ angular.module('my.app', [
                     // the rest is the same for ui-router and ngRoute...
                     controller: "chatController",
                     templateUrl: "chat/chat.html"
+                }).when("/inventory", {
+                    // the rest is the same for ui-router and ngRoute...
+                    controller: "inventoryController",
+                    templateUrl: "inventory/inventory.html"/*,
+                    resolve: {
+                        "currentAuth": ['firebaseFactory', function (firebaseFactory) {
+                                return firebaseFactory.auth().$requireAuth();
+                            }]
+                    }*/
+                }).when("/inventoryDetail", {
+                    // the rest is the same for ui-router and ngRoute...
+                    controller: "inventoryDetailController",
+                    templateUrl: "inventory/inventoryDetail.html"/*,
+                    resolve: {
+                        "currentAuth": ['firebaseFactory', function (firebaseFactory) {
+                                return firebaseFactory.auth().$requireAuth();
+                            }]
+                    }*/
+                }).when("/inventoryDetail/:id", {
+                    // the rest is the same for ui-router and ngRoute...
+                    controller: "inventoryDetailController",
+                    templateUrl: "inventory/inventoryDetail.html"/*,
+                    resolve: {
+                        "currentAuth": ['firebaseFactory', function (firebaseFactory) {
+                                return firebaseFactory.auth().$requireAuth();
+                            }]
+                    }*/
                 }).when("/user", {
                     // the rest is the same for ui-router and ngRoute...
                     controller: "userController",
