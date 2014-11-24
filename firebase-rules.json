@@ -1,0 +1,48 @@
+{
+   "rules": {
+      // block all operations if node is not defined...this is the default!
+      // ".read": false,
+      // ".write": false,
+      "syncedValue": {
+         ".read": true,
+         ".write": true,
+         ".validate": "newData.isString() && newData.val().length <= 100"
+      },
+      "inventory": {
+        ".read": true,
+        // user must be valid user and logged in.
+        ".write": "root.child('users/' + auth.uid).exists()"
+      },
+      "messages": {
+         ".read": true,
+         "$message": {
+            ".write": true,
+            ".validate": "newData.hasChildren(['text'])",
+            "text": {
+               ".validate": "newData.isString() && newData.val().length <= 1000"
+            },
+            "$other": {
+               ".validate": false
+            }
+         }
+      },
+      "users": {
+         "$user": {
+            ".read": "auth.uid === $user",
+            ".write": "auth.uid === $user && (!newData.exists() || newData.hasChildren())",
+            "name": {
+               ".validate": "newData.isString() && newData.val().length <= 100"
+            },
+            "businessPhone": {
+               ".validate": "newData.isString() && newData.val().length <= 100"
+            },
+            "email": {
+               ".validate": "newData.isString() && newData.val().length <= 100"
+            },
+            "$other": {
+               ".validate": false
+            }
+         }
+      }
+   }
+}
