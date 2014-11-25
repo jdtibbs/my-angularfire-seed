@@ -2,9 +2,9 @@
 
 
 <form>
-    <input ng-model="item.name"/>
+    <input placeholder="Name" ng-model="item.name"/>
     <br/>
-    <input ng-model="item.quantity"/>    
+    <input placeholder="Quantity" ng-model="item.quantity"/>    
     <br/>
     <button type="submit" ng-if="!item.$id" ng-click="add(item)">Add</button>
     <button ng-if="item.$id" ng-click="save()">Save</button>

@@ -8,6 +8,8 @@ angular.module('my.app', [
     'my.home.controller',
     'my.inventory.controller',
     'my.inventoryDetail.controller',
+    'my.contacts.controller',
+    'my.contactsDetail.controller',
     'my.login.controller',
     'my.menu.controller',
     'my.decorators',
@@ -64,6 +66,33 @@ angular.module('my.app', [
                                 return firebaseFactory.auth().$requireAuth();
                             }]
                     }*/
+                }).when("/contacts", {
+                    // the rest is the same for ui-router and ngRoute...
+                    controller: "contactsController",
+                    templateUrl: "contacts/contacts.html",
+                    resolve: {
+                        "currentAuth": ['firebaseFactory', function (firebaseFactory) {
+                                return firebaseFactory.auth().$requireAuth();
+                            }]
+                    }
+                }).when("/contactsDetail", {
+                    // the rest is the same for ui-router and ngRoute...
+                    controller: "contactsDetailController",
+                    templateUrl: "contacts/contactsDetail.html",
+                    resolve: {
+                        "currentAuth": ['firebaseFactory', function (firebaseFactory) {
+                                return firebaseFactory.auth().$requireAuth();
+                            }]
+                    }
+                }).when("/contactsDetail/:id", {
+                    // the rest is the same for ui-router and ngRoute...
+                    controller: "contactsDetailController",
+                    templateUrl: "contacts/contactsDetail.html",
+                    resolve: {
+                        "currentAuth": ['firebaseFactory', function (firebaseFactory) {
+                                return firebaseFactory.auth().$requireAuth();
+                            }]
+                    }
                 }).when("/user", {
                     // the rest is the same for ui-router and ngRoute...
                     controller: "userController",

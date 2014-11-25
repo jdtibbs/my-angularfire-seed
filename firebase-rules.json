@@ -13,6 +13,13 @@
         // user must be valid user and logged in.
         ".write": "root.child('users/' + auth.uid).exists()"
       },
+      "contacts": {
+        ".read": true,
+        "$contact": {
+          // user must be valid user, logged in and match the user that created.
+          ".write": "root.child('users/' + auth.uid).exists()  && newData.child('belongsTo').val() == auth.uid"
+        }
+      },
       "messages": {
          ".read": true,
          "$message": {

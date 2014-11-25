@@ -1,0 +1,9 @@
+<h2>Contacts</h2>
+
+<p ng-hide="contacts.length">No Contacts</p>
+
+<a href="" ng-click="add()">Add</a>
+<br/>
+<ul ng-show="contacts.length">
+    <li ng-repeat="contact in contacts"><span>{{contact.name}}</span>&nbsp;<a href="#/contactsDetail/{{contact.$id}}">Edit</a></li>
+</ul>
