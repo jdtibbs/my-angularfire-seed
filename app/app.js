@@ -18,19 +18,4 @@ angular.module('my.app', [
     'ngRoute'
 ])
 
-        .run(["$rootScope", "$location", 'firebaseFactory', function ($rootScope, $location, firebaseFactory) {
-                $rootScope.$on("$routeChangeError", function (event, next, previous, error) {
-                    // We can catch the error thrown when the $requireAuth promise is rejected
-                    // and redirect the user back to the home page
-                    if (error === "AUTH_REQUIRED") {
-                        $location.path("/login");
-                    }
-                });
-                firebaseFactory.auth().$onAuth(function (auth) {
-                    // placing into rootscope so can use everywhere.
-                    $rootScope.auth = auth;
-                });
-                $rootScope.$on('$destroy', function () {
-                    firebaseFactory.auth().$offAuth();
-                });
-            }]);
+        
