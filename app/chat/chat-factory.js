@@ -3,5 +3,5 @@
 angular.module('my.chat.factory', [])
 
         .factory('message', ['firebaseFactory', function (firebaseFactory) {
-                return firebaseFactory.syncArray('messages', {limit: 10, endAt: null});
+                return firebaseFactory.syncArray('messages', {limitToLast: 10, endAt: null});
             }]);
