@@ -1,6 +1,22 @@
 'use strict';
 
-angular.module('my.user.controller', ['my.user.factory'])
+angular.module('my.user.controller', ['my.user.factory', 'ngRoute'])
+        .config(["$routeProvider", function ($routeProvider) {
+                $routeProvider.when("/user", {
+                    // the rest is the same for ui-router and ngRoute...
+                    controller: "userController",
+                    templateUrl: "components/user/user.html",
+                    resolve: {
+                        // controller will not be loaded until $requireAuth resolves
+                        // Auth refers to our $firebaseAuth wrapper in the example above
+                        "currentAuth": ['firebaseFactory', function (firebaseFactory) {
+                                // $requireAuth returns a promise so the resolve waits for it to complete
+                                // If the promise is rejected, it will throw a $stateChangeError (see above)
+                                return firebaseFactory.auth().$requireAuth();
+                            }]
+                    }});
+            }])
+
         .controller('userController', ['$scope', 'userFactory', '$location',
             function ($scope, userFactory, $location) {
 
