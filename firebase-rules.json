@@ -17,6 +17,7 @@
         ".read": true,
         "$contact": {
           // user must be valid user, logged in and match the user that created.
+          // see: https://www.firebase.com/docs/security/api/rule/data.html
           ".write": "root.child('users/' + auth.uid).exists()  && newData.child('belongsTo').val() == auth.uid"
         }
       },
