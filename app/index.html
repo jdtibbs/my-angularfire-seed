@@ -37,7 +37,7 @@
                         <li ng-show="auth"><a href="#/contacts">contacts</a></li>
                         <li ng-hide="auth"><a href="#/login">login</a></li>
                         <li ng-show="auth"><a href="#/user">account</a></li>
-                        <li ng-show="auth"><a href="" ng-click="logout()">Logout</a></li>
+                        <li ng-show="auth"><a href="" ng-click="logout()">Logout {{auth.password.email}}</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
@@ -95,6 +95,6 @@
         <script src="contacts/contacts-controller.js"></script>    
         <script src="contacts/contactsDetail-controller.js"></script>  
         <script src="contacts/contacts-factory.js"></script>    
-        
+
     </body>
 </html>
