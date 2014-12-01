@@ -1,7 +1,7 @@
 'use strict';
 angular.module('my.menu.controller', ['my.user.factory'])
 
-        .controller('menuController', ['$scope', function ($scope) {
+        .controller('menuController', ['$scope', '$location', 'userFactory', function ($scope, $location, userFactory) {
                 $scope.menu = {
                     "items": [{
                             "value": "Chat",
@@ -15,5 +15,9 @@ angular.module('my.menu.controller', ['my.user.factory'])
                         }],
                     "home": "#/home",
                     "selected": "x"
+                };
+                $scope.logout = function () {
+                    userFactory.logout();
+                    $location.path('/home');
                 };
             }]);
