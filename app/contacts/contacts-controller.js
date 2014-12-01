@@ -21,5 +21,5 @@ angular.module('my.contacts.controller', ['my.contacts.factory', 'ngRoute'])
                 };
                 $scope.edit = function (id) {
                     $location.path('/contactsDetail/' + id);
-                }
+                };
             }]);

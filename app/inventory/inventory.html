@@ -1,9 +1,28 @@
 <h2>Inventory</h2>
 
-<p ng-hide="inventory.length">No items in inventory</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <p ng-hide="inventory.length">No items in inventory</p>
 
-<a href="" ng-click="add()">Add</a>
-<br/>
-<ul ng-show="inventory.length">
-    <li ng-repeat="item in inventory"><span>{{item.name}}</span>&nbsp;<span>{{item.quantity}}</span>&nbsp<span><a href="#/inventoryDetail/{{item.$id}}">Edit</a></span></li>
-</ul>
+            <button class="btn btn-primary" ng-click="add()">Add</button>
+
+            <table class="table table-hover" ng-show="inventory.length">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in inventory" class="edit" ng-click="edit(item.$id)">
+                        <td>{{item.name}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td><a href="#/inventoryDetail/{{item.$id}}">Edit</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

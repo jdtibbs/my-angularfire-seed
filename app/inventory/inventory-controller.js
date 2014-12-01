@@ -19,4 +19,7 @@ angular.module('my.inventory.controller', ['my.inventory.factory', 'ngRoute'])
                 $scope.add = function () {
                     $location.path('/inventoryDetail');
                 };
+                $scope.edit = function (id) {
+                    $location.path('/inventoryDetail/' + id);
+                };
             }]);
