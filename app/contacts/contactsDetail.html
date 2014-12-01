@@ -6,7 +6,7 @@
             <form role="form" novalidate>
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input id="name" class="form-control" ng-model="contact.name"/>
+                    <input id="name" class="form-control" auto-focus ng-model="contact.name"/>
                 </div>
                 <div class="btn-group">
                     <button class="btn btn-primary" type="submit" ng-if="!contact.$id" ng-click="add(contact)">Add</button>
