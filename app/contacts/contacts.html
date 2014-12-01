@@ -1,9 +1,26 @@
 <h2>Contacts</h2>
 
-<p ng-hide="contacts.length">No Contacts</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <p ng-hide="contacts.length">No Contacts</p>
 
-<a href="" ng-click="add()">Add</a>
-<br/>
-<ul ng-show="contacts.length">
-    <li ng-repeat="contact in contacts"><span>{{contact.name}}</span>&nbsp;<a href="#/contactsDetail/{{contact.$id}}">Edit</a></li>
-</ul>
+            <button class="btn btn-primary" ng-click="add()">Add</button>
+
+            <table class="table table-hover" ng-show="contacts.length">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="contact in contacts" class="edit" ng-click="edit(contact.$id)">
+                        <td>{{contact.name}}</td>
+                        <td><a href="#/contactsDetail/{{contact.$id}}">Edit</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
