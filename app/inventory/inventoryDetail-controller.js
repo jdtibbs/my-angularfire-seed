@@ -23,6 +23,8 @@ angular.module('my.inventoryDetail.controller', ['my.inventory.factory', 'ngRout
             }])
 
         .controller('inventoryDetailController', ['$scope', '$routeParams', '$location', 'inventoryFactory', function ($scope, $routeParams, $location, inventoryFactory) {
+                $scope.errors = [];
+
                 if ($routeParams.id) {
                     $scope.item = inventoryFactory.syncObject($routeParams.id);
                     // console.log($scope.item);
@@ -31,11 +33,25 @@ angular.module('my.inventoryDetail.controller', ['my.inventory.factory', 'ngRout
                 }
 
                 $scope.add = function (item) {
-                    inventoryFactory.syncArray().$add(item);
+                    // inventoryFactory.syncArray().$add(item);
+                    inventoryFactory.add(item).then(function (ref) {
+                        console.log('add OK: ' + ref.key());
+                        $scope.errors = [];
+                    }).catch(function (error) {
+                        console.log('add Error: ' + error);
+                        $scope.errors = error;
+                    });
                 };
 
                 $scope.save = function () {
-                    $scope.item.$save();
+                    // $scope.item.$save();
+                    inventoryFactory.save($scope.item).then(function (ref) {
+                        console.log('save OK: ' + ref.key());
+                        $scope.errors = [];
+                    }).catch(function (error) {
+                        console.log('save Error: ' + error);
+                        $scope.errors = error;
+                    });
                 };
 
                 $scope.cancel = function () {

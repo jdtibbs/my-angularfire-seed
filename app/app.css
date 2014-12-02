@@ -55,3 +55,17 @@ fieldset {
 tr.edit {
     cursor: pointer;
 }
+
+/*
+see https://docs.angularjs.org/guide/forms
+*/
+.css-form input.ng-invalid.ng-dirty {
+    background-color: #FA787E;
+}
+
+.css-form input.ng-valid.ng-dirty {
+    background-color: #FFFFFF;
+}
+/*
+end css-form
+*/

@@ -30,11 +30,11 @@
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-primary" ng-click="login(profile.email, pass)" ng-hide="createMode">Log In</button>
+                    <button class="btn btn-primary" type="submit" ng-click="login(profile.email, pass)" ng-hide="createMode">Log In</button>
                     <button class="btn btn-default" ng-click="createMode = true" ng-hide="createMode">Register</button>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-primary" ng-cloak ng-show="createMode" ng-click="createAccount(profile, pass, confirm)">Create Account</button>
+                    <button class="btn btn-primary" type="submit" ng-cloak ng-show="createMode" ng-click="createAccount(profile, pass, confirm)">Create Account</button>
                     <button class="btn btn-default" ng-cloak ng-show="createMode" ng-click="createMode = false">Cancel</button>
                 </div>
 

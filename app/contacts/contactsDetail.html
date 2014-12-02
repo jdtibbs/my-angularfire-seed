@@ -8,9 +8,14 @@
                     <label for="name">Name</label>
                     <input id="name" class="form-control" auto-focus ng-model="contact.name"/>
                 </div>
+                <div>
+                    <ul ng-repeat="error in errors">
+                        <li class="error">{{error}}</li>
+                    </ul>
+                </div>
                 <div class="btn-group">
                     <button class="btn btn-primary" type="submit" ng-if="!contact.$id" ng-click="add(contact)">Add</button>
-                    <button class="btn btn-primary" ng-if="contact.$id" ng-click="save()">Save</button>
+                    <button class="btn btn-primary" type="submit" ng-if="contact.$id" ng-click="save()">Save</button>
                     <button class="btn btn-default" ng-click="cancel()">Cancel</button>
                 </div>
             </form>
