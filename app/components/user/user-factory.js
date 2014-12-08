@@ -10,24 +10,6 @@ angular.module('my.user.factory', ['my.firebase.factory'])
                     firebaseAuth: function () {
                         return fbauth;
                     },
-                    login: function (email, pass) {
-                        var def = $q.defer();
-                        if (!email) {
-                            def.reject('Email is required to login.');
-                        } else if (!pass) {
-                            def.reject('Password is required to login.');
-                        } else {
-                            fbauth.$authWithPassword({'email': email, 'password': pass})
-                                    .then(function (authData) {
-                                        def.resolve(authData);
-                                    })
-                                    .catch(function (error) {
-                                        console.log(error.message);
-                                        def.reject(INVALID_LOGIN);
-                                    });
-                        }
-                        return def.promise;
-                    },
                     getAuth: function () {
                         var def = $q.defer();
                         var auth = fbauth.$getAuth();
@@ -46,9 +28,6 @@ angular.module('my.user.factory', ['my.firebase.factory'])
                             def.reject(error);
                         });
                         return def.promise;
-                    },
-                    logout: function () {
-                        fbauth.$unauth();
                     },
                     createAccount: function (profile, pass) {
                         return userFactory.createUser(profile.email, pass)

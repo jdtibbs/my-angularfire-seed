@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('my.user.controller', ['my.user.factory', 'ngRoute'])
+angular.module('my.user.controller', ['my.user.factory', 'my.login.service', 'ngRoute'])
         .config(["$routeProvider", function ($routeProvider) {
                 $routeProvider.when("/user", {
                     // the rest is the same for ui-router and ngRoute...
@@ -32,7 +32,7 @@ angular.module('my.user.controller', ['my.user.factory', 'ngRoute'])
                 // expose logout function to scope
                 $scope.logout = function () {
                     profile.$destroy();
-                    userFactory.logout();
+                    loginService.logout();
                     $location.path('/login');
                 };
                 $scope.changePassword = function (pass, confirm, newPass) {

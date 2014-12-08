@@ -1,0 +1,5 @@
+This style guide link says to use .service rather than .factory: 
+    http://google-styleguide.googlecode.com/svn/trunk/angularjs-google-style.html
+    Services registered on the module with module.service are classes. 
+    Use module.service instead of module.provider or module.factory 
+    unless you need to do initialization beyond just creating a new instance of the class.
