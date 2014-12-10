@@ -1,6 +1,5 @@
 'use strict';
-
-angular.module('my.user.controller', ['my.user.factory', 'my.login.service', 'ngRoute'])
+angular.module('my.user.controller', ['my.users.firebase.service', 'my.login.firebase.service', 'my.login.service', 'ngRoute'])
         .config(["$routeProvider", function ($routeProvider) {
                 $routeProvider.when("/user", {
                     // the rest is the same for ui-router and ngRoute...
@@ -17,24 +16,36 @@ angular.module('my.user.controller', ['my.user.factory', 'my.login.service', 'ng
                     }});
             }])
 
-        .controller('userController', ['$scope', 'userFactory', '$location',
-            function ($scope, userFactory, $location) {
+        .controller('userController', ['$scope', 'usersFirebaseService', 'loginFirebaseService', 'loginService', '$location',
+            function ($scope, usersFirebaseService, loginFirebaseService, loginService, $location) {
 
-                // create a 3-way binding with the user profile object in Firebase
-                var profile = {};
-                userFactory.getUid().then(function (uid) {
-                    profile = userFactory.getUserProfile(uid);
-                    profile.$bindTo($scope, 'profile');
-                }).catch(function (error) {
-                    // $location.path('/login');
-                });
+                loginService.getUid()
+                        .then(function (uid) {
+                            loginFirebaseService.syncObject(uid).$loaded()
+                                    .then(function (login) {
+                                        $scope.login = login;
 
-                // expose logout function to scope
-                $scope.logout = function () {
-                    profile.$destroy();
-                    loginService.logout();
-                    $location.path('/login');
+                                        usersFirebaseService.syncObject(login.users).$loaded()
+                                                .then(function (profile) {
+                                                    $scope.profile = profile;
+                                                });
+                                    });
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                $scope.saveProfile = function (profile) {
+                    resetMessages();
+                    usersFirebaseService.save(profile)
+                            .then(function (ref) {
+                                $scope.profileMsg = 'Profile successfully updated.';
+                            })
+                            .catch(function (error) {
+                                $scope.profileErr = error;
+                            });
                 };
+
                 $scope.changePassword = function (pass, confirm, newPass) {
                     resetMessages();
                     if (!pass || !confirm || !newPass) {
@@ -44,7 +55,7 @@ angular.module('my.user.controller', ['my.user.factory', 'my.login.service', 'ng
                         $scope.err = 'New pass and confirm do not match';
                     }
                     else {
-                        userFactory.changePassword(profile.email, pass, newPass)
+                        loginService.changePassword($scope.login.email, pass, newPass)
                                 .then(function () {
                                     $scope.msg = 'Password changed';
                                     // clear form after successful completion.
@@ -56,7 +67,9 @@ angular.module('my.user.controller', ['my.user.factory', 'my.login.service', 'ng
                                 });
                     }
                 };
+
                 $scope.clear = resetMessages;
+
                 $scope.changeEmail = function (pass, newEmail) {
                     resetMessages();
                     if (!newEmail) {
@@ -64,21 +77,30 @@ angular.module('my.user.controller', ['my.user.factory', 'my.login.service', 'ng
                     } else if (!pass) {
                         $scope.emailerr = 'Please enter password.';
                     } else {
-                        profile.$destroy();
-                        userFactory.changeEmail(pass, newEmail)
-                                .then(function (user) {
-                                    profile = userFactory.getUserProfile(user.uid);
-                                    profile.$bindTo($scope, 'profile');
-                                    $scope.emailmsg = 'Email changed';
-                                    // clear form after successful completion.
-                                    $scope.pass = null;
+                        loginService.changeEmail(newEmail, pass)
+                                .then(function (auth) {
+                                    loginFirebaseService.syncObject(auth.uid).$loaded()
+                                            .then(function (login) {
+                                                $scope.login = login;
+
+                                                usersFirebaseService.syncObject(login.users).$loaded()
+                                                        .then(function (profile) {
+                                                            $scope.profile = profile;
+                                                        });
+                                            });
                                     $scope.newEmail = null;
-                                }, function (err) {
-                                    $scope.emailerr = err;
+                                    $scope.pass = null;
+                                    $scope.emailmsg = 'Email changed successfully.';
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                    $scope.emailerr = error;
                                 });
                     }
                 };
                 function resetMessages() {
+                    $scope.profileErr = null;
+                    $scope.profileMsg = null;
                     $scope.err = null;
                     $scope.msg = null;
                     $scope.emailerr = null;

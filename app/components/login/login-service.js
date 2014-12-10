@@ -1,10 +1,10 @@
 'use strict';
-angular.module('my.login.service', ['my.firebase.factory'])
-        .constant('LOGIN_URL', 'login')
+angular.module('my.login.service', ['my.firebase.factory', 'my.login.firebase.service', 'my.users.firebase.service'])
 
-        .constant('INVALID_CREDENTIALS', 'The specified email and or password is incorrect.')
+        .service('loginService', ['firebaseFactory', 'loginFirebaseService', 'usersFirebaseService', '$q', '$log',
+            function (firebaseFactory, loginFirebaseService, usersFirebaseService, $q, $log) {
+                var INVALID_CREDENTIALS = 'The email and or password is incorrect.';
 
-        .service('loginService', ['firebaseFactory', 'LOGIN_URL', 'INVALID_CREDENTIALS', '$q', '$log', function (firebaseFactory, LOGIN_URL, INVALID_CREDENTIALS, $q, $log) {
                 var loginService = {
                     login: function (email, pass) {
                         var def = $q.defer();
@@ -37,14 +37,46 @@ angular.module('my.login.service', ['my.firebase.factory'])
                         }
                         return def.promise;
                     },
-                    // TODO is this used anywhere?
                     getUid: function () {
                         var def = $q.defer();
                         loginService.getAuth().then(function (auth) {
+                            $log.debug('auth.uid: ' + auth.uid);
                             def.resolve(auth.uid);
                         }).catch(function (error) {
                             def.reject(error);
                         });
+                        return def.promise;
+                    },
+                    register: function (profile, email, password) {
+                        var def = $q.defer();
+                        loginService.createUser(email, password)
+                                .then(function () {
+                                    loginService.login(email, password)
+                                            //.then(function (auth) {
+                                            //    return auth;
+                                            //})
+                                            .then(function (auth) {
+                                                usersFirebaseService.add(profile)
+                                                        .then(function (profileRef) {
+                                                            loginService.createLogin(auth, email, profileRef.key())
+                                                                    .then(function (loginRef) {
+                                                                        def.resolve(loginRef);
+                                                                    })
+                                                                    .catch(function (error) {
+                                                                        def.reject(error);
+                                                                    });
+                                                        })
+                                                        .catch(function (error) {
+                                                            def.reject(error);
+                                                        });
+                                            })
+                                            .catch(function (error) {
+                                                def.reject(error);
+                                            });
+                                })
+                                .catch(function (error) {
+                                    def.reject(error);
+                                });
                         return def.promise;
                     },
                     createUser: function (email, pass) {
@@ -66,37 +98,31 @@ angular.module('my.login.service', ['my.firebase.factory'])
                                 });
                         return def.promise;
                     },
-                    createLogin: function (authUid, email, userId) {
-                        var ref = firebaseFactory.ref(LOGIN_URL, authUid);
+                    createLogin: function (auth, email, users) {
                         var def = $q.defer();
-                        var login = {email: email, userId: userId};
-                        // !! set() overwrites existing data at given location.
-                        ref.set(login, function (err) {
-                            $timeout(function () {
-                                if (err) {
-                                    def.reject(err);
-                                }
-                                else {
-                                    def.resolve(ref);
-                                }
-                            });
-                        });
+                        var login = loginFirebaseService.create(email, users);
+                        $log.debug('createLogin: ' + login.email + ' ' + login.users);
+                        loginFirebaseService.add(auth.uid, login)
+                                .then(function () {
+                                    $log.debug('Login created');
+                                    def.resolve();
+                                })
+                                .catch(function (error) {
+                                    def.reject(error);
+                                });
                         return def.promise;
                     },
-                    getLogin: function (authUid) {
+                    getLogin: function () {
                         var def = $q.defer();
-                        var ref = firebaseFactory.ref(LOGIN_URL, authUid);
-                        ref.once('value',
-                                function (snap) {
-                                    if (snap.val()) {
-                                        def.resolve(snap.val());
-                                    }
-                                    else {
-                                        def.reject('not found');
-                                    }
-                                },
-                                function (err) {
-                                    def.reject(err);
+                        loginService.getUid()
+                                .then(function (uid) {
+                                    loginFirebaseService.syncObject(uid).$loaded()
+                                            .then(function (login) {
+                                                def.resolve(login);
+                                            })
+                                })
+                                .catch(function (error) {
+                                    def.reject(error);
                                 });
                         return def.promise;
                     },
@@ -120,16 +146,16 @@ angular.module('my.login.service', ['my.firebase.factory'])
                         return def.promise;
                     },
                     removeLogin: function (authUid) {
-                        var d = $q.defer();
-                        var ref = firebaseFactory.ref(LOGIN_URL, authUid);
-                        ref.remove(function (err) {
-                            if (err) {
-                                d.reject(err);
+                        var def = $q.defer();
+                        var login = loginFirebaseService.ref(authUid);
+                        login.remove(function (error) {
+                            if (error) {
+                                def.reject(error);
                             } else {
-                                d.resolve();
+                                def.resolve();
                             }
                         });
-                        return d.promise;
+                        return def.promise;
                     },
                     changePassword: function (email, oldpass, newpass) {
                         var def = $q.defer();
@@ -148,6 +174,75 @@ angular.module('my.login.service', ['my.firebase.factory'])
                                             def.reject(error);
                                     }
                                 });
+                        return def.promise;
+                    },
+                    changeEmail: function (newEmail, password) {
+                        var def = $q.defer();
+                        // validate input parameters.
+
+                        if (!newEmail) {
+                            def.reject('Email is required.');
+                        } //else if (newEmail === oldLogin.email) {
+                        // def.reject('New email must not be same as current email.');
+                        //} 
+                        else if (!password) {
+                            def.reject('Password is required.');
+                        } else {
+                            // begin change email...
+                            var oldLogin = {};
+                            //  // get old auth uid.
+                            loginService.getUid()
+                                    .then(function (oldUid) {
+                                        $log.debug('oldUid: ' + oldUid);
+                                        // get old /login object which contains the old email and /user object id.
+                                        loginService.getLogin(oldUid)
+                                                .then(function (login) {
+                                                    $log.debug('oldLogin: ' + login);
+                                                    oldLogin = login;
+                                                    // create new firebase user.
+                                                    loginService.createUser(newEmail, password)
+                                                            .then(function () {
+                                                                // login so we can write to fire base.
+                                                                $log.debug('created user:' + newEmail);
+                                                                loginService.login(newEmail, password)
+                                                                        .then(function (auth) {
+                                                                            // create new /login object
+                                                                            $log.debug('logged in w new email: ' + auth.uid);
+                                                                            loginService.createLogin(auth, newEmail, oldLogin.users)
+                                                                                    .then(function (newLogin) {
+                                                                                        $log.debug('new Login: ' + newLogin);
+                                                                                        // successfully created new firebase user and /login object.
+                                                                                        // now remove old /login object then old firebase user.
+                                                                                        loginService.login(oldLogin.email, password)
+                                                                                                .then(function (auth) {
+                                                                                                    $log.debug('login w oldEmail: ' + oldLogin.email + ' auth: ' + auth);
+                                                                                                    loginService.removeLogin(auth.uid)
+                                                                                                            //yah, did not remove login / simplelogin:45
+                                                                                                            .then(function () {
+                                                                                                                $log.debug('removed Login' + auth.uid);
+                                                                                                                loginService.removeUser(auth.uid, password)
+                                                                                                                        .then(function () {
+                                                                                                                            $log.debug('removed fb user.');
+                                                                                                                            // success!
+                                                                                                                            // log in with new email
+                                                                                                                            loginService.login(newEmail, password)
+                                                                                                                                    .then(function (auth) {
+                                                                                                                                        $log.debug('login w new email: ' + auth.uid);
+                                                                                                                                        def.resolve(auth);
+                                                                                                                                    });
+                                                                                                                        });
+                                                                                                            });
+                                                                                                });
+                                                                                    });
+                                                                        });
+                                                            })
+                                                            .catch(function (error) {
+                                                                $log.error(error);
+                                                                def.reject(error);
+                                                            });
+                                                });
+                                    });
+                        }
                         return def.promise;
                     }
                 };

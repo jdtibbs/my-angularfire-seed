@@ -8,16 +8,25 @@
                     <legend>Profile</legend>
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input id="name" class="form-control" type="text" name="name" ng-model="profile.name"/>
+                        <input id="name" class="form-control" type="text" ng-keypress="clear()" ng-model="profile.name"/>
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input id="phone" class="form-control" type="text" name="name" ng-model="profile.businessPhone"/>
+                        <input id="phone" class="form-control" type="text" ng-keypress="clear()" ng-model="profile.businessPhone"/>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input id="email" class="form-control" type="text" placeholder="{{profile.email}}" readonly>
+                        <input id="email" class="form-control" type="text" placeholder="{{login.email}}" readonly>
                     </div>
+                    <button class="btn btn-primary" type="submit" ng-click="saveProfile(profile)">Save</button>
+
+                    <div ng-show="profileErr">
+                        <ul ng-repeat="error in profileErr">
+                            <li class="error">{{error}}</li>
+                        </ul>
+                    </div>
+                    <p class="good" ng-show="profileMsg">{{profileMsg}}</p>
+
                 </fieldset>
             </form>
         </div>

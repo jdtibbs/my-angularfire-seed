@@ -1,6 +1,5 @@
 'use strict';
-
-angular.module('my.login.controller', ['my.firebase.factory', 'my.user.factory', 'my.login.service', 'ngRoute'])
+angular.module('my.login.controller', ['my.firebase.factory', 'my.login.service', 'ngRoute'])
         .config(["$routeProvider", function ($routeProvider) {
                 $routeProvider.when("/login", {
                     // the rest is the same for ui-router and ngRoute...
@@ -26,8 +25,10 @@ angular.module('my.login.controller', ['my.firebase.factory', 'my.user.factory',
                 });
             }])
 
-        .controller('loginController', ['$scope', 'userFactory', 'loginService', '$location', function ($scope, userFactory, loginService, $location) {
+        .controller('loginController', ['$scope', 'loginService', '$location',
+            function ($scope, loginService, $location) {
                 $scope.profile = null;
+                $scope.email = null;
                 $scope.pass = null;
                 $scope.confirm = null;
                 $scope.createMode = false;
@@ -40,19 +41,20 @@ angular.module('my.login.controller', ['my.firebase.factory', 'my.user.factory',
                                 $scope.err = errMessage(err);
                             });
                 };
-                $scope.createAccount = function () {
+                $scope.register = function () {
                     $scope.err = null;
                     if (assertValidAccountProps()) {
-                        userFactory.createAccount($scope.profile, $scope.pass)
-                                .then(function (/* user */) {
+                        loginService.register($scope.profile, $scope.email, $scope.pass)
+                                .then(function (login) {
                                     $location.path('/user');
-                                }, function (err) {
-                                    $scope.err = errMessage(err);
+                                })
+                                .catch(function (error) {
+                                    $scope.err = errMessage(error);
                                 });
                     }
                 };
                 function assertValidAccountProps() {
-                    if (!$scope.profile.email) {
+                    if (!$scope.email) {
                         $scope.err = 'Please enter an email address';
                     } else if ($scope.createMode && !$scope.profile.name) {
                         $scope.err = 'Please enter a name';

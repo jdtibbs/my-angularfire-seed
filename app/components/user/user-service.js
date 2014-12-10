@@ -1,12 +1,11 @@
 'use strict';
+angular.module('my.user.service', ['my.firebase.factory', 'my.login.service'])
+        .constant('USERS_URL', 'users')
 
-angular.module('my.user.factory', ['my.firebase.factory', 'my.login.service'])
-
-        .factory('userFactory', ['firebaseFactory', 'changeEmailFactory', 'loginService', '$q', '$timeout', function (firebaseFactory, changeEmailFactory, loginService, $q, $timeout) {
-                var INVALID_LOGIN = 'The specified email and or password is incorrect.';
+        .service('userService', ['firebaseFactory', 'changeEmailFactory', 'loginService', 'USERS_URL', '$q', '$log',
+            function (firebaseFactory, changeEmailFactory, loginService, USERS_URL, $q, $log) {
                 var fbauth = firebaseFactory.auth();
-
-                var userFactory = {
+                var userService = {
                     firebaseAuth: function () {
                         return fbauth;
                     },
@@ -14,22 +13,29 @@ angular.module('my.user.factory', ['my.firebase.factory', 'my.login.service'])
                         return loginService.createUser(profile.email, pass)
                                 .then(function () {
                                     // authenticate so we have permission to write to Firebase
-                                    return userFactory.login(profile.email, pass);
+                                    return loginService.login(profile.email, pass);
                                 })
                                 .then(function (user) {
                                     // store user data in Firebase after creating account
-                                    return userFactory.createUserProfile(user.uid, profile).then(function () {
-                                        return user;
-                                    });
+                                    return userService.createUser(profile)
+                                            .then(function (newProfile) {
+                                                return newProfile;
+                                            })
+                                            .then(function (newProfile) {
+                                                return loginService.createLogin(user.uid, profile.email, newProfile.$id);
+                                            });
                                 });
                     },
-                    changeEmail: function (password, newEmail) {
+                    createUser: function (profile) {
+                        return firebaseFactory.syncArray(USERS_URL).$add(profile);
+                    },
+                    changeEmail_OLD: function (password, newEmail) {
                         var def = $q.defer();
                         // TODO is this the only way to nest these calls!?
                         loginService.getAuth().then(function (auth) {
                             return auth;
                         }).then(function (auth) {
-                            changeEmailFactory.changeEmail(password, auth.password.email, newEmail, userFactory).then(function (auth) {
+                            changeEmailFactory.changeEmail(password, auth.password.email, newEmail, loginService).then(function (auth) {
                                 def.resolve(auth);
                             }).catch(function (error) {
                                 def.reject(error);
@@ -40,35 +46,31 @@ angular.module('my.user.factory', ['my.firebase.factory', 'my.login.service'])
                         return def.promise;
                     },
                     createUserProfile: function (id, profile) {
-                        var ref = firebaseFactory.ref('users', id);
+                        var ref = firebaseFactory.ref(USERS_URL, id);
                         var def = $q.defer();
                         // !! set() overwrites existing data.
                         ref.set(profile, function (err) {
-                            $timeout(function () {
-                                if (err) {
-                                    def.reject(err);
-                                }
-                                else {
-                                    def.resolve(ref);
-                                }
-                            });
+                            if (err) {
+                                def.reject(err);
+                            }
+                            else {
+                                def.resolve(ref);
+                            }
                         });
                         return def.promise;
                     },
                     getUserProfile: function (id) {
-                        return firebaseFactory.syncObject(['users', id]);
+                        return firebaseFactory.syncObject([USERS_URL, id]);
                     }
                 };
-
-                return userFactory;
+                return userService;
             }])
         .factory('changeEmailFactory', ['firebaseFactory', '$q', function (firebaseFactory, $q) {
                 var changeEmailFactory = {
-                    changeEmail: function (password, oldEmail, newEmail, userFactory) {
+                    changeEmail: function (password, oldEmail, newEmail, loginService) {
                         var ctx = {old: {email: oldEmail}, curr: {email: newEmail}};
                         var oldProfile = {};
                         var newProfile = {};
-
                         // execute activities in order; first we authenticate the user
                         return authOldAccount()
                                 // then we fetch old account details
@@ -86,11 +88,10 @@ angular.module('my.user.factory', ['my.firebase.factory', 'my.login.service'])
                                     console.error(err);
                                     return $q.reject(err);
                                 });
-
                         function authOldAccount() {
                             // return 
                             var def = $q.defer();
-                            userFactory.login(ctx.old.email, password)
+                            loginService.login(ctx.old.email, password)
                                     .then(function (user) {
                                         ctx.old.uid = user.uid;
                                         console.log('authOldAccount ctx.old.uid ' + ctx.old.uid);
@@ -126,7 +127,7 @@ angular.module('my.user.factory', ['my.firebase.factory', 'my.login.service'])
                         function createNewAccount() {
                             newProfile = oldProfile;
                             newProfile.email = ctx.curr.email;
-                            return userFactory.createAccount(newProfile, password).then(function (user) {
+                            return userService.createAccount(newProfile, password).then(function (user) {
                                 ctx.curr.uid = user.uid;
                                 console.log('createNewAccount ctx.curr.uid ' + ctx.curr.uid);
                             });
@@ -158,7 +159,7 @@ angular.module('my.user.factory', ['my.firebase.factory', 'my.login.service'])
                         }
 
                         function authNewAccount() {
-                            return userFactory.login(ctx.curr.email, password);
+                            return loginService.login(ctx.curr.email, password);
                         }
                     }};
                 return changeEmailFactory;
