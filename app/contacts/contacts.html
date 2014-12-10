@@ -2,9 +2,13 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12 col-md-6">
             <p ng-hide="contacts.length">No Contacts</p>
 
+            <div class="form-group">
+                <label for="search">Search</label>
+                <input id="search" class="form-control" auto-focus ng-model="search"/>
+            </div>
             <button class="btn btn-primary" ng-click="add()">Add</button>
 
             <table class="table table-hover" ng-show="contacts.length">
@@ -15,7 +19,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="contact in contacts" class="edit" ng-click="edit(contact.$id)">
+                    <tr ng-repeat="contact in contacts| filter: search | orderBy: 'name' " class="edit" ng-click="edit(contact.$id)">
                         <td>{{contact.name}}</td>
                         <td><a href="#/contactsDetail/{{contact.$id}}">Edit</a></td>
                     </tr>

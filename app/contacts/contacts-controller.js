@@ -14,8 +14,14 @@ angular.module('my.contacts.controller', ['my.contacts.factory', 'ngRoute'])
                 });
             }])
 
-        .controller('contactsController', ['$scope', '$location', 'contactsFactory', function ($scope, $location, contactsFactory) {
-                $scope.contacts = contactsFactory.syncArray();
+        .controller('contactsController', ['$scope', '$location', 'contactsFactory',
+            function ($scope, $location, contactsFactory) {
+
+                contactsFactory.syncArray()
+                        .then(function (contacts) {
+                            $scope.contacts = contacts;
+                        });
+
                 $scope.add = function () {
                     $location.path('/contactsDetail');
                 };

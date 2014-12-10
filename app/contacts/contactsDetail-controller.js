@@ -23,25 +23,25 @@ angular.module('my.contactsDetail.controller', ['my.contacts.factory', 'ngRoute'
                 });
             }])
 
-        .controller('contactsDetailController', ['$scope', '$routeParams', '$location', 'contactsFactory', 'currentAuth', function ($scope, $routeParams, $location, contactsFactory, currentAuth) {
+        .controller('contactsDetailController', ['$scope', '$routeParams', '$location', 'contactsFactory',
+            function ($scope, $routeParams, $location, contactsFactory) {
                 $scope.errors = [];
                 if ($routeParams.id) {
                     $scope.contact = contactsFactory.syncObject($routeParams.id);
-                    // console.log($scope.contact);
                 } else {
-                    $scope.contact = {belongsTo: ""};
+                    $scope.contact = {users: ""};
                 }
 
                 $scope.add = function (contact) {
-                    // add user_id to secure it to user who added.                     
-                    contact.belongsTo = currentAuth.uid;
-                    contactsFactory.add(contact).then(function (ref) {
-                        console.log('add OK: ' + ref.key());
-                        $scope.errors = [];
-                    }).catch(function (error) {
-                        console.log('add Error: ' + error);
-                        $scope.errors = error;
-                    });
+                    contactsFactory.add(contact)
+                            .then(function (ref) {
+                                console.log('add OK: ' + ref.key());
+                                $scope.errors = [];
+                            })
+                            .catch(function (error) {
+                                console.log('add Error: ' + error);
+                                $scope.errors = error;
+                            });
                 };
 
                 $scope.save = function () {

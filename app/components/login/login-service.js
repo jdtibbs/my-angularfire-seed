@@ -119,7 +119,7 @@ angular.module('my.login.service', ['my.firebase.factory', 'my.login.firebase.se
                                     loginFirebaseService.syncObject(uid).$loaded()
                                             .then(function (login) {
                                                 def.resolve(login);
-                                            })
+                                            });
                                 })
                                 .catch(function (error) {
                                     def.reject(error);
