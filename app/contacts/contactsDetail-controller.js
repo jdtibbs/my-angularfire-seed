@@ -45,13 +45,27 @@ angular.module('my.contactsDetail.controller', ['my.contacts.factory', 'ngRoute'
                 };
 
                 $scope.save = function () {
-                    contactsFactory.save($scope.contact).then(function (ref) {
-                        console.log('saved OK ' + ref.key());
-                        $scope.errors = [];
-                    }).catch(function (error) {
-                        console.log('save error: ' + error);
-                        $scope.errors = error;
-                    });
+                    contactsFactory.save($scope.contact)
+                            .then(function (ref) {
+                                console.log('saved OK ' + ref.key());
+                                $scope.errors = [];
+                            })
+                            .catch(function (error) {
+                                console.log('save error: ' + error);
+                                $scope.errors = error;
+                            });
+                };
+
+                $scope.delete = function () {
+                    contactsFactory.delete($scope.contact)
+                            .then(function (ref) {
+                                console.log('delete OK ');
+                                $scope.errors = [];
+                            })
+                            .catch(function (error) {
+                                console.log('delete error: ' + error);
+                                $scope.errors = error;
+                            });
                 };
 
                 $scope.cancel = function () {

@@ -39,6 +39,18 @@ angular.module('my.contacts.factory', ['my.firebase.factory', 'my.login.service'
                                 });
                         // TODO jdtibbs, insure validate errors reach UI.
                     },
+                    delete: function (contact) {
+                        var def = $q.defer();
+                        var cc = factory.ref().child(contact.$id);
+                        cc.remove(function (error) {
+                            if (error) {
+                                def.reject(error);
+                            } else {
+                                def.resolve();
+                            }
+                        });
+                        return def.promise;
+                    },
                     validate: function (contact) {
                         var def = $q.defer();
                         var errors = [];
