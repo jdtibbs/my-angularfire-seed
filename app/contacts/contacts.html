@@ -3,14 +3,17 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12 col-md-6">
-            <p ng-hide="contacts.length">No Contacts</p>
-
-            <div class="form-group">
-                <label for="search">Search</label>
-                <input id="search" class="form-control" auto-focus ng-model="search"/>
+            <p ng-hide="contacts.length">No Contacts</p>    
+            <button id="add" class="btn btn-primary" ng-click="add()">Add</button>
+            <div ng-show="contacts.length" class="form-group">
+                <label for="search">&nbsp;</label>
+                <input id="search" placeholder="Search" class="form-control" auto-focus ng-model="search"/>
             </div>
-            <button class="btn btn-primary" ng-click="add()">Add</button>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
             <table class="table table-hover" ng-show="contacts.length">
                 <thead>
                     <tr>
