@@ -1,8 +1,8 @@
 'use strict';
-angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.service', 'my.users.firebase.service'])
+angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.service', 'my.users.firebase.factory'])
 
-        .factory('loginFactory', ['firebaseFactory', 'loginFirebaseService', 'usersFirebaseService', '$q', '$log',
-            function (firebaseFactory, loginFirebaseService, usersFirebaseService, $q, $log) {
+        .factory('loginFactory', ['firebaseFactory', 'loginFirebaseService', 'usersFirebaseFactory', '$q', '$log',
+            function (firebaseFactory, loginFirebaseService, usersFirebaseFactory, $q, $log) {
                 var INVALID_CREDENTIALS = 'The email and or password is incorrect.';
 
                 var loginFactory = {
@@ -52,25 +52,27 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.se
                         loginFactory.createUser(email, password)
                                 .then(function () {
                                     loginFactory.login(email, password)
-                                            //.then(function (auth) {
-                                            //    return auth;
-                                            //})
                                             .then(function (auth) {
-                                                usersFirebaseService.add(profile)
+                                                usersFirebaseFactory.add(profile)
                                                         .then(function (profileRef) {
                                                             loginFactory.createLogin(auth, email, profileRef.key())
                                                                     .then(function (loginRef) {
+                                                                        var x = {id: 'x'};
+                                                                        console.log(x.fred());
                                                                         def.resolve(loginRef);
                                                                     })
                                                                     .catch(function (error) {
+                                                                        //TODO back out data.
                                                                         def.reject(error);
                                                                     });
                                                         })
                                                         .catch(function (error) {
+                                                            //TODO back out data.
                                                             def.reject(error);
                                                         });
                                             })
                                             .catch(function (error) {
+                                                //TODO back out data.
                                                 def.reject(error);
                                             });
                                 })

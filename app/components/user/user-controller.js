@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.user.controller', ['my.users.firebase.service', 'my.login.firebase.service', 'my.login.factory', 'ngRoute'])
+angular.module('my.user.controller', ['my.users.firebase.factory', 'my.login.firebase.service', 'my.login.factory', 'ngRoute'])
         .config(["$routeProvider", function ($routeProvider) {
                 $routeProvider.when("/user", {
                     // the rest is the same for ui-router and ngRoute...
@@ -16,8 +16,8 @@ angular.module('my.user.controller', ['my.users.firebase.service', 'my.login.fir
                     }});
             }])
 
-        .controller('userController', ['$scope', 'usersFirebaseService', 'loginFirebaseService', 'loginFactory', '$location',
-            function ($scope, usersFirebaseService, loginFirebaseService, loginFactory, $location) {
+        .controller('userController', ['$scope', 'usersFirebaseFactory', 'loginFirebaseService', 'loginFactory', '$location',
+            function ($scope, usersFirebaseFactory, loginFirebaseService, loginFactory, $location) {
 
                 loginFactory.getUid()
                         .then(function (uid) {
@@ -25,7 +25,7 @@ angular.module('my.user.controller', ['my.users.firebase.service', 'my.login.fir
                                     .then(function (login) {
                                         $scope.login = login;
 
-                                        usersFirebaseService.syncObject(login.users).$loaded()
+                                        usersFirebaseFactory.syncObject(login.users).$loaded()
                                                 .then(function (profile) {
                                                     $scope.profile = profile;
                                                 });
@@ -37,7 +37,7 @@ angular.module('my.user.controller', ['my.users.firebase.service', 'my.login.fir
 
                 $scope.saveProfile = function (profile) {
                     resetMessages();
-                    usersFirebaseService.save(profile)
+                    usersFirebaseFactory.save(profile)
                             .then(function (ref) {
                                 $scope.profileMsg = 'Profile successfully updated.';
                             })
@@ -83,7 +83,7 @@ angular.module('my.user.controller', ['my.users.firebase.service', 'my.login.fir
                                             .then(function (login) {
                                                 $scope.login = login;
 
-                                                usersFirebaseService.syncObject(login.users).$loaded()
+                                                usersFirebaseFactory.syncObject(login.users).$loaded()
                                                         .then(function (profile) {
                                                             $scope.profile = profile;
                                                         });

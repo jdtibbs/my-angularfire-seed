@@ -1,7 +1,7 @@
 'use strict';
-angular.module('my.users.firebase.service', ['my.firebase.factory'])
+angular.module('my.users.firebase.factory', ['my.firebase.factory'])
 
-        .service('usersFirebaseService', ['firebaseFactory', '$q', function (firebaseFactory, $q) {
+        .factory('usersFirebaseFactory', ['firebaseFactory', '$q', function (firebaseFactory, $q) {
                 var FIREBASE_URL = 'users';
 
                 var service = {
