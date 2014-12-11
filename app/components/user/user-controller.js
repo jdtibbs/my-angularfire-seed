@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.user.controller', ['my.users.firebase.service', 'my.login.firebase.service', 'my.login.service', 'ngRoute'])
+angular.module('my.user.controller', ['my.users.firebase.service', 'my.login.firebase.service', 'my.login.factory', 'ngRoute'])
         .config(["$routeProvider", function ($routeProvider) {
                 $routeProvider.when("/user", {
                     // the rest is the same for ui-router and ngRoute...
@@ -16,10 +16,10 @@ angular.module('my.user.controller', ['my.users.firebase.service', 'my.login.fir
                     }});
             }])
 
-        .controller('userController', ['$scope', 'usersFirebaseService', 'loginFirebaseService', 'loginService', '$location',
-            function ($scope, usersFirebaseService, loginFirebaseService, loginService, $location) {
+        .controller('userController', ['$scope', 'usersFirebaseService', 'loginFirebaseService', 'loginFactory', '$location',
+            function ($scope, usersFirebaseService, loginFirebaseService, loginFactory, $location) {
 
-                loginService.getUid()
+                loginFactory.getUid()
                         .then(function (uid) {
                             loginFirebaseService.syncObject(uid).$loaded()
                                     .then(function (login) {
@@ -55,7 +55,7 @@ angular.module('my.user.controller', ['my.users.firebase.service', 'my.login.fir
                         $scope.err = 'New pass and confirm do not match';
                     }
                     else {
-                        loginService.changePassword($scope.login.email, pass, newPass)
+                        loginFactory.changePassword($scope.login.email, pass, newPass)
                                 .then(function () {
                                     $scope.msg = 'Password changed';
                                     // clear form after successful completion.
@@ -77,7 +77,7 @@ angular.module('my.user.controller', ['my.users.firebase.service', 'my.login.fir
                     } else if (!pass) {
                         $scope.emailerr = 'Please enter password.';
                     } else {
-                        loginService.changeEmail(newEmail, pass)
+                        loginFactory.changeEmail(newEmail, pass)
                                 .then(function (auth) {
                                     loginFirebaseService.syncObject(auth.uid).$loaded()
                                             .then(function (login) {

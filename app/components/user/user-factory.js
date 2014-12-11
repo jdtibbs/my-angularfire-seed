@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('my.user.factory', ['my.firebase.factory', 'my.login.service'])
+angular.module('my.user.factory', ['my.firebase.factory', 'my.login.factory'])
 
-        .factory('userFactory', ['firebaseFactory', 'changeEmailFactory', 'loginService', '$q', '$timeout', function (firebaseFactory, changeEmailFactory, loginService, $q, $timeout) {
+        .factory('userFactory', ['firebaseFactory', 'changeEmailFactory', 'loginFactory', '$q', '$timeout', function (firebaseFactory, changeEmailFactory, loginFactory, $q, $timeout) {
                 var INVALID_LOGIN = 'The specified email and or password is incorrect.';
                 var fbauth = firebaseFactory.auth();
 
@@ -11,7 +11,7 @@ angular.module('my.user.factory', ['my.firebase.factory', 'my.login.service'])
                         return fbauth;
                     },
                     createAccount: function (profile, pass) {
-                        return loginService.createUser(profile.email, pass)
+                        return loginFactory.createUser(profile.email, pass)
                                 .then(function () {
                                     // authenticate so we have permission to write to Firebase
                                     return userFactory.login(profile.email, pass);
@@ -26,7 +26,7 @@ angular.module('my.user.factory', ['my.firebase.factory', 'my.login.service'])
                     changeEmail: function (password, newEmail) {
                         var def = $q.defer();
                         // TODO is this the only way to nest these calls!?
-                        loginService.getAuth().then(function (auth) {
+                        loginFactory.getAuth().then(function (auth) {
                             return auth;
                         }).then(function (auth) {
                             changeEmailFactory.changeEmail(password, auth.password.email, newEmail, userFactory).then(function (auth) {
@@ -145,7 +145,7 @@ angular.module('my.user.factory', ['my.firebase.factory', 'my.login.service'])
                         }
 
                         function removeOldLogin() {
-                            return loginService.removeUser(ctx.old.email, password);
+                            return loginFactory.removeUser(ctx.old.email, password);
                             /*
                              var def = $q.defer();
                              userFactory.removeUser(ctx.old.email, password).then(function () {

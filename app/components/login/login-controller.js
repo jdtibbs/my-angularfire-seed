@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.login.controller', ['my.firebase.factory', 'my.login.service', 'ngRoute'])
+angular.module('my.login.controller', ['my.firebase.factory', 'my.login.factory', 'ngRoute'])
         .config(["$routeProvider", function ($routeProvider) {
                 $routeProvider.when("/login", {
                     // the rest is the same for ui-router and ngRoute...
@@ -25,8 +25,8 @@ angular.module('my.login.controller', ['my.firebase.factory', 'my.login.service'
                 });
             }])
 
-        .controller('loginController', ['$scope', 'loginService', '$location',
-            function ($scope, loginService, $location) {
+        .controller('loginController', ['$scope', 'loginFactory', '$location',
+            function ($scope, loginFactory, $location) {
                 $scope.profile = null;
                 $scope.email = null;
                 $scope.pass = null;
@@ -34,7 +34,7 @@ angular.module('my.login.controller', ['my.firebase.factory', 'my.login.service'
                 $scope.createMode = false;
                 $scope.login = function (email, pass) {
                     $scope.err = null;
-                    loginService.login(email, pass)
+                    loginFactory.login(email, pass)
                             .then(function (/* user */) {
                                 $location.path('/user');
                             }, function (err) {
@@ -44,7 +44,7 @@ angular.module('my.login.controller', ['my.firebase.factory', 'my.login.service'
                 $scope.register = function () {
                     $scope.err = null;
                     if (assertValidAccountProps()) {
-                        loginService.register($scope.profile, $scope.email, $scope.pass)
+                        loginFactory.register($scope.profile, $scope.email, $scope.pass)
                                 .then(function (login) {
                                     $location.path('/user');
                                 })

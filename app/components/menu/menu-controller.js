@@ -1,7 +1,7 @@
 'use strict';
-angular.module('my.menu.controller', ['my.login.service'])
+angular.module('my.menu.controller', ['my.login.factory'])
 
-        .controller('menuController', ['$scope', '$location', 'loginService', function ($scope, $location, loginService) {
+        .controller('menuController', ['$scope', '$location', 'loginFactory', function ($scope, $location, loginFactory) {
                 $scope.menu = {
                     "items": [{
                             "value": "Chat",
@@ -17,7 +17,7 @@ angular.module('my.menu.controller', ['my.login.service'])
                     "selected": "x"
                 };
                 $scope.logout = function () {
-                    loginService.logout();
+                    loginFactory.logout();
                     $location.path('/home');
                 };
             }]);

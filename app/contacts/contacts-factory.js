@@ -1,15 +1,15 @@
 'use strict';
-angular.module('my.contacts.factory', ['my.firebase.factory', 'my.login.service'])
+angular.module('my.contacts.factory', ['my.firebase.factory', 'my.login.factory'])
 
-        .factory('contactsFactory', ['firebaseFactory', 'loginService', '$q',
-            function (firebaseFactory, loginService, $q) {
+        .factory('contactsFactory', ['firebaseFactory', 'loginFactory', '$q',
+            function (firebaseFactory, loginFactory, $q) {
 
                 var factory = {
                     ref: function () {
                         return firebaseFactory.ref('contacts');
                     },
                     syncArray: function () {
-                        return loginService.getLogin()
+                        return loginFactory.getLogin()
                                 .then(function (login) {
                                     console.log(login.users);
                                     return firebaseFactory.syncArray('contacts', {orderByChild: 'users', equalTo: login.users});
@@ -19,7 +19,7 @@ angular.module('my.contacts.factory', ['my.firebase.factory', 'my.login.service'
                         return firebaseFactory.syncObject('contacts' + '/' + id);
                     },
                     add: function (contact) {
-                        return loginService.getLogin()
+                        return loginFactory.getLogin()
                                 .then(function (login) {
                                     contact.users = login.users;
                                     return factory.validate(contact)

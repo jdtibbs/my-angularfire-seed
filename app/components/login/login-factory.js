@@ -1,11 +1,11 @@
 'use strict';
-angular.module('my.login.service', ['my.firebase.factory', 'my.login.firebase.service', 'my.users.firebase.service'])
+angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.service', 'my.users.firebase.service'])
 
-        .service('loginService', ['firebaseFactory', 'loginFirebaseService', 'usersFirebaseService', '$q', '$log',
+        .factory('loginFactory', ['firebaseFactory', 'loginFirebaseService', 'usersFirebaseService', '$q', '$log',
             function (firebaseFactory, loginFirebaseService, usersFirebaseService, $q, $log) {
                 var INVALID_CREDENTIALS = 'The email and or password is incorrect.';
 
-                var loginService = {
+                var loginFactory = {
                     login: function (email, pass) {
                         var def = $q.defer();
                         if (!email) {
@@ -39,7 +39,7 @@ angular.module('my.login.service', ['my.firebase.factory', 'my.login.firebase.se
                     },
                     getUid: function () {
                         var def = $q.defer();
-                        loginService.getAuth().then(function (auth) {
+                        loginFactory.getAuth().then(function (auth) {
                             $log.debug('auth.uid: ' + auth.uid);
                             def.resolve(auth.uid);
                         }).catch(function (error) {
@@ -49,16 +49,16 @@ angular.module('my.login.service', ['my.firebase.factory', 'my.login.firebase.se
                     },
                     register: function (profile, email, password) {
                         var def = $q.defer();
-                        loginService.createUser(email, password)
+                        loginFactory.createUser(email, password)
                                 .then(function () {
-                                    loginService.login(email, password)
+                                    loginFactory.login(email, password)
                                             //.then(function (auth) {
                                             //    return auth;
                                             //})
                                             .then(function (auth) {
                                                 usersFirebaseService.add(profile)
                                                         .then(function (profileRef) {
-                                                            loginService.createLogin(auth, email, profileRef.key())
+                                                            loginFactory.createLogin(auth, email, profileRef.key())
                                                                     .then(function (loginRef) {
                                                                         def.resolve(loginRef);
                                                                     })
@@ -114,7 +114,7 @@ angular.module('my.login.service', ['my.firebase.factory', 'my.login.firebase.se
                     },
                     getLogin: function () {
                         var def = $q.defer();
-                        loginService.getUid()
+                        loginFactory.getUid()
                                 .then(function (uid) {
                                     loginFirebaseService.syncObject(uid).$loaded()
                                             .then(function (login) {
@@ -191,41 +191,41 @@ angular.module('my.login.service', ['my.firebase.factory', 'my.login.firebase.se
                             // begin change email...
                             var oldLogin = {};
                             //  // get old auth uid.
-                            loginService.getUid()
+                            loginFactory.getUid()
                                     .then(function (oldUid) {
                                         $log.debug('oldUid: ' + oldUid);
                                         // get old /login object which contains the old email and /user object id.
-                                        loginService.getLogin(oldUid)
+                                        loginFactory.getLogin(oldUid)
                                                 .then(function (login) {
                                                     $log.debug('oldLogin: ' + login);
                                                     oldLogin = login;
                                                     // create new firebase user.
-                                                    loginService.createUser(newEmail, password)
+                                                    loginFactory.createUser(newEmail, password)
                                                             .then(function () {
                                                                 // login so we can write to fire base.
                                                                 $log.debug('created user:' + newEmail);
-                                                                loginService.login(newEmail, password)
+                                                                loginFactory.login(newEmail, password)
                                                                         .then(function (auth) {
                                                                             // create new /login object
                                                                             $log.debug('logged in w new email: ' + auth.uid);
-                                                                            loginService.createLogin(auth, newEmail, oldLogin.users)
+                                                                            loginFactory.createLogin(auth, newEmail, oldLogin.users)
                                                                                     .then(function (newLogin) {
                                                                                         $log.debug('new Login: ' + newLogin);
                                                                                         // successfully created new firebase user and /login object.
                                                                                         // now remove old /login object then old firebase user.
-                                                                                        loginService.login(oldLogin.email, password)
+                                                                                        loginFactory.login(oldLogin.email, password)
                                                                                                 .then(function (auth) {
                                                                                                     $log.debug('login w oldEmail: ' + oldLogin.email + ' auth: ' + auth);
-                                                                                                    loginService.removeLogin(auth.uid)
+                                                                                                    loginFactory.removeLogin(auth.uid)
                                                                                                             //yah, did not remove login / simplelogin:45
                                                                                                             .then(function () {
                                                                                                                 $log.debug('removed Login' + auth.uid);
-                                                                                                                loginService.removeUser(auth.uid, password)
+                                                                                                                loginFactory.removeUser(auth.uid, password)
                                                                                                                         .then(function () {
                                                                                                                             $log.debug('removed fb user.');
                                                                                                                             // success!
                                                                                                                             // log in with new email
-                                                                                                                            loginService.login(newEmail, password)
+                                                                                                                            loginFactory.login(newEmail, password)
                                                                                                                                     .then(function (auth) {
                                                                                                                                         $log.debug('login w new email: ' + auth.uid);
                                                                                                                                         def.resolve(auth);
@@ -246,7 +246,7 @@ angular.module('my.login.service', ['my.firebase.factory', 'my.login.firebase.se
                         return def.promise;
                     }
                 };
-                return loginService;
+                return loginFactory;
             }]);
 
 
