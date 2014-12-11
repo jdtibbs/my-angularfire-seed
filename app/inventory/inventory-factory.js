@@ -4,6 +4,9 @@ angular.module('my.inventory.factory', ['my.firebase.factory', 'firebase'])
         .factory('inventoryFactory', ['firebaseFactory', '$firebase', '$q', function (firebaseFactory, $firebase, $q) {
 
                 var factory = {
+                    ref: function () {
+                        return firebaseFactory.ref('inventory');
+                    },
                     syncArray: function () {
                         return firebaseFactory.syncArray('inventory');
                     },
@@ -21,6 +24,18 @@ angular.module('my.inventory.factory', ['my.firebase.factory', 'firebase'])
                                 .then(function (item) {
                                     return item.$save();
                                 });
+                    },
+                    delete: function (item) {
+                        var def = $q.defer();
+                        factory.ref().child(item.$id)
+                                .remove(function (error) {
+                                    if (error) {
+                                        def.reject(error);
+                                    } else {
+                                        def.resolve();
+                                    }
+                                });
+                        return def.promise;
                     },
                     validate: function (item) {
                         var def = $q.defer();

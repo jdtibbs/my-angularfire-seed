@@ -37,6 +37,7 @@ angular.module('my.contactsDetail.controller', ['my.contacts.factory', 'ngRoute'
                             .then(function (ref) {
                                 console.log('add OK: ' + ref.key());
                                 $scope.errors = [];
+                                back();
                             })
                             .catch(function (error) {
                                 console.log('add Error: ' + error);
@@ -49,6 +50,7 @@ angular.module('my.contactsDetail.controller', ['my.contacts.factory', 'ngRoute'
                             .then(function (ref) {
                                 console.log('saved OK ' + ref.key());
                                 $scope.errors = [];
+                                back();
                             })
                             .catch(function (error) {
                                 console.log('save error: ' + error);
@@ -58,9 +60,10 @@ angular.module('my.contactsDetail.controller', ['my.contacts.factory', 'ngRoute'
 
                 $scope.delete = function () {
                     contactsFactory.delete($scope.contact)
-                            .then(function (ref) {
+                            .then(function () {
                                 console.log('delete OK ');
                                 $scope.errors = [];
+                                back();
                             })
                             .catch(function (error) {
                                 console.log('delete error: ' + error);
@@ -69,8 +72,12 @@ angular.module('my.contactsDetail.controller', ['my.contacts.factory', 'ngRoute'
                 };
 
                 $scope.cancel = function () {
-                    $location.path('/contacts');
+                    back();
                 };
+
+                var back = function () {
+                    $location.path('/contacts');
+                }
             }]);
 
 

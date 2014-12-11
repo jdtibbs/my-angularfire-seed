@@ -37,6 +37,7 @@ angular.module('my.inventoryDetail.controller', ['my.inventory.factory', 'ngRout
                     inventoryFactory.add(item).then(function (ref) {
                         console.log('add OK: ' + ref.key());
                         $scope.errors = [];
+                        back();
                     }).catch(function (error) {
                         console.log('add Error: ' + error);
                         $scope.errors = error;
@@ -48,15 +49,33 @@ angular.module('my.inventoryDetail.controller', ['my.inventory.factory', 'ngRout
                     inventoryFactory.save($scope.item).then(function (ref) {
                         console.log('save OK: ' + ref.key());
                         $scope.errors = [];
+                        back();
                     }).catch(function (error) {
                         console.log('save Error: ' + error);
                         $scope.errors = error;
                     });
                 };
 
-                $scope.cancel = function () {
-                    $location.path('/inventory');
+                $scope.delete = function () {
+                    inventoryFactory.delete($scope.item)
+                            .then(function () {
+                                console.log('delete OK ');
+                                $scope.errors = [];
+                                back();
+                            })
+                            .catch(function (error) {
+                                console.log('delete error: ' + error);
+                                $scope.errors = error;
+                            });
                 };
+
+                $scope.cancel = function () {
+                    back();
+                };
+
+                var back = function () {
+                    $location.path('/inventory');
+                }
             }]);
 
 

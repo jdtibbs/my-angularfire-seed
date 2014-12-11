@@ -41,14 +41,14 @@ angular.module('my.contacts.factory', ['my.firebase.factory', 'my.login.service'
                     },
                     delete: function (contact) {
                         var def = $q.defer();
-                        var cc = factory.ref().child(contact.$id);
-                        cc.remove(function (error) {
-                            if (error) {
-                                def.reject(error);
-                            } else {
-                                def.resolve();
-                            }
-                        });
+                        factory.ref().child(contact.$id)
+                                .remove(function (error) {
+                                    if (error) {
+                                        def.reject(error);
+                                    } else {
+                                        def.resolve();
+                                    }
+                                });
                         return def.promise;
                     },
                     validate: function (contact) {
