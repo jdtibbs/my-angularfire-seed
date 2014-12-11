@@ -179,12 +179,10 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.se
                     changeEmail: function (newEmail, password) {
                         var def = $q.defer();
                         // validate input parameters.
-
                         if (!newEmail) {
                             def.reject('Email is required.');
-                        } //else if (newEmail === oldLogin.email) {
-                        // def.reject('New email must not be same as current email.');
-                        //} 
+                            // find below, validate that new email is different then current.
+                        }
                         else if (!password) {
                             def.reject('Password is required.');
                         } else {
@@ -199,6 +197,9 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.se
                                                 .then(function (login) {
                                                     $log.debug('oldLogin: ' + login);
                                                     oldLogin = login;
+                                                    if (newEmail === oldLogin.email) {
+                                                        def.reject('New email must not be same as current email.');
+                                                    }
                                                     // create new firebase user.
                                                     loginFactory.createUser(newEmail, password)
                                                             .then(function () {
