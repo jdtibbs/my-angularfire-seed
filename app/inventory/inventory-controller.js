@@ -14,8 +14,9 @@ angular.module('my.inventory.controller', ['my.inventory.factory', 'ngRoute'])
                 });
             }])
 
-        .controller('inventoryController', ['$scope', '$location', 'inventoryFactory', function ($scope, $location, inventoryFactory) {
-                $scope.inventory = inventoryFactory.syncArray();
+        .controller('inventoryController', ['$scope', '$location', 'inventoryFirebaseFactory',
+            function ($scope, $location, inventoryFirebaseFactory) {
+                $scope.inventory = inventoryFirebaseFactory.syncArray();
                 $scope.add = function () {
                     $location.path('/inventoryDetail');
                 };

@@ -22,42 +22,46 @@ angular.module('my.inventoryDetail.controller', ['my.inventory.factory', 'ngRout
                      }*/});
             }])
 
-        .controller('inventoryDetailController', ['$scope', '$routeParams', '$location', 'inventoryFactory', function ($scope, $routeParams, $location, inventoryFactory) {
+        .controller('inventoryDetailController', ['$scope', '$routeParams', '$location', 'inventoryFirebaseFactory',
+            function ($scope, $routeParams, $location, inventoryFirebaseFactory) {
                 $scope.errors = [];
 
                 if ($routeParams.id) {
-                    $scope.item = inventoryFactory.syncObject($routeParams.id);
+                    $scope.item = inventoryFirebaseFactory.syncObject($routeParams.id);
                     // console.log($scope.item);
                 } else {
                     $scope.item = {};
                 }
 
                 $scope.add = function (item) {
-                    // inventoryFactory.syncArray().$add(item);
-                    inventoryFactory.add(item).then(function (ref) {
-                        console.log('add OK: ' + ref.key());
-                        $scope.errors = [];
-                        back();
-                    }).catch(function (error) {
-                        console.log('add Error: ' + error);
-                        $scope.errors = error;
-                    });
+                    // inventoryFirebaseFactory.syncArray().$add(item);
+                    inventoryFirebaseFactory.add(item)
+                            .then(function (ref) {
+                                console.log('add OK: ' + ref.key());
+                                $scope.errors = [];
+                                back();
+                            })
+                            .catch(function (error) {
+                                console.log('add Error: ' + error);
+                                $scope.errors = error;
+                            });
                 };
 
                 $scope.save = function () {
-                    // $scope.item.$save();
-                    inventoryFactory.save($scope.item).then(function (ref) {
-                        console.log('save OK: ' + ref.key());
-                        $scope.errors = [];
-                        back();
-                    }).catch(function (error) {
-                        console.log('save Error: ' + error);
-                        $scope.errors = error;
-                    });
+                    inventoryFirebaseFactory.save($scope.item)
+                            .then(function (ref) {
+                                console.log('save OK: ' + ref.key());
+                                $scope.errors = [];
+                                back();
+                            })
+                            .catch(function (error) {
+                                console.log('save Error: ' + error);
+                                $scope.errors = error;
+                            });
                 };
 
                 $scope.delete = function () {
-                    inventoryFactory.delete($scope.item)
+                    inventoryFirebaseFactory.delete($scope.item)
                             .then(function () {
                                 console.log('delete OK ');
                                 $scope.errors = [];
@@ -75,7 +79,7 @@ angular.module('my.inventoryDetail.controller', ['my.inventory.factory', 'ngRout
 
                 var back = function () {
                     $location.path('/inventory');
-                }
+                };
             }]);
 
 
