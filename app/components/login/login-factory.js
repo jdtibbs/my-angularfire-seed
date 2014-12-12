@@ -1,5 +1,73 @@
 'use strict';
-angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.service', 'my.users.factory'])
+angular.module('my.login.factory', ['my.firebase.factory', 'my.users.factory'])
+        .constant('LOGIN_URL', 'login')
+
+        .service('loginValidator', ['$q',
+            function ($q) {
+                var validator = {
+                    validate: function (login) {
+                        var def = $q.defer();
+                        var errors = [];
+                        if (!login) {
+                            errors.push('Missing login parameter.');
+                        } else {
+                            if (!login || !login.email || login.email.length > 100) {
+                                errors.push('Email is required.');
+                            }
+                            if (!login || !login.users) {
+                                errors.push('Users ID is required.');
+                            }
+                        }
+                        if (errors.length > 0) {
+                            def.reject(errors);
+                        } else {
+                            def.resolve(login);
+                        }
+                        return def.promise;
+                    }
+                };
+                return validator;
+            }])
+
+        .service('loginFirebaseService', ['LOGIN_URL', 'loginValidator', 'firebaseFactory', '$q',
+            function (LOGIN_URL, loginValidator, firebaseFactory, $q) {
+                var firebase = {
+                    ref: function (id) {
+                        return firebaseFactory.ref(LOGIN_URL, id);
+                    },
+                    syncObject: function (id) {
+                        return firebaseFactory.syncObject([LOGIN_URL, id]);
+                    },
+                    create: function (email, userId) {
+                        return {email: email, users: userId};
+                    },
+                    add: function (id, login) {
+                        var def = $q.defer();
+                        if (!id) {
+                            def.reject('Id is required.');
+                        } else if (!login) {
+                            def.reject('Login is required.');
+                        } else {
+                            loginValidator.validate(login)
+                                    .then(function (login) {
+                                        var ref = firebaseFactory.ref(LOGIN_URL);
+                                        ref.child(id).set(login, function (error) {
+                                            if (error) {
+                                                def.reject(error);
+                                            } else {
+                                                def.resolve();
+                                            }
+                                        });
+                                    })
+                                    .catch(function (error) {
+                                        def.reject(error);
+                                    });
+                        }
+                        return def.promise;
+                    }
+                };
+                return firebase;
+            }])
 
         .factory('loginFactory', ['firebaseFactory', 'loginFirebaseService', 'usersFirebaseFactory', '$q', '$log',
             function (firebaseFactory, loginFirebaseService, usersFirebaseFactory, $q, $log) {
@@ -56,7 +124,7 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.se
                                                 usersFirebaseFactory.add(profile)
                                                         .then(function (profileRef) {
                                                             loginFactory.createLogin(auth, email, profileRef.key())
-                                                                    .then(function (loginRef) {                                                                       
+                                                                    .then(function (loginRef) {
                                                                         def.resolve(loginRef);
                                                                     })
                                                                     .catch(function (error) {
@@ -175,7 +243,17 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.se
                                     }
                                 });
                         return def.promise;
-                    },
+                    }
+                };
+                return loginFactory;
+            }])
+
+        .factory('changeEmailFactory', ['loginFactory', '$q', '$log',
+            function (loginFactory, $q, $log) {
+
+                // TODO handle errors, rollback data is error.
+
+                var changeEmail = {
                     changeEmail: function (newEmail, password) {
                         var def = $q.defer();
                         // validate input parameters.
@@ -247,7 +325,7 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.se
                         return def.promise;
                     }
                 };
-                return loginFactory;
+                return changeEmail;
             }]);
 
 
