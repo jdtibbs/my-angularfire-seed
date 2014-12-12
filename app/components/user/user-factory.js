@@ -3,7 +3,7 @@ angular.module('my.users.factory', ['my.firebase.factory'])
 
         .constant('USERS_URL', 'users')
 
-        .factory('usersValidateFactory', ['$q',
+        .factory('usersValidator', ['$q',
             function ($q) {
                 var validate = {
                     validate: function (user) {
@@ -30,8 +30,8 @@ angular.module('my.users.factory', ['my.firebase.factory'])
                 return validate;
             }])
 
-        .factory('usersFirebaseFactory', ['USERS_URL', 'usersValidateFactory', 'firebaseFactory',
-            function (USERS_URL, usersValidateFactory, firebaseFactory) {
+        .factory('usersFirebaseFactory', ['USERS_URL', 'usersValidator', 'firebaseFactory',
+            function (USERS_URL, usersValidator, firebaseFactory) {
 
                 var firebase = {
                     syncArray: function () {
@@ -41,10 +41,10 @@ angular.module('my.users.factory', ['my.firebase.factory'])
                         return firebaseFactory.syncObject([USERS_URL, id]);
                     },
                     add: function (user) {
-                        return firebaseFactory.add(USERS_URL, user, usersValidateFactory.validate);
+                        return firebaseFactory.add(USERS_URL, user, usersValidator.validate);
                     },
                     save: function (user) {
-                        return firebaseFactory.save(user, usersValidateFactory.validate);
+                        return firebaseFactory.save(user, usersValidator.validate);
                     }
                 };
                 return firebase;

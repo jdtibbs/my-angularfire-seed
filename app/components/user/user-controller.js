@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.user.controller', ['my.users.factory', 'my.login.firebase.service', 'my.login.factory', 'ngRoute'])
+angular.module('my.user.controller', ['my.users.factory', 'my.login.factory', 'ngRoute'])
         .config(["$routeProvider", function ($routeProvider) {
                 $routeProvider.when("/user", {
                     // the rest is the same for ui-router and ngRoute...
@@ -16,15 +16,14 @@ angular.module('my.user.controller', ['my.users.factory', 'my.login.firebase.ser
                     }});
             }])
 
-        .controller('userController', ['$scope', 'usersFirebaseFactory', 'loginFirebaseService', 'loginFactory', 
-            function ($scope, usersFirebaseFactory, loginFirebaseService, loginFactory) {
+        .controller('userController', ['$scope', 'usersFirebaseFactory', 'loginFirebaseService', 'loginFactory', 'changeEmailFactory',
+            function ($scope, usersFirebaseFactory, loginFirebaseService, loginFactory, changeEmailFactory) {
 
                 loginFactory.getUid()
                         .then(function (uid) {
                             loginFirebaseService.syncObject(uid).$loaded()
                                     .then(function (login) {
                                         $scope.login = login;
-
                                         usersFirebaseFactory.syncObject(login.users).$loaded()
                                                 .then(function (profile) {
                                                     $scope.profile = profile;
@@ -77,7 +76,7 @@ angular.module('my.user.controller', ['my.users.factory', 'my.login.firebase.ser
                     } else if (!pass) {
                         $scope.emailerr = 'Please enter password.';
                     } else {
-                        loginFactory.changeEmail(newEmail, pass)
+                        changeEmailFactory.changeEmail(newEmail, pass)
                                 .then(function (auth) {
                                     loginFirebaseService.syncObject(auth.uid).$loaded()
                                             .then(function (login) {
