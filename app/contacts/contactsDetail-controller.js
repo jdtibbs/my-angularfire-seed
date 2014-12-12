@@ -23,50 +23,44 @@ angular.module('my.contactsDetail.controller', ['my.contacts.factory', 'ngRoute'
                 });
             }])
 
-        .controller('contactsDetailController', ['$scope', '$routeParams', '$location', 'contactsFactory',
-            function ($scope, $routeParams, $location, contactsFactory) {
+        .controller('contactsDetailController', ['$scope', '$routeParams', '$location', 'contactsFirebaseFactory',
+            function ($scope, $routeParams, $location, contactsFirebaseFactory) {
                 $scope.errors = [];
                 if ($routeParams.id) {
-                    $scope.contact = contactsFactory.syncObject($routeParams.id);
+                    $scope.contact = contactsFirebaseFactory.syncObject($routeParams.id);
                 } else {
                     $scope.contact = {users: ""};
                 }
 
                 $scope.add = function (contact) {
-                    contactsFactory.add(contact)
+                    contactsFirebaseFactory.add(contact)
                             .then(function (ref) {
-                                console.log('add OK: ' + ref.key());
                                 $scope.errors = [];
                                 back();
                             })
                             .catch(function (error) {
-                                console.log('add Error: ' + error);
                                 $scope.errors = error;
                             });
                 };
 
                 $scope.save = function () {
-                    contactsFactory.save($scope.contact)
+                    contactsFirebaseFactory.save($scope.contact)
                             .then(function (ref) {
-                                console.log('saved OK ' + ref.key());
                                 $scope.errors = [];
                                 back();
                             })
                             .catch(function (error) {
-                                console.log('save error: ' + error);
                                 $scope.errors = error;
                             });
                 };
 
                 $scope.delete = function () {
-                    contactsFactory.delete($scope.contact)
+                    contactsFirebaseFactory.delete($scope.contact)
                             .then(function () {
-                                console.log('delete OK ');
                                 $scope.errors = [];
                                 back();
                             })
                             .catch(function (error) {
-                                console.log('delete error: ' + error);
                                 $scope.errors = error;
                             });
                 };
@@ -77,7 +71,7 @@ angular.module('my.contactsDetail.controller', ['my.contacts.factory', 'ngRoute'
 
                 var back = function () {
                     $location.path('/contacts');
-                }
+                };
             }]);
 
 

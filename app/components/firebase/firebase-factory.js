@@ -44,9 +44,9 @@ angular.module('my.firebase.factory', ['firebase', 'my.config'])
                                     return def.promise;
                                 });
                     },
-                    delete: function (path, object) {
+                    delete: function (path) {
                         var def = $q.defer();
-                        factory.ref(path).child(object.$id)
+                        factory.ref(path)
                                 .remove(function (error) {
                                     if (error) {
                                         def.reject(error);

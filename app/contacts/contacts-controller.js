@@ -14,10 +14,10 @@ angular.module('my.contacts.controller', ['my.contacts.factory', 'ngRoute'])
                 });
             }])
 
-        .controller('contactsController', ['$scope', '$location', 'contactsFactory',
-            function ($scope, $location, contactsFactory) {
+        .controller('contactsController', ['$scope', '$location', 'contactsFirebaseFactory',
+            function ($scope, $location, contactsFirebaseFactory) {
 
-                contactsFactory.syncArray()
+                contactsFirebaseFactory.syncArray()
                         .then(function (contacts) {
                             $scope.contacts = contacts;
                         });

@@ -46,7 +46,7 @@ angular.module('my.inventory.factory', ['my.firebase.factory', 'firebase'])
                         return firebaseFactory.save(item, inventoryValidator.validate);
                     },
                     delete: function (item) {
-                        return firebaseFactory.delete(INVENTORY_URL, item);
+                        return firebaseFactory.delete([INVENTORY_URL, item.$id]);
                     }
                 };
                 return firebase;
