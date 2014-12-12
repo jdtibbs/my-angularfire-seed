@@ -32,7 +32,7 @@ angular.module('my.inventory.factory', ['my.firebase.factory', 'firebase'])
         .factory('inventoryFirebaseFactory', ['INVENTORY_URL', 'firebaseFactory', 'inventoryValidator',
             function (INVENTORY_URL, firebaseFactory, inventoryValidator) {
 
-                var factory = {
+                var firebase = {
                     syncArray: function () {
                         return firebaseFactory.syncArray(INVENTORY_URL);
                     },
@@ -49,5 +49,5 @@ angular.module('my.inventory.factory', ['my.firebase.factory', 'firebase'])
                         return firebaseFactory.delete(INVENTORY_URL, item);
                     }
                 };
-                return factory;
+                return firebase;
             }]);
