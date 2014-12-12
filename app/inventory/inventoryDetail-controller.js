@@ -28,21 +28,17 @@ angular.module('my.inventoryDetail.controller', ['my.inventory.factory', 'ngRout
 
                 if ($routeParams.id) {
                     $scope.item = inventoryFirebaseFactory.syncObject($routeParams.id);
-                    // console.log($scope.item);
                 } else {
                     $scope.item = {};
                 }
 
                 $scope.add = function (item) {
-                    // inventoryFirebaseFactory.syncArray().$add(item);
                     inventoryFirebaseFactory.add(item)
                             .then(function (ref) {
-                                console.log('add OK: ' + ref.key());
                                 $scope.errors = [];
                                 back();
                             })
                             .catch(function (error) {
-                                console.log('add Error: ' + error);
                                 $scope.errors = error;
                             });
                 };
@@ -50,12 +46,10 @@ angular.module('my.inventoryDetail.controller', ['my.inventory.factory', 'ngRout
                 $scope.save = function () {
                     inventoryFirebaseFactory.save($scope.item)
                             .then(function (ref) {
-                                console.log('save OK: ' + ref.key());
                                 $scope.errors = [];
                                 back();
                             })
                             .catch(function (error) {
-                                console.log('save Error: ' + error);
                                 $scope.errors = error;
                             });
                 };
@@ -63,12 +57,10 @@ angular.module('my.inventoryDetail.controller', ['my.inventory.factory', 'ngRout
                 $scope.delete = function () {
                     inventoryFirebaseFactory.delete($scope.item)
                             .then(function () {
-                                console.log('delete OK ');
                                 $scope.errors = [];
                                 back();
                             })
                             .catch(function (error) {
-                                console.log('delete error: ' + error);
                                 $scope.errors = error;
                             });
                 };

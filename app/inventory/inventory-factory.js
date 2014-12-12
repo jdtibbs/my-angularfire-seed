@@ -8,12 +8,12 @@ angular.module('my.inventory.factory', ['my.firebase.factory', 'firebase'])
                     validate: function (item) {
                         var def = $q.defer();
                         var errors = [];
-                        if (!item || !item.name || item.name.length > 100) {
-                            errors.push('Name must be between 1 and 100 charaters in length.');
+                        if (!item || !item.name) {
+                            errors.push('Name is required.');
+                        } else if (item.name.length > 100) {
+                            errors.push('Name must be 100 charaters or less.');
                         }
-//                        if (/\D/.test(item.quantity)) {
                         if (!angular.isNumber(item.quantity)) {
-                            /* non-digit found */
                             errors.push('Quantity must be a number.');
                         } else if (item.quantity < 0 || item.quantity > 1000) {
                             errors.push('Quantity must be between 0 and 1000.');

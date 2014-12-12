@@ -6,13 +6,13 @@ angular.module('my.firebase.factory', ['firebase', 'my.config'])
             function ($window, FBURL, $firebase, $firebaseAuth, $q) {
 
                 var factory = {
+                    ref: firebaseRef,
                     syncObject: function (path, factoryConfig) {
                         return syncData.apply(null, arguments).$asObject();
                     },
                     syncArray: function (path, factoryConfig) {
                         return syncData.apply(null, arguments).$asArray();
                     },
-                    ref: firebaseRef,
                     auth: function () {
                         return $firebaseAuth(this.ref());
                     },
@@ -46,7 +46,7 @@ angular.module('my.firebase.factory', ['firebase', 'my.config'])
                     },
                     delete: function (path, object) {
                         var def = $q.defer();
-                        factory.ref([path]).child(object.$id)
+                        factory.ref(path).child(object.$id)
                                 .remove(function (error) {
                                     if (error) {
                                         def.reject(error);
