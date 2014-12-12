@@ -56,9 +56,7 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.se
                                                 usersFirebaseFactory.add(profile)
                                                         .then(function (profileRef) {
                                                             loginFactory.createLogin(auth, email, profileRef.key())
-                                                                    .then(function (loginRef) {
-                                                                        var x = {id: 'x'};
-                                                                        console.log(x.fred());
+                                                                    .then(function (loginRef) {                                                                       
                                                                         def.resolve(loginRef);
                                                                     })
                                                                     .catch(function (error) {
