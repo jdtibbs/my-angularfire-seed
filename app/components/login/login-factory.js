@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.service', 'my.users.firebase.factory'])
+angular.module('my.login.factory', ['my.firebase.factory', 'my.login.firebase.service', 'my.users.factory'])
 
         .factory('loginFactory', ['firebaseFactory', 'loginFirebaseService', 'usersFirebaseFactory', '$q', '$log',
             function (firebaseFactory, loginFirebaseService, usersFirebaseFactory, $q, $log) {

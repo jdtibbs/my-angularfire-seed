@@ -2,10 +2,10 @@
 
 // a simple wrapper on Firebase and AngularFire to simplify deps and keep things DRY
 angular.module('my.firebase.factory', ['firebase', 'my.config'])
-        .factory('firebaseFactory', ['$window', 'FBURL', '$firebase', '$firebaseAuth',
-            function ($window, FBURL, $firebase, $firebaseAuth) {
+        .factory('firebaseFactory', ['$window', 'FBURL', '$firebase', '$firebaseAuth', '$q',
+            function ($window, FBURL, $firebase, $firebaseAuth, $q) {
 
-                return {
+                var factory = {
                     syncObject: function (path, factoryConfig) {
                         return syncData.apply(null, arguments).$asObject();
                     },
@@ -15,8 +15,38 @@ angular.module('my.firebase.factory', ['firebase', 'my.config'])
                     ref: firebaseRef,
                     auth: function () {
                         return $firebaseAuth(this.ref());
+                    },
+                    add: function (path, object, validate) {
+                        return validate(object)
+                                .then(function (object) {
+                                    var def = $q.defer();
+                                    factory.syncArray(path).$add(object)
+                                            .then(function (ref) {
+                                                def.resolve(ref);
+                                            })
+                                            .catch(function (error) {
+                                                def.reject(error);
+                                            });
+                                    return def.promise;
+                                });
+                    },
+                    save: function (object, validate) {
+                        return validate(object)
+                                .then(function (object) {
+                                    var def = $q.defer();
+                                    object.$save()
+                                            .then(function (ref) {
+                                                def.resolve(ref);
+                                            })
+                                            .catch(function (error) {
+                                                def.reject(error);
+                                            });
+                                    return def.promise;
+                                });
                     }
                 };
+
+                return factory;
 
                 function pathRef(args) {
                     for (var i = 0; i < args.length; i++) {

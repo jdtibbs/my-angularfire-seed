@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.user.controller', ['my.users.firebase.factory', 'my.login.firebase.service', 'my.login.factory', 'ngRoute'])
+angular.module('my.user.controller', ['my.users.factory', 'my.login.firebase.service', 'my.login.factory', 'ngRoute'])
         .config(["$routeProvider", function ($routeProvider) {
                 $routeProvider.when("/user", {
                     // the rest is the same for ui-router and ngRoute...
@@ -16,8 +16,8 @@ angular.module('my.user.controller', ['my.users.firebase.factory', 'my.login.fir
                     }});
             }])
 
-        .controller('userController', ['$scope', 'usersFirebaseFactory', 'loginFirebaseService', 'loginFactory', '$location',
-            function ($scope, usersFirebaseFactory, loginFirebaseService, loginFactory, $location) {
+        .controller('userController', ['$scope', 'usersFirebaseFactory', 'loginFirebaseService', 'loginFactory', 
+            function ($scope, usersFirebaseFactory, loginFirebaseService, loginFactory) {
 
                 loginFactory.getUid()
                         .then(function (uid) {
