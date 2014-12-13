@@ -16,12 +16,12 @@ angular.module('my.user.controller', ['my.users.factory', 'my.login.factory', 'n
                     }});
             }])
 
-        .controller('userController', ['$scope', 'usersFirebaseFactory', 'loginFirebaseService', 'loginFactory', 'changeEmailFactory',
-            function ($scope, usersFirebaseFactory, loginFirebaseService, loginFactory, changeEmailFactory) {
+        .controller('userController', ['$scope', 'usersFirebaseFactory', 'loginFirebaseFactory', 'loginFactory', 'changeEmailFactory',
+            function ($scope, usersFirebaseFactory, loginFirebaseFactory, loginFactory, changeEmailFactory) {
 
                 loginFactory.getUid()
                         .then(function (uid) {
-                            loginFirebaseService.syncObject(uid).$loaded()
+                            loginFirebaseFactory.syncObject(uid).$loaded()
                                     .then(function (login) {
                                         $scope.login = login;
                                         usersFirebaseFactory.syncObject(login.users).$loaded()
@@ -78,7 +78,7 @@ angular.module('my.user.controller', ['my.users.factory', 'my.login.factory', 'n
                     } else {
                         changeEmailFactory.changeEmail(newEmail, pass)
                                 .then(function (auth) {
-                                    loginFirebaseService.syncObject(auth.uid).$loaded()
+                                    loginFirebaseFactory.syncObject(auth.uid).$loaded()
                                             .then(function (login) {
                                                 $scope.login = login;
 

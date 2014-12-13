@@ -2,7 +2,7 @@
 angular.module('my.login.factory', ['my.firebase.factory', 'my.users.factory'])
         .constant('LOGIN_URL', 'login')
 
-        .service('loginValidator', ['$q',
+        .factory('loginValidator', ['$q',
             function ($q) {
                 var validator = {
                     validate: function (login) {
@@ -29,7 +29,7 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.users.factory'])
                 return validator;
             }])
 
-        .service('loginFirebaseService', ['LOGIN_URL', 'loginValidator', 'firebaseFactory', '$q',
+        .factory('loginFirebaseFactory', ['LOGIN_URL', 'loginValidator', 'firebaseFactory', '$q',
             function (LOGIN_URL, loginValidator, firebaseFactory, $q) {
                 var firebase = {
                     ref: function (id) {
@@ -69,8 +69,8 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.users.factory'])
                 return firebase;
             }])
 
-        .factory('loginFactory', ['firebaseFactory', 'loginFirebaseService', 'usersFirebaseFactory', '$q', '$log',
-            function (firebaseFactory, loginFirebaseService, usersFirebaseFactory, $q, $log) {
+        .factory('loginFactory', ['firebaseFactory', 'loginFirebaseFactory', 'usersFirebaseFactory', '$q', '$log',
+            function (firebaseFactory, loginFirebaseFactory, usersFirebaseFactory, $q, $log) {
                 var INVALID_CREDENTIALS = 'The email and or password is incorrect.';
 
                 var loginFactory = {
@@ -168,9 +168,9 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.users.factory'])
                     },
                     createLogin: function (auth, email, users) {
                         var def = $q.defer();
-                        var login = loginFirebaseService.create(email, users);
+                        var login = loginFirebaseFactory.create(email, users);
                         $log.debug('createLogin: ' + login.email + ' ' + login.users);
-                        loginFirebaseService.add(auth.uid, login)
+                        loginFirebaseFactory.add(auth.uid, login)
                                 .then(function () {
                                     $log.debug('Login created');
                                     def.resolve();
@@ -184,7 +184,7 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.users.factory'])
                         var def = $q.defer();
                         loginFactory.getUid()
                                 .then(function (uid) {
-                                    loginFirebaseService.syncObject(uid).$loaded()
+                                    loginFirebaseFactory.syncObject(uid).$loaded()
                                             .then(function (login) {
                                                 def.resolve(login);
                                             });
@@ -215,7 +215,7 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.users.factory'])
                     },
                     removeLogin: function (authUid) {
                         var def = $q.defer();
-                        var login = loginFirebaseService.ref(authUid);
+                        var login = loginFirebaseFactory.ref(authUid);
                         login.remove(function (error) {
                             if (error) {
                                 def.reject(error);
