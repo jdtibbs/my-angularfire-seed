@@ -253,6 +253,38 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.users.factory'])
 
                 // TODO handle errors, rollback data is error.
 
+//                TODO flip create new user and login, then remove old one?
+//                        newUser = function () {
+//                            // create new FB user.
+//                            // create new login.
+//                            // handle errors, backout any changes.
+//                            var def = $q.defer();
+//                            def.resolve();
+//                            return def.promise;
+//                        };
+//                removeOld = function () {
+//                    // remove old login
+//                    // remove FB user
+//                    // handle errors, backout any changes.
+//                    var def = $q.defer();
+//                    def.resolve();
+//                    return def.promise;
+//                };
+//                // Execute proposed process...
+//                newUser()
+//                        .then(function () {
+//                            removeOld()
+//                                    .then(function () {
+//
+//                                    })
+//                                    .catch(function () {
+//                                        // removeOld should handle OK???
+//                                    });
+//                        })
+//                        .catch(function () {
+//                            // newUser should handle OK???
+//                        });
+
                 var changeEmail = {
                     changeEmail: function (newEmail, password) {
                         var def = $q.defer();
@@ -266,17 +298,15 @@ angular.module('my.login.factory', ['my.firebase.factory', 'my.users.factory'])
                         } else {
                             // begin change email...
                             var oldLogin = {};
-                            //  // get old auth uid.
+                            // get old auth uid.
                             loginFactory.getUid()
                                     .then(function (oldUid) {
-                                        $log.debug('oldUid: ' + oldUid);
-                                        // get old /login object which contains the old email and /user object id.
+                                        // get user id.
                                         loginFactory.getLogin(oldUid)
                                                 .then(function (login) {
-                                                    $log.debug('oldLogin: ' + login);
                                                     oldLogin = login;
                                                     if (newEmail === oldLogin.email) {
-                                                        def.reject('New email must not be same as current email.');
+                                                        def.reject('New email cannot be the same as your current email.');
                                                     }
                                                     // create new firebase user.
                                                     loginFactory.createUser(newEmail, password)

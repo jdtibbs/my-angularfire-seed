@@ -21,3 +21,4 @@ node_modules
 bower_components
 .log
 /nbproject/private/
+test_out/unit.xml
