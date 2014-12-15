@@ -9,7 +9,7 @@ angular.module('my.chat.controller', ['my.chat.factory', 'ngRoute'])
                 });
             }])
 
-        .controller('chatController', ['$scope', 'message', function ($scope, message) {
+        .controller('chatController', ['message', function (message) {
                 this.messages = message;
                 this.addMessage = function (newMessage) {
                     if (newMessage) {
