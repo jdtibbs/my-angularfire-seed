@@ -10,13 +10,13 @@
                     <input id="message" class="form-control" auto-focus ng-model="newMessage">
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-primary" ng-click="addMessage(newMessage);
+                    <button class="btn btn-primary" ng-click="chat.addMessage(newMessage);
                                 newMessage = null;">send</button>
                 </div>
             </form>
 
-            <ul id="messages" ng-show="messages.length">
-                <li ng-repeat="message in messages| reverse">{{message.text}}</li>
+            <ul id="messages" ng-show="chat.messages.length">
+                <li ng-repeat="message in chat.messages| reverse">{{message.text}}</li>
             </ul>
         </div>
     </div>
