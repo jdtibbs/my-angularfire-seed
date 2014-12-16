@@ -1,14 +1,14 @@
 angular.module('app', [])
-        .controller('PasswordController', function PasswordController($scope) {
-            $scope.password = '';
-            $scope.grade = function () {
-                var size = $scope.password.length;
+        .controller('PasswordController', function PasswordController() {
+            this.password = '';
+            this.grade = function () {
+                var size = this.password.length;
                 if (size > 8) {
-                    $scope.strength = 'strong';
+                    this.strength = 'strong';
                 } else if (size > 3) {
-                    $scope.strength = 'medium';
+                    this.strength = 'medium';
                 } else {
-                    $scope.strength = 'weak';
+                    this.strength = 'weak';
                 }
             };
         });

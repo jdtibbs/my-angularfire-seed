@@ -8,13 +8,22 @@ describe('PasswordController', function () {
         $controller = _$controller_;
     }));
 
-    describe('$scope.grade', function () {
+    describe('grade', function () {
+        var controller;
+        beforeEach(function () {
+            controller = $controller('PasswordController');
+        });
+
         it('sets the strength to "strong" if the password length is >8 chars', function () {
-            var $scope = {};
-            var controller = $controller('PasswordController', {$scope: $scope});
-            $scope.password = 'longerthaneightchars';
-            $scope.grade();
-            expect($scope.strength).toEqual('strong');
+            controller.password = 'longerthaneightchars';
+            controller.grade();
+            expect(controller.strength).toEqual('strong');
+        });
+
+        it('sets the strength to "weak" if the password length <3 chars', function () {
+            controller.password = 'a';
+            controller.grade();
+            expect(controller.strength).toEqual('weak');
         });
     });
 });
