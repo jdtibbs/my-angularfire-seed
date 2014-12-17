@@ -4,16 +4,18 @@ angular.module('my.chat.controller', ['my.chat.factory', 'ngRoute'])
         .config(["$routeProvider", function ($routeProvider) {
                 $routeProvider.when("/chat", {
                     // the rest is the same for ui-router and ngRoute...
-                    controller: "chatController as chat",
+                    controller: "chatController",
+                    controllerAs: 'chat',
                     templateUrl: "chat/chat.html"
                 });
             }])
 
         .controller('chatController', ['message', function (message) {
-                this.messages = message;
-                this.addMessage = function (newMessage) {
+                var self = this;
+                self.messages = message;
+                self.addMessage = function (newMessage) {
                     if (newMessage) {
-                        this.messages.$add({text: newMessage});
+                        self.messages.$add({text: newMessage});
                     }
                 };
             }]);
