@@ -9,6 +9,7 @@ angular.module('my.login.controller', ['my.firebase.factory', 'my.login.factory'
             }])
 
         .run(["$rootScope", "$location", 'firebaseFactory', function ($rootScope, $location, firebaseFactory) {
+                // TODO find way to not use $rootScope
                 $rootScope.$on("$routeChangeError", function (event, next, previous, error) {
                     // We can catch the error thrown when the $requireAuth promise is rejected
                     // and redirect the user back to the home page
