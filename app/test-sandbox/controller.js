@@ -1,4 +1,4 @@
-angular.module('app', [])
+angular.module('app.controller', [])
         .controller('PasswordController', function PasswordController() {
             this.password = '';
             this.grade = function () {

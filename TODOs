@@ -1,5 +1,19 @@
+TODO:
 This style guide link says to use .service rather than .factory: 
     http://google-styleguide.googlecode.com/svn/trunk/angularjs-google-style.html
     Services registered on the module with module.service are classes. 
     Use module.service instead of module.provider or module.factory 
     unless you need to do initialization beyond just creating a new instance of the class.
+
+TODO:
+    see: https://github.com/Zenovations/FirebaseIndex
+    FirebaseIndex is a simple proxy that allows a larger data set to be filtered, sorted, and retrieved by an index.
+
+TODO:
+    see: https://github.com/katowulf/mockfirebase
+    A Firebase stub useful for unit testing.
+    This is an experimental library. It is not supported by Firebase. Use with caution and submit PRs for fixes and enhancements.
+
+TODO:
+    http://lab.hakim.se/ladda/
+    buttons with submit in process spinners, etc.

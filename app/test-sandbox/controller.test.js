@@ -1,15 +1,28 @@
 describe('PasswordController', function () {
-    beforeEach(module('app'));
+    'use strict';
+
+    // load the module that contains the 'module' to be tested.
+    beforeEach(module('app.controller'));
 
     var $controller;
 
-    beforeEach(inject(function (_$controller_) {
-        // The injector unwraps the underscores (_) from around the parameter names when matching
-        $controller = _$controller_;
+    // 2 options to inject services.
+
+    // 1.
+    //    beforeEach(inject(function (_$controller_) {
+    //        // The injector unwraps the underscores (_) from around the parameter names when matching
+    //        $controller = _$controller_;
+    //    }));
+
+    // 2.
+    beforeEach(inject(function ($injector) {
+        // The $controller service is used to create instances of controllers
+        $controller = $injector.get('$controller');
     }));
 
     describe('grade', function () {
-        var controller;
+        // create the controller being tested.  Also inject dependencies here.
+        var controller;    
         beforeEach(function () {
             controller = $controller('PasswordController');
         });
