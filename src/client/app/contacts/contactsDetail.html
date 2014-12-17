@@ -1,0 +1,25 @@
+<h2>Contacts Detail</h2>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            <form role="form" novalidate>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input id="name" class="form-control" auto-focus ng-model="contact.name"/>
+                </div>
+                <div>
+                    <ul ng-repeat="error in errors">
+                        <li class="error">{{error}}</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" type="submit" ng-if="!contact.$id" ng-click="add(contact)">Add</button>
+                    <button class="btn btn-primary" type="submit" ng-if="contact.$id" ng-click="save()">Save</button>                    
+                    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+                    <button class="btn btn-default" type="submit" ng-if="contact.$id" ng-click="delete()">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

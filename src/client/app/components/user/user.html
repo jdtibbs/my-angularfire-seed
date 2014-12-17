@@ -1,0 +1,78 @@
+
+<h2>Account</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-md-4">
+            <form role="form">
+                <fieldset>
+                    <legend>Profile</legend>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input id="name" class="form-control" type="text" ng-keypress="clear()" ng-model="profile.name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input id="phone" class="form-control" type="text" ng-keypress="clear()" ng-model="profile.businessPhone"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input id="email" class="form-control" type="text" placeholder="{{login.email}}" readonly>
+                    </div>
+                    <button class="btn btn-primary" type="submit" ng-click="saveProfile(profile)">Save</button>
+
+                    <div ng-show="profileErr">
+                        <ul ng-repeat="error in profileErr">
+                            <li class="error">{{error}}</li>
+                        </ul>
+                    </div>
+                    <p class="good" ng-show="profileMsg">{{profileMsg}}</p>
+
+                </fieldset>
+            </form>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <form role="form">
+                <fieldset>
+                    <legend>Change Password</legend>
+                    <div class="form-group">
+                        <label for="oldPassword">Old Password</label>
+                        <input id="oldPassword" class="form-control" type="password" ng-keypress="clear()" ng-model="oldpass"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input id="newPassword" class="form-control" type="password" ng-keypress="clear()" ng-model="newpass"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input id="confirmPassword" class="form-control" type="password" ng-keypress="clear()" ng-model="confirm"/>
+                    </div>
+                    <button class="btn btn-primary" type="submit" ng-click="changePassword(oldpass, newpass, confirm)">Change Password</button>
+
+                    <p class="error" ng-show="err">{{err}}</p>
+                    <p class="good" ng-show="msg">{{msg}}</p>
+                </fieldset>
+            </form>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <form role="form">
+                <fieldset>
+                    <legend>Change Email</legend>
+                    <div class="form-group">
+                        <label for="newEmail">New Email</label>
+                        <input id="newEmail" class="form-control"  type="text" ng-keypress="clear()" ng-model="newEmail"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input id="password" class="form-control" type="password" ng-keypress="clear()" ng-model="pass"/>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit" ng-click="changeEmail(pass, newEmail)">Update Email</button>
+
+                    <p class="error" ng-show="emailerr">{{emailerr}}</p>
+                    <p class="good" ng-show="emailmsg">{{emailmsg}}</p>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

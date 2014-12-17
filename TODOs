@@ -1,7 +1,9 @@
 TODO:
     ** high priority **
-    https://github.com/johnpapa/angularjs-styleguide
     angular style guide.
+    https://github.com/johnpapa/angularjs-styleguide
+    code: 
+    https://github.com/johnpapa/ng-demos/tree/master/modular
 
 TODO:
 This style guide link says to use .service rather than .factory: 
