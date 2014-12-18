@@ -1,10 +1,10 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-angular.module('my.app', [
+angular.module('app', [
     'my.config',
     'my.user.controller',
-    'my.chat.controller',
+    'app.chat',
     'my.home.controller',
     'my.inventory.controller',
     'my.inventoryDetail.controller',

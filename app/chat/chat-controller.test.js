@@ -2,7 +2,7 @@ describe('testing: chat-controller', function () {
     'use strict';
 
     beforeEach(function () {
-        module('my.chat.controller');
+        module('app.chat');
         module(function ($provide) {
             $provide.value('message', messageStub());
         });
@@ -30,7 +30,7 @@ describe('testing: chat-controller', function () {
         var controller;
 
         beforeEach(function () {
-            controller = $controller('chatController', {message: message});
+            controller = $controller('ChatController', {message: message});
         });
 
         it('controller is created', function () {

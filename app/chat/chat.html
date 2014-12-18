@@ -7,11 +7,11 @@
             <form class="form-horizontal" role="form" novalidate>
                 <div class="form-group">
                     <label for="message">Message</label>
-                    <input id="message" class="form-control" auto-focus ng-model="newMessage">
+                    <input id="message" class="form-control" auto-focus ng-model="message">
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-primary" ng-click="chat.addMessage(newMessage);
-                                newMessage = null;">send</button>
+                    <button class="btn btn-primary" ng-click="chat.addMessage(message);
+                                message = null;">send</button>
                 </div>
             </form>
 

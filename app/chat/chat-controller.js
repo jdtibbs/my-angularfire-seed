@@ -1,21 +1,26 @@
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('my.chat.controller', ['my.chat.factory', 'ngRoute'])
-        .config(["$routeProvider", function ($routeProvider) {
-                $routeProvider.when("/chat", {
-                    // the rest is the same for ui-router and ngRoute...
-                    controller: "chatController",
-                    controllerAs: 'chat',
-                    templateUrl: "chat/chat.html"
-                });
-            }])
+// add a controller to the module.
+// https://github.com/johnpapa/angularjs-styleguide#style-y024
+    angular.module('app.chat')
+            .controller('ChatController', ChatController);
 
-        .controller('chatController', ['message', function (message) {
-                var self = this;
-                self.messages = message;
-                self.addMessage = function (newMessage) {
-                    if (newMessage) {
-                        self.messages.$add({text: newMessage});
-                    }
-                };
-            }]);
+// inject dependencies into the controller function.
+// https://github.com/johnpapa/angularjs-styleguide#style-y091
+    ChatController.$inject = ['ChatFactory', 'messages'];
+
+// define the controller function.
+    function ChatController(ChatFactory, messages) {
+        // https://github.com/johnpapa/angularjs-styleguide#style-y032
+        var vm = this;
+
+        // https://github.com/johnpapa/angularjs-styleguide#style-y033
+        vm.messages = messages;
+        vm.addMessage = addMessage;
+
+        function addMessage(message) {
+            ChatFactory.add(message);
+        }
+    }
+})();

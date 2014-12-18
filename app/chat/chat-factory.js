@@ -1,7 +1,26 @@
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('my.chat.factory', [])
+// add a service to the module.
+    angular.module('app.chat')
+            .constant('MESSAGES_URL', 'messages')
+            .factory('ChatFactory', ChatFactory);
 
-        .factory('message', ['firebaseFactory', function (firebaseFactory) {
-                return firebaseFactory.syncArray('messages', {limitToLast: 10, endAt: null});
-            }]);
+// inject dependencies into the service function.
+    ChatFactory.$inject = ['firebaseFactory', 'MESSAGES_URL'];
+
+// define the service function.
+    function ChatFactory(firebaseFactory, MESSAGES_URL) {
+        var factory = {
+            add: function (message) {
+                if (message) {
+                    factory.messages().$add({text: message});
+                }
+            },
+            messages: function () {
+                return firebaseFactory.syncArray(MESSAGES_URL, {limitToLast: 10, endAt: null});
+            }
+        };
+        return factory;
+    }
+})();
