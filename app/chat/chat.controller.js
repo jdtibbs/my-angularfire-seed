@@ -34,7 +34,7 @@
         function addMessage(message) {
 // https://github.com/johnpapa/angularjs-styleguide#style-y110
 // see: components/exception/exception-decorator.js
-            // message.foo();
+          message.foo();
             // TODO handle errors with exception.blocks.js
 // https://github.com/johnpapa/angularjs-styleguide#style-y111
 // Create a factory that exposes an interface to catch and gracefully handle exceptions.

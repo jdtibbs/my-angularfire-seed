@@ -4,7 +4,7 @@
     
     // https://github.com/johnpapa/angularjs-styleguide#style-y111
     // Create a factory that exposes an interface to catch and gracefully handle exceptions.
-    angular.module('app.exception.blocks')
+    angular.module('exception.module')
             .factory('exceptionBlocksFactory', exception);
 
     // logger = custom interface.

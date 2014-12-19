@@ -4,7 +4,7 @@
 // https://github.com/johnpapa/angularjs-styleguide#style-y110
 // Use a decorator, at config time using the $provide service, 
 // on the $exceptionHandler service to perform custom actions when exceptions occur.
-    angular.module('app.exception.decorator', [])
+    angular.module('exception.module')
             .config(exceptionConfig);
 
     exceptionConfig.$inject = ['$provide'];
