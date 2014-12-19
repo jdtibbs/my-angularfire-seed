@@ -1,6 +1,19 @@
 // SEE:
+// https://docs.angularjs.org/api/ngMock/function/angular.mock.dump
+// --Method for serializing common angular objects (scope, elements, etc..) 
+//      into strings, useful for debugging.
 // https://docs.angularjs.org/api/ngMock/function/angular.mock.module
+// -- This function registers a module configuration code. 
+//      It collects the configuration information which will be used when 
+//      the injector is created by inject.
 // https://docs.angularjs.org/api/ngMock/function/angular.mock.inject
+// -- The inject function wraps a function into an injectable function. 
+//      The inject() creates new instance of $injector per test, 
+//      which is then used for resolving references.
+// https://docs.angularjs.org/api/auto/service/$provide
+// -- The $provide service has a number of methods for registering components 
+//      with the $injector. 
+//      Many of these functions are also exposed on angular.Module.
 
 // module:
 // Usage
@@ -36,7 +49,6 @@ describe('MyApp', function () {
     it('should override a version and test the new version is injected', function () {
         // module() takes functions or strings (module aliases)
         module(function ($provide) {
-            // See: https://docs.angularjs.org/api/auto/service/$provide
             $provide.value('version', 'overridden'); // override version here
         });
 

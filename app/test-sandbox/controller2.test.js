@@ -1,29 +1,35 @@
-angular.module('app.spat', []);
+(function () {
+    angular.module('app.spat', []);
+})();
 
-angular.module('app.spat')
-        .factory('service', Service);
+(function () {
+    angular.module('app.spat')
+            .factory('service', Service);
 
-function Service() {
-    var factory = {
-        hello: function () {
-            return 'Hello Sam';
-        }
-    };
-    return factory;
-}
-
-angular.module('app.spat')
-        .controller('controller', Controller);
-
-Controller.$inject = ['service'];
-
-function Controller(service) {
-    var vm = this;
-    vm.hello = hello;
-    function hello() {
-        return service.hello();
+    function Service() {
+        var factory = {
+            hello: function () {
+                return 'Hello Sam';
+            }
+        };
+        return factory;
     }
-}
+})();
+
+(function () {
+    angular.module('app.spat')
+            .controller('controller', Controller);
+
+    Controller.$inject = ['service'];
+
+    function Controller(service) {
+        var vm = this;
+        vm.hello = hello;
+        function hello() {
+            return service.hello();
+        }
+    }
+})();
 
 describe('app.spat test', function () {
     'use strict';

@@ -8,8 +8,17 @@ module.exports = function (config) {
             'app/bower_components/mockfirebase/browser/mockfirebase.js',
             'app/bower_components/angularfire/dist/angularfire.js',
             'test/lib/**/*.js',
-            'app/**/*.js',
-            'app/**/*.test.js'
+            'app/test-sandbox/*.js',
+            'app/test-sandbox/*.test.js',
+            'app/chat/injection.test.js',
+//            'app/chat/*.js',
+//            'app/chat/*.test.js'
+            'app/test-sandbox/controller2.test.js',
+            'app/test-sandbox/hello/hello.module.js',
+            'app/test-sandbox/hello/hello.config.js',
+            'app/test-sandbox/hello/hello.service.js',
+            'app/test-sandbox/hello/hello.controller.js',
+            'app/test-sandbox/hello/hello.controller.test.js'
         ],
         exclude: [
             'app/bower_components/angular-material/**/*.js',
