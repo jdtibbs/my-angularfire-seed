@@ -3,8 +3,9 @@
 // Declare app level module which depends on filters, and services
 angular.module('app', [
     'my.config',
+    'app.exception.decorator',
     'my.user.controller',
-    'app.chat',
+    'chat.module',
     'my.home.controller',
     'my.inventory.controller',
     'my.inventoryDetail.controller',
@@ -17,7 +18,7 @@ angular.module('app', [
     'my.filters',
     'ngRoute'
 ])
-
+        // TODO move this into its own file.
         .directive('autoFocus', function ($timeout) {
             return {
                 restrict: 'AC',

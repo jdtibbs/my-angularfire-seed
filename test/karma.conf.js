@@ -9,16 +9,16 @@ module.exports = function (config) {
             'app/bower_components/angularfire/dist/angularfire.js',
             'test/lib/**/*.js',
             'app/test-sandbox/*.js',
-            'app/test-sandbox/*.test.js',
-            'app/chat/injection.test.js',
+            'app/test-sandbox/*.spec.js',
+            'app/chat/injection.spec.js',
 //            'app/chat/*.js',
 //            'app/chat/*.test.js'
-            'app/test-sandbox/controller2.test.js',
+            'app/test-sandbox/controller2.spec.js',
             'app/test-sandbox/hello/hello.module.js',
             'app/test-sandbox/hello/hello.config.js',
             'app/test-sandbox/hello/hello.service.js',
             'app/test-sandbox/hello/hello.controller.js',
-            'app/test-sandbox/hello/hello.controller.test.js'
+            'app/test-sandbox/hello/hello.controller.spec.js'
         ],
         exclude: [
             'app/bower_components/angular-material/**/*.js',
