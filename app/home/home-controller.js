@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('my.home.controller', ['my.firebase.factory', 'ngRoute'])
+angular.module('my.home.controller', ['firebase.module', 'ngRoute'])
         .config(["$routeProvider", function ($routeProvider) {
                 $routeProvider.when("/home", {
                     // the rest is the same for ui-router and ngRoute...

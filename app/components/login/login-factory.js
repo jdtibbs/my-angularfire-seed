@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.login.factory', ['my.firebase.factory', 'my.users.factory'])
+angular.module('my.login.factory', ['firebase.module', 'my.users.factory'])
         .constant('LOGIN_URL', 'login')
 
         .factory('loginValidator', ['$q',

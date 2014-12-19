@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.inventory.factory', ['my.firebase.factory', 'firebase'])
+angular.module('my.inventory.factory', ['firebase.module', 'firebase'])
 
         .constant('INVENTORY_URL', 'inventory')
 

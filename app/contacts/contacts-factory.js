@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.contacts.factory', ['my.firebase.factory', 'my.login.factory'])
+angular.module('my.contacts.factory', ['firebase.module', 'my.login.factory'])
         .constant('CONTACTS_URL', 'contacts')
 
         .factory('contactsValidator', ['$q', function ($q) {

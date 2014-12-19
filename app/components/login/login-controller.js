@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.login.controller', ['my.firebase.factory', 'my.login.factory', 'ngRoute'])
+angular.module('my.login.controller', ['firebase.module', 'my.login.factory', 'ngRoute'])
         .config(["$routeProvider", function ($routeProvider) {
                 $routeProvider.when("/login", {
                     // the rest is the same for ui-router and ngRoute...

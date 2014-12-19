@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.users.factory', ['my.firebase.factory'])
+angular.module('my.users.factory', ['firebase.module'])
 
         .constant('USERS_URL', 'users')
 
