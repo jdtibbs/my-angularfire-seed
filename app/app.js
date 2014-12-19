@@ -13,7 +13,7 @@ angular.module('app', [
     'my.contactsDetail.controller',
     'my.login.controller',
     'my.menu.controller',
-    'my.decorators',
+    'decorators.module',
     'my.directives',
     'my.filters',
     'ngRoute'

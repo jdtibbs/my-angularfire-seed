@@ -6,7 +6,7 @@
  *    <div ng-cloak>Authentication has resolved.</div>
  * </code>
  */
-angular.module('my.decorators', ['firebase.module'])
+angular.module('decorators.module', ['firebase.module'])
         .config(['$provide', function ($provide) {
                 // adapt ng-cloak to wait for auth before it does its magic
                 $provide.decorator('ngCloakDirective', ['$delegate', 'firebaseFactory',
