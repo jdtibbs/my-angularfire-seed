@@ -14,8 +14,8 @@ angular.module('app', [
     'my.login.controller',
     'my.menu.controller',
     'decorators.module',
-    'my.directives',
-    'my.filters',
+    'directives.module',
+    'filters.module',
     'ngRoute'
 ])
         // TODO move this into its own file.
