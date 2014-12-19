@@ -2,7 +2,7 @@
 
 // Declare app level module which depends on filters, and services
 angular.module('app', [
-    'my.config',
+    'config.module',
     'app.exception.decorator',
     'my.user.controller',
     'chat.module',
