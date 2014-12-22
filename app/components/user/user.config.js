@@ -3,11 +3,11 @@
     'use strict';
 
     angular.module('user.module')
-            .config(Config);
+            .config(config);
 
-    Config.$inject = ['$routeProvider'];
+    config.$inject = ['$routeProvider'];
 
-    function Config($routeProvider) {
+    function config($routeProvider) {
         $routeProvider.when('/user', {
             controller: 'userController',
             controllerAs: 'user',
