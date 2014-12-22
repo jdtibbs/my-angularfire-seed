@@ -1,4 +1,7 @@
 (function () {
+
+    'use strict';
+
     angular.module('user.module')
             .factory('userDaoFactory', factory);
 
