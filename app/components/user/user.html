@@ -8,24 +8,24 @@
                     <legend>Profile</legend>
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input id="name" class="form-control" type="text" ng-keypress="clear()" ng-model="profile.name"/>
+                        <input id="name" class="form-control" type="text" ng-keypress="user.clear()" ng-model="user.profile.name"/>
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input id="phone" class="form-control" type="text" ng-keypress="clear()" ng-model="profile.businessPhone"/>
+                        <input id="phone" class="form-control" type="text" ng-keypress="user.clear()" ng-model="user.profile.businessPhone"/>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input id="email" class="form-control" type="text" placeholder="{{login.email}}" readonly>
+                        <input id="email" class="form-control" type="text" placeholder="{{user.login.email}}" readonly>
                     </div>
-                    <button class="btn btn-primary" type="submit" ng-click="saveProfile(profile)">Save</button>
+                    <button class="btn btn-primary" type="submit" ng-click="user.saveProfile(user.profile)">Save</button>
 
-                    <div ng-show="profileErr">
-                        <ul ng-repeat="error in profileErr">
+                    <div ng-show="user.profileErr">
+                        <ul ng-repeat="error in user.profileErr">
                             <li class="error">{{error}}</li>
                         </ul>
                     </div>
-                    <p class="good" ng-show="profileMsg">{{profileMsg}}</p>
+                    <p class="good" ng-show="user.profileMsg">{{user.profileMsg}}</p>
 
                 </fieldset>
             </form>
@@ -36,20 +36,20 @@
                     <legend>Change Password</legend>
                     <div class="form-group">
                         <label for="oldPassword">Old Password</label>
-                        <input id="oldPassword" class="form-control" type="password" ng-keypress="clear()" ng-model="oldpass"/>
+                        <input id="oldPassword" class="form-control" type="password" ng-keypress="user.clear()" ng-model="user.oldpass"/>
                     </div>
                     <div class="form-group">
                         <label for="newPassword">New Password</label>
-                        <input id="newPassword" class="form-control" type="password" ng-keypress="clear()" ng-model="newpass"/>
+                        <input id="newPassword" class="form-control" type="password" ng-keypress="user.clear()" ng-model="user.newpass"/>
                     </div>
                     <div class="form-group">
                         <label for="confirmPassword">Confirm New Password</label>
-                        <input id="confirmPassword" class="form-control" type="password" ng-keypress="clear()" ng-model="confirm"/>
+                        <input id="confirmPassword" class="form-control" type="password" ng-keypress="user.clear()" ng-model="user.confirm"/>
                     </div>
-                    <button class="btn btn-primary" type="submit" ng-click="changePassword(oldpass, newpass, confirm)">Change Password</button>
+                    <button class="btn btn-primary" type="submit" ng-click="user.changePassword(user.oldpass, user.newpass, user.confirm)">Change Password</button>
 
-                    <p class="error" ng-show="err">{{err}}</p>
-                    <p class="good" ng-show="msg">{{msg}}</p>
+                    <p class="error" ng-show="user.err">{{user.err}}</p>
+                    <p class="good" ng-show="user.msg">{{user.msg}}</p>
                 </fieldset>
             </form>
         </div>
@@ -59,18 +59,18 @@
                     <legend>Change Email</legend>
                     <div class="form-group">
                         <label for="newEmail">New Email</label>
-                        <input id="newEmail" class="form-control"  type="text" ng-keypress="clear()" ng-model="newEmail"/>
+                        <input id="newEmail" class="form-control"  type="text" ng-keypress="user.clear()" ng-model="user.newEmail"/>
                     </div>
 
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input id="password" class="form-control" type="password" ng-keypress="clear()" ng-model="pass"/>
+                        <input id="password" class="form-control" type="password" ng-keypress="user.clear()" ng-model="user.pass"/>
                     </div>
 
-                    <button class="btn btn-primary" type="submit" ng-click="changeEmail(pass, newEmail)">Update Email</button>
+                    <button class="btn btn-primary" type="submit" ng-click="user.changeEmail(user.pass, user.newEmail)">Update Email</button>
 
-                    <p class="error" ng-show="emailerr">{{emailerr}}</p>
-                    <p class="good" ng-show="emailmsg">{{emailmsg}}</p>
+                    <p class="error" ng-show="user.emailerr">{{user.emailerr}}</p>
+                    <p class="good" ng-show="user.emailmsg">{{user.emailmsg}}</p>
                 </fieldset>
             </form>
         </div>

@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.login.factory', ['firebase.module', 'my.users.factory'])
+angular.module('my.login.factory', ['firebase.module', 'user.module'])
         .constant('LOGIN_URL', 'login')
 
         .factory('loginValidator', ['$q',
@@ -69,8 +69,8 @@ angular.module('my.login.factory', ['firebase.module', 'my.users.factory'])
                 return firebase;
             }])
 
-        .factory('loginFactory', ['firebaseFactory', 'loginFirebaseFactory', 'usersFirebaseFactory', '$q', '$log',
-            function (firebaseFactory, loginFirebaseFactory, usersFirebaseFactory, $q, $log) {
+        .factory('loginFactory', ['firebaseFactory', 'loginFirebaseFactory', 'userDaoFactory', '$q', '$log',
+            function (firebaseFactory, loginFirebaseFactory, userDaoFactory, $q, $log) {
                 var INVALID_CREDENTIALS = 'The email and or password is incorrect.';
 
                 var loginFactory = {
@@ -121,7 +121,7 @@ angular.module('my.login.factory', ['firebase.module', 'my.users.factory'])
                                 .then(function () {
                                     loginFactory.login(email, password)
                                             .then(function (auth) {
-                                                usersFirebaseFactory.add(profile)
+                                                userDaoFactory.add(profile)
                                                         .then(function (profileRef) {
                                                             loginFactory.createLogin(auth, email, profileRef.key())
                                                                     .then(function (loginRef) {

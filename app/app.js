@@ -5,8 +5,8 @@
     angular.module('app', [
         'config.module',
         'exception.module',
-        'firebase.module',
-        'my.user.controller',
+        'firebase.module', // sb able to remove this if app modules spec it.
+        'user.module',
         'chat.module',
         'my.home.controller',
         'my.inventory.controller',
