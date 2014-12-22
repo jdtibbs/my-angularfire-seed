@@ -1,7 +1,7 @@
 'use strict';
 
 // a simple wrapper on Firebase and AngularFire to simplify deps and keep things DRY
-angular.module('firebase.module', ['firebase', 'config.module'])
+angular.module('firebase.module')
         .factory('firebaseFactory', ['$window', 'FBURL', '$firebase', '$firebaseAuth', '$q',
             function ($window, FBURL, $firebase, $firebaseAuth, $q) {
 

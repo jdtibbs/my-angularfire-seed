@@ -8,7 +8,7 @@
             <form role="form" novalidate>
                 <div class="form-group">
                     <label for="syncValue" class="sr-only">Sync Value</label>
-                    <input id="syncValue" class="form-control" ng-model="syncedValue.$value" type="text" ng-change="syncedValue.$save()" /> <b>{{syncedValue.$value}}</b>
+                    <input id="syncValue" class="form-control" ng-model="syncedValue.$value" type="text" auto-focus ng-change="syncedValue.$save()" /> <b>{{syncedValue.$value}}</b>
                 </div>
             </form>
             <p>Open <a ng-href="{{FBURL}}/syncedValue" target="_blank">Forge</a> or a <a target="_blank" href="#/">new window</a> to see this input update in real time.</p>
