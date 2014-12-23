@@ -1,35 +1,21 @@
 (function () {
-    
+
     'use strict';
 
     angular.module('user.module')
             .controller('UserController', controller);
 
-    controller.$inject = ['userDaoFactory', 'loginDaoFactory', 'firebaseAuthFactory', 'loginEmailFactory'];
+    controller.$inject = ['userDaoFactory', 'loginDaoFactory', 'firebaseAuthFactory', 'loginEmailFactory', 'auth', 'profile'];
 
-    function controller(userDaoFactory, loginDaoFactory, firebaseAuthFactory, loginEmailFactory) {
+    function controller(userDaoFactory, loginDaoFactory, firebaseAuthFactory, loginEmailFactory, auth, profile) {
 
         var vm = this;
-        // vm.profile = profile;
+        vm.profile = profile;
+        vm.auth = auth;
         vm.saveProfile = saveProfile;
         vm.changePassword = changePassword;
         vm.changeEmail = changeEmail;
         vm.clear = resetMessages;
-
-        firebaseAuthFactory.getUid()
-                .then(function (uid) {
-                    loginDaoFactory.syncObject(uid).$loaded()
-                            .then(function (login) {
-                                vm.login = login;
-                                userDaoFactory.syncObject(login.users).$loaded()
-                                        .then(function (profile) {
-                                            vm.profile = profile;
-                                        });
-                            });
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
 
         function saveProfile(profile) {
             resetMessages();
