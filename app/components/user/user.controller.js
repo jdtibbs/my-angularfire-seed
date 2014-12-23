@@ -59,10 +59,9 @@
             } else {
                 loginEmailFactory.changeEmail(newEmail, pass)
                         .then(function (auth) {
+                            vm.auth = auth;
                             loginDaoFactory.syncObject(auth.uid).$loaded()
                                     .then(function (login) {
-                                        vm.login = login;
-
                                         userDaoFactory.syncObject(login.users).$loaded()
                                                 .then(function (profile) {
                                                     vm.profile = profile;
