@@ -6,39 +6,39 @@
             <form role="form" novalidate>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input id="email" class="form-control" type="text" auto-focus ng-model="email" />
+                    <input id="email" class="form-control" type="text" auto-focus ng-model="login.email" />
                 </div>
 
-                <div class="form-group" ng-cloak ng-show="createMode">
+                <div class="form-group" ng-cloak ng-show="login.createMode">
                     <label for="name">Name</label>
-                    <input id="name" class="form-control" type="text" ng-model="profile.name" />
+                    <input id="name" class="form-control" type="text" ng-model="login.profile.name" />
                 </div>
 
-                <div class="form-group" ng-cloak ng-show="createMode">
+                <div class="form-group" ng-cloak ng-show="login.createMode">
                     <label for="phone">Phone</label>
-                    <input id="phone" class="form-control" type="text" ng-model="profile.businessPhone" />
+                    <input id="phone" class="form-control" type="text" ng-model="login.profile.businessPhone" />
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input id="password" class="form-control" type="password" ng-model="pass" />
+                    <input id="password" class="form-control" type="password" ng-model="login.pass" />
                 </div>
 
-                <div class="form-group" ng-cloak ng-show="createMode">
+                <div class="form-group" ng-cloak ng-show="login.createMode">
                     <label for="confirmPassword">Confirm Password</label>
-                    <input id="confirmPassword" class="form-control" type="password" ng-model="confirm" />
+                    <input id="confirmPassword" class="form-control" type="password" ng-model="login.confirm" />
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-primary" type="submit" ng-click="login(email, pass)" ng-hide="createMode">Log In</button>
-                    <button class="btn btn-default" ng-click="createMode = true" ng-hide="createMode">Register</button>
+                    <button class="btn btn-primary" type="submit" ng-click="login.login(login.email, login.pass)" ng-hide="login.createMode">Log In</button>
+                    <button class="btn btn-default" ng-click="login.createMode = true" ng-hide="login.createMode">Register</button>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-primary" type="submit" ng-cloak ng-show="createMode" ng-click="register(profile, email, pass, confirm)">Register</button>
-                    <button class="btn btn-default" ng-cloak ng-show="createMode" ng-click="createMode = false">Cancel</button>
+                    <button class="btn btn-primary" type="submit" ng-cloak ng-show="login.createMode" ng-click="login.register(login.profile, login.email, login.pass, login.confirm)">Register</button>
+                    <button class="btn btn-default" ng-cloak ng-show="login.createMode" ng-click="login.createMode = false">Cancel</button>
                 </div>
 
-                <p ng-show="err" class="error">{{err}}</p>
+                <p ng-show="login.err" class="error">{{login.err}}</p>
             </form>
         </div>
     </div>

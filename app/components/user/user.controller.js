@@ -3,11 +3,11 @@
     'use strict';
 
     angular.module('user.module')
-            .controller('userController', userController);
+            .controller('UserController', controller);
 
-    userController.$inject = ['userDaoFactory', 'loginFirebaseFactory', 'loginFactory', 'changeEmailFactory'];
+    controller.$inject = ['userDaoFactory', 'loginDaoFactory', 'firebaseAuthFactory', 'loginEmailFactory'];
 
-    function userController(userDaoFactory, loginFirebaseFactory, loginFactory, changeEmailFactory) {
+    function controller(userDaoFactory, loginDaoFactory, firebaseAuthFactory, loginEmailFactory) {
 
         var vm = this;
         // vm.profile = profile;
@@ -16,9 +16,9 @@
         vm.changeEmail = changeEmail;
         vm.clear = resetMessages;
 
-        loginFactory.getUid()
+        firebaseAuthFactory.getUid()
                 .then(function (uid) {
-                    loginFirebaseFactory.syncObject(uid).$loaded()
+                    loginDaoFactory.syncObject(uid).$loaded()
                             .then(function (login) {
                                 vm.login = login;
                                 userDaoFactory.syncObject(login.users).$loaded()
@@ -51,7 +51,7 @@
                 vm.err = 'New pass and confirm do not match';
             }
             else {
-                loginFactory.changePassword(vm.login.email, pass, newPass)
+                firebaseAuthFactory.changePassword(vm.login.email, pass, newPass)
                         .then(function () {
                             vm.msg = 'Password changed';
                             // clear form after successful completion.
@@ -71,9 +71,9 @@
             } else if (!pass) {
                 vm.emailerr = 'Please enter password.';
             } else {
-                changeEmailFactory.changeEmail(newEmail, pass)
+                loginEmailFactory.changeEmail(newEmail, pass)
                         .then(function (auth) {
-                            loginFirebaseFactory.syncObject(auth.uid).$loaded()
+                            loginDaoFactory.syncObject(auth.uid).$loaded()
                                     .then(function (login) {
                                         vm.login = login;
 

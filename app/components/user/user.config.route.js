@@ -9,7 +9,7 @@
 
     function config($routeProvider) {
         $routeProvider.when('/user', {
-            controller: 'userController',
+            controller: 'UserController',
             controllerAs: 'user',
             templateUrl: 'components/user/user.html',
             resolve: {

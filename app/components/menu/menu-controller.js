@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.menu.controller', ['my.login.factory'])
+angular.module('my.menu.controller', ['login.module'])
 
         .controller('menuController', ['$scope', '$location', 'loginFactory', function ($scope, $location, loginFactory) {
                 $scope.menu = {

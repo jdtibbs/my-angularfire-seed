@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('new.module')
-            .controller('newController', controller);
+            .controller('NewController', controller);
 
     controller.$inject = [/* 'someFactory' */];
 

@@ -6,6 +6,7 @@
         'config.module',
         'exception.module',
         'firebase.module', // sb able to remove this if app modules spec it.
+        'login.module',
         'user.module',
         'chat.module',
         'my.home.controller',
@@ -13,7 +14,6 @@
         'my.inventoryDetail.controller',
         'my.contacts.controller',
         'my.contactsDetail.controller',
-        'my.login.controller',
         'my.menu.controller',
         'decorators.module',
         'directives.module',

@@ -1,5 +1,5 @@
 'use strict';
-angular.module('my.contacts.factory', ['firebase.module', 'my.login.factory'])
+angular.module('my.contacts.factory', ['firebase.module', 'login.module'])
         .constant('CONTACTS_URL', 'contacts')
 
         .factory('contactsValidator', ['$q', function ($q) {
@@ -25,12 +25,12 @@ angular.module('my.contacts.factory', ['firebase.module', 'my.login.factory'])
                 return validator;
             }])
 
-        .factory('contactsFirebaseFactory', ['CONTACTS_URL', 'contactsValidator', 'firebaseFactory', 'loginFactory',
-            function (CONTACTS_URL, contactsValidator, firebaseFactory, loginFactory) {
+        .factory('contactsFirebaseFactory', ['CONTACTS_URL', 'contactsValidator', 'firebaseFactory', 'loginDaoFactory',
+            function (CONTACTS_URL, contactsValidator, firebaseFactory, loginDaoFactory) {
 
                 var firebase = {
                     syncArray: function () {
-                        return loginFactory.getLogin()
+                        return loginDaoFactory.getLogin()
                                 .then(function (login) {
                                     return firebaseFactory.syncArray([CONTACTS_URL], {orderByChild: 'users', equalTo: login.users});
                                 });
@@ -39,7 +39,7 @@ angular.module('my.contacts.factory', ['firebase.module', 'my.login.factory'])
                         return firebaseFactory.syncObject([CONTACTS_URL, id]);
                     },
                     add: function (contact) {
-                        return loginFactory.getLogin()
+                        return loginDaoFactory.getLogin()
                                 .then(function (login) {
                                     contact.users = login.users;
                                     return firebaseFactory.add(CONTACTS_URL, contact, contactsValidator.validate);
