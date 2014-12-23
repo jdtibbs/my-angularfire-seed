@@ -37,7 +37,7 @@
                 vm.err = 'New pass and confirm do not match';
             }
             else {
-                firebaseAuthFactory.changePassword(vm.login.email, pass, newPass)
+                firebaseAuthFactory.changePassword(vm.auth.password.email, pass, newPass)
                         .then(function () {
                             vm.msg = 'Password changed';
                             // clear form after successful completion.
@@ -65,14 +65,19 @@
                                         userDaoFactory.syncObject(login.users).$loaded()
                                                 .then(function (profile) {
                                                     vm.profile = profile;
+                                                })
+                                                .catch(function (error) {
+                                                    vm.emailerr = error;
                                                 });
+                                    })
+                                    .catch(function (error) {
+                                        vm.emailerr = error;
                                     });
                             vm.newEmail = null;
                             vm.pass = null;
                             vm.emailmsg = 'Email changed successfully.';
                         })
                         .catch(function (error) {
-                            console.log(error);
                             vm.emailerr = error;
                         });
             }
