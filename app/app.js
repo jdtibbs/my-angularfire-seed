@@ -17,7 +17,6 @@
         'my.contactsDetail.controller',
         'my.menu.controller',
         'decorators.module',
-        'directives.module',
         'filters.module',
         'ngRoute'
     ]);
