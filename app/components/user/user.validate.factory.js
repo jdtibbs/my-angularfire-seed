@@ -1,5 +1,7 @@
 (function () {
-
+    
+// TODO, implement/use this
+    
     'use strict';
 
     angular.module('user.module')

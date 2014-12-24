@@ -21,7 +21,7 @@
             vm.err = null;
             loginFactory.login(email, pass)
                     .then(function (/* user */) {
-                        $location.path('/user');
+                        $location.path('/home');
                     }, function (err) {
                         vm.err = errMessage(err);
                     });
@@ -32,7 +32,7 @@
             if (validate()) {
                 loginFactory.register(vm.profile, vm.email, vm.pass)
                         .then(function (login) {
-                            $location.path('/user');
+                            $location.path('/home');
                         })
                         .catch(function (error) {
                             vm.err = errMessage(error);

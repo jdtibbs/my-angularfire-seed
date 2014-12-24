@@ -36,12 +36,19 @@
                         <!--
                         <li ng-repeat="item in menu.items"><a href="{{item.url}}"><span ng-bind="item.value"></span></a></li>
                         -->
-                        <li><a href="#/home">home</a></li>
-                        <li><a href="#/chat">chat</a></li>
-                        <li><a href="#/inventory">inventory</a></li>
-                        <li ng-show="auth"><a href="#/contacts">contacts</a></li>
+                        <li><a href="#/home">Home</a></li>
+                        <li><a href="#/chat">Chat</a></li>
+                        <li><a href="#/inventory">Inventory</a></li>
+                        <li ng-show="auth"><a href="#/contacts">Contacts</a></li>                        
+                        <li ng-show="auth" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#/user/profile">Profile</a></li>                                
+                                <li><a href="#/user/password">Change Password</a></li>
+                                <li><a href="#/user/email">Change Email</a></li>
+                            </ul>
+                        </li>
                         <li ng-hide="auth"><a href="#/login">login</a></li>
-                        <li ng-show="auth"><a href="#/user">account</a></li>
                         <li ng-show="auth"><a href="" ng-click="logout()">Logout {{auth.password.email}}</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
@@ -68,7 +75,6 @@
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 
-        <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
         <script src="bower_components/angular-route/angular-route.js"></script>
         <script src="bower_components/firebase/firebase.js"></script>        
         <script src="bower_components/angularfire/dist/angularfire.js"></script>
@@ -93,6 +99,15 @@
         <script src="components/user/user.controller.js"></script>
         <script src="components/user/user.dao.factory.js"></script>
         <script src="components/user/user.validate.factory.js"></script>        
+
+        <script src="components/user/profile/profile.config.route.js"></script>
+        <script src="components/user/profile/profile.controller.js"></script>
+
+        <script src="components/user/password/password.config.route.js"></script>
+        <script src="components/user/password/password.controller.js"></script>
+
+        <script src="components/user/email/email.config.route.js"></script>
+        <script src="components/user/email/email.controller.js"></script>
 
         <script src="components/firebase/firebase.module.js"></script>   
         <script src="components/firebase/firebase.auth.factory.js"></script>

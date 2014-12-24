@@ -1,0 +1,34 @@
+
+<h2>Account</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-md-4">
+            <form role="form">
+                <fieldset>
+                    <legend>Profile</legend>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input id="name" class="form-control" type="text" ng-keypress="user.clear()" ng-model="user.profile.name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input id="phone" class="form-control" type="text" ng-keypress="user.clear()" ng-model="user.profile.businessPhone"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input id="email" class="form-control" type="text" placeholder="{{user.auth.password.email}}" readonly>
+                    </div>
+                    <button class="btn btn-primary" type="submit" ng-click="user.saveProfile(user.profile)">Save</button>
+
+                    <div ng-show="user.error">
+                        <ul ng-repeat="error in user.error">
+                            <li class="error">{{error}}</li>
+                        </ul>
+                    </div>
+                    <p class="good" ng-show="user.message">{{user.message}}</p>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

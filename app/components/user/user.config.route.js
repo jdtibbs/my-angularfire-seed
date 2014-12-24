@@ -5,10 +5,32 @@
             .config(config);
     config.$inject = ['$routeProvider'];
     function config($routeProvider) {
-        $routeProvider.when('/user', {
-            controller: 'UserController',
+        $routeProvider.when('/user/profile', {
+            controller: 'ProfileController',
             controllerAs: 'user',
-            templateUrl: 'components/user/user.html',
+            templateUrl: 'components/user/profile/profile.html',
+            resolve: {
+                // controller will not be loaded until $requireAuth resolves
+                // Auth refers to our $firebaseAuth wrapper in the example above
+                auth: getAuth,
+                profile: getProfile
+            }
+        }
+        ).when('/user/password', {
+            controller: 'PasswordController',
+            controllerAs: 'user',
+            templateUrl: 'components/user/password/password.html',
+            resolve: {
+                // controller will not be loaded until $requireAuth resolves
+                // Auth refers to our $firebaseAuth wrapper in the example above
+                auth: getAuth,
+                profile: getProfile
+            }
+        }
+        ).when('/user/email', {
+            controller: 'EmailController',
+            controllerAs: 'user',
+            templateUrl: 'components/user/email/email.html',
             resolve: {
                 // controller will not be loaded until $requireAuth resolves
                 // Auth refers to our $firebaseAuth wrapper in the example above
@@ -27,7 +49,7 @@
     }
 
     getProfile.$inject = ['firebaseFactory', 'loginDaoFactory', 'userDaoFactory', '$q'];
-    
+
     function getProfile(firebaseFactory, loginDaoFactory, userDaoFactory, $q) {
         var def = $q.defer();
         firebaseFactory.auth().$requireAuth()
