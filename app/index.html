@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Project Name</title>
+        <title app-name></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -28,7 +28,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <span class="navbar-brand" >Project Name</span>
+                    <span class="navbar-brand" app-name></span>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
 
@@ -48,6 +48,7 @@
                                 <li><a href="#/user/email">Change Email</a></li>
                             </ul>
                         </li>
+                        <li><a href="#/about">About</a></li>
                         <li ng-hide="auth"><a href="#/login">login</a></li>
                         <li ng-show="auth"><a href="" ng-click="logout()">Logout {{auth.password.email}}</a></li>
                     </ul>
@@ -93,6 +94,13 @@
         <script src="components/exception/exception.module.js"></script>
         <script src="components/exception/exception.decorator.js"></script>
 
+        <script src="components/about/about.module.js"></script>
+        <script src="components/about/about.config.route.js"></script>
+        <script src="components/about/about.constant.js"></script>
+        <script src="components/about/about.directive.appname.js"></script>
+        <script src="components/about/about.directive.copyright.js"></script>
+        <script src="components/about/about.directive.version.js"></script>
+        
         <script src="components/user/user.module.js"></script>
         <script src="components/user/user.config.route.js"></script>
         <script src="components/user/user.constant.js"></script>
