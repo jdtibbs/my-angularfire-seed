@@ -6,6 +6,9 @@
             <form role="form">
                 <fieldset>
                     <legend>Profile</legend>
+                    <div class="well well-sm">
+                        {{user.auth.password.email}}
+                    </div>
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input id="name" class="form-control" type="text" ng-keypress="user.clear()" ng-model="user.profile.name"/>
@@ -13,11 +16,7 @@
                     <div class="form-group">
                         <label for="phone">Phone</label>
                         <input id="phone" class="form-control" type="text" ng-keypress="user.clear()" ng-model="user.profile.businessPhone"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input id="email" class="form-control" type="text" placeholder="{{user.auth.password.email}}" readonly>
-                    </div>
+                    </div>                    
                     <button class="btn btn-primary" type="submit" ng-click="user.saveProfile(user.profile)">Save</button>
 
                     <div ng-show="user.error">
