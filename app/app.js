@@ -4,7 +4,6 @@
     // Declare app level module which depends on filters, and services
     angular.module('app', [
         'about.module',
-        'config.module',
         'exception.module',
         'firebase.module', // sb able to remove this if app modules spec it.
         'login.module',
@@ -16,7 +15,6 @@
         'my.contacts.controller',
         'my.contactsDetail.controller',
         'my.menu.controller',
-        'decorators.module',
         'filters.module',
         'ngRoute'
     ]);
