@@ -4,6 +4,7 @@
     // Declare app level module which depends on filters, and services
     angular.module('app', [
         'about.module',
+        'directives.module',
         'exception.module',
         'firebase.module', // sb able to remove this if app modules spec it.
         'login.module',

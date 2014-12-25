@@ -44,12 +44,12 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="#/user/profile" data-toggle="collapse" data-target="#navbar">Profile</a></li>                                
-                                <li><a href="#/user/password" data-toggle="collapse" data-target="#navbar">Change Password</a></li>
-                                <li><a href="#/user/email" data-toggle="collapse" data-target="#navbar">Change Email</a></li>
+                                <li><a href="#/user/password" data-toggle="collapse" data-target="#navbar">Password</a></li>
+                                <li><a href="#/user/email" data-toggle="collapse" data-target="#navbar">Email</a></li>
                             </ul>
                         </li>
                         <li><a href="#/about" data-toggle="collapse" data-target="#navbar">About</a></li>
-                        <li ng-hide="auth"><a href="#/login" data-toggle="collapse" data-target="#navbar">login</a></li>
+                        <li ng-hide="auth"><a href="#/login" data-toggle="collapse" data-target="#navbar">Login</a></li>
                         <li ng-show="auth"><a href="" ng-click="logout()" data-toggle="collapse" data-target="#navbar">Logout {{auth.password.email}}</a></li>
                     </ul>
                 </div>
