@@ -19,7 +19,7 @@
     </head>
     <body ng-cloak>
 
-        <nav class="navbar navbar-default navbar-fixed-top" ng-controller="menuController">
+        <nav class="navbar navbar-default navbar-fixed-top" ng-controller="MenuController as menu">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -33,10 +33,17 @@
                 <div id="navbar" class="navbar-collapse collapse">
 
                     <ul class="nav navbar-nav">
-                        <!--
-                        <li ng-repeat="item in menu.items"><a href="{{item.url}}"><span ng-bind="item.value"></span></a></li>
-                        -->
-                        <li><a href="#/home" data-toggle="collapse" data-target="#navbar">Home</a></li>
+                        <li ng-repeat="item in menu.items">    
+                            <a ng-if="item.url" href="{{item.url}}"><span ng-bind="item.value"></span></a>
+                            <a ng-if="!item.url" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{item.value}}<span class="caret"></span></a>
+                            <ul ng-if="!item.url" class="dropdown-menu" role="menu">
+                                <li ng-repeat="item2 in item.items">
+                                    <a  ng-if="item2.url" href="{{item2.url}}"><span ng-bind="item2.value"></span></a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li><a href="#/home" ng-click="menu.hasItems(menu.items)" data-toggle="collapse" data-target="#navbar">Home</a></li>
                         <li><a href="#/chat" data-toggle="collapse" data-target="#navbar">Chat</a></li>
                         <li><a href="#/inventory" data-toggle="collapse" data-target="#navbar">Inventory</a></li>
                         <li ng-show="auth"><a href="#/contacts" data-toggle="collapse" data-target="#navbar">Contacts</a></li>                        
@@ -75,7 +82,7 @@
         <!-- DEV -->
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-   
+
         <script src="bower_components/angular-route/angular-route.js"></script>
         <script src="bower_components/firebase/firebase.js"></script>        
         <script src="bower_components/angularfire/dist/angularfire.js"></script>
@@ -91,7 +98,7 @@
 
         <script src="components/directives/directives.module.js"></script>
         <script src="components/directives/autoFocus.js"></script>
-        
+
         <script src="components/exception/exception.module.js"></script>
         <script src="components/exception/exception.decorator.js"></script>
 
@@ -129,7 +136,10 @@
         <script src="components/login/login.run.js"></script>        
         <script src="components/login/login.validate.factory.js"></script>
 
-        <script src="components/menu/menu-controller.js"></script>   
+        <script src="components/menu/menu.module.js"></script>  
+        <script src="components/menu/menu.controller.js"></script>  
+        <script src="components/menu/menu.factory.js"></script>  
+
         <script src="home/home-controller.js"></script>     
         <script src="inventory/inventory-controller.js"></script>    
         <script src="inventory/inventoryDetail-controller.js"></script>  

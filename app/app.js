@@ -8,6 +8,7 @@
         'exception.module',
         'firebase.module', // sb able to remove this if app modules spec it.
         'login.module',
+        'menu.module',
         'user.module',
         'chat.module',
         'my.home.controller',
@@ -15,7 +16,6 @@
         'my.inventoryDetail.controller',
         'my.contacts.controller',
         'my.contactsDetail.controller',
-        'my.menu.controller',
         'filters.module'
     ]);
 
