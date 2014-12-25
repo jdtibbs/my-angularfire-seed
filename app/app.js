@@ -16,8 +16,7 @@
         'my.contacts.controller',
         'my.contactsDetail.controller',
         'my.menu.controller',
-        'filters.module',
-        'ngRoute'
+        'filters.module'
     ]);
 
 })();
