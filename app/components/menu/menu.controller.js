@@ -4,13 +4,19 @@
     angular.module('menu.module')
             .controller('MenuController', controller);
 
-    controller.$inject = ['menuFactory'];
+    controller.$inject = ['menuFactory', 'loginFactory', '$location'];
 
-    function controller(menuFactory) {
+    function controller(menuFactory, loginFactory, $location) {
 
         var vm = this;
+        vm.logout = logout;
         vm.items = items();
         vm.hasItems = hasItems;
+
+        function logout() {
+            loginFactory.logout();
+            $location.path('/home');
+        }
 
         function items() {
             return menuFactory.menu();

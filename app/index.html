@@ -33,31 +33,19 @@
                 <div id="navbar" class="navbar-collapse collapse">
 
                     <ul class="nav navbar-nav">
+                        <li><a href="#/home" data-toggle="collapse" data-target="#navbar">Home</a></li>
                         <li ng-repeat="item in menu.items">    
-                            <a ng-if="item.url" href="{{item.url}}"><span ng-bind="item.value"></span></a>
-                            <a ng-if="!item.url" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{item.value}}<span class="caret"></span></a>
+                            <a ng-if="item.url" ng-show="auth" href="{{item.url}}" data-toggle="collapse" data-target="#navbar"><span ng-bind="item.value"></span></a>
+                            <a ng-if="!item.url" ng-show="auth" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{item.value}}<span class="caret"></span></a>
                             <ul ng-if="!item.url" class="dropdown-menu" role="menu">
                                 <li ng-repeat="item2 in item.items">
-                                    <a  ng-if="item2.url" href="{{item2.url}}"><span ng-bind="item2.value"></span></a>
+                                    <a  ng-if="item2.url" ng-show="auth" href="{{item2.url}}" data-toggle="collapse" data-target="#navbar"><span ng-bind="item2.value"></span></a>
                                 </li>
-                            </ul>
-                        </li>
-
-                        <li><a href="#/home" ng-click="menu.hasItems(menu.items)" data-toggle="collapse" data-target="#navbar">Home</a></li>
-                        <li><a href="#/chat" data-toggle="collapse" data-target="#navbar">Chat</a></li>
-                        <li><a href="#/inventory" data-toggle="collapse" data-target="#navbar">Inventory</a></li>
-                        <li ng-show="auth"><a href="#/contacts" data-toggle="collapse" data-target="#navbar">Contacts</a></li>                        
-                        <li ng-show="auth" class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account<span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#/user/profile" data-toggle="collapse" data-target="#navbar">Profile</a></li>                                
-                                <li><a href="#/user/password" data-toggle="collapse" data-target="#navbar">Password</a></li>
-                                <li><a href="#/user/email" data-toggle="collapse" data-target="#navbar">Email</a></li>
                             </ul>
                         </li>
                         <li><a href="#/about" data-toggle="collapse" data-target="#navbar">About</a></li>
                         <li ng-hide="auth"><a href="#/login" data-toggle="collapse" data-target="#navbar">Login</a></li>
-                        <li ng-show="auth"><a href="" ng-click="logout()" data-toggle="collapse" data-target="#navbar">Logout {{auth.password.email}}</a></li>
+                        <li ng-show="auth"><a href="" ng-click="menu.logout()" data-toggle="collapse" data-target="#navbar">Logout {{auth.password.email}}</a></li>
                     </ul>
                 </div>
             </div>

@@ -15,8 +15,11 @@
                             "value": "Chat",
                             "url": "#/chat"
                         }, {
-                            "value": "Login",
-                            "url": "#/login"
+                            "value": "Inventory",
+                            "url": "#/inventory"
+                        }, {
+                            "value": "Contacts",
+                            "url": "#/contacts"
                         }, {
                             "value": "Account",
                             "url": "",
