@@ -10,22 +10,17 @@
 
         var vm = this;
         vm.collapse = true;
-        vm.collapseOn = collapseOn;
-        vm.collapseOff = collapseOff;
+        vm.toggleCollapse = toggleCollapse;
         vm.logout = logout;
         vm.items = items();
         vm.hasItems = hasItems;
 
-        function collapseOn() {
-            vm.collapse = true;
-        }
-
-        function collapseOff() {
-            vm.collapse = false;
+        function toggleCollapse() {
+            vm.collapse = !vm.collapse;
         }
 
         function logout() {
-            collapseOn();
+            toggleCollapse();
             loginFactory.logout();
             $location.path('/home');
         }
