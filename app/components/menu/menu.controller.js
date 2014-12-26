@@ -9,11 +9,23 @@
     function controller(menuFactory, loginFactory, $location) {
 
         var vm = this;
+        vm.collapse = true;
+        vm.collapseOn = collapseOn;
+        vm.collapseOff = collapseOff;
         vm.logout = logout;
         vm.items = items();
         vm.hasItems = hasItems;
 
+        function collapseOn() {
+            vm.collapse = true;
+        }
+
+        function collapseOff() {
+            vm.collapse = false;
+        }
+
         function logout() {
+            collapseOn();
             loginFactory.logout();
             $location.path('/home');
         }

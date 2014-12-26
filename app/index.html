@@ -22,7 +22,7 @@
         <nav class="navbar navbar-default navbar-fixed-top" ng-controller="MenuController as menu">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <button type="button" class="navbar-toggle collapsed" ng-click="menu.collapseOff()" aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -30,22 +30,21 @@
                     </button>
                     <span class="navbar-brand" app-name></span>
                 </div>
-                <div id="navbar" class="navbar-collapse collapse">
-
+                <div id="navbar" class="navbar-collapse" ng-class="{collapse: menu.collapse}">
                     <ul class="nav navbar-nav">
-                        <li><a href="#/home" data-toggle="collapse" data-target="#navbar">Home</a></li>
+                        <li><a href="#/home" ng-click="menu.collapseOn()">Home</a></li>
                         <li ng-repeat="item in menu.items">    
-                            <a ng-if="item.url" ng-show="auth" href="{{item.url}}" data-toggle="collapse" data-target="#navbar"><span ng-bind="item.value"></span></a>
+                            <a ng-if="item.url" ng-show="auth" ng-href="{{item.url}}" ng-click="menu.collapseOn()"><span ng-bind="item.value"></span></a>
                             <a ng-if="!item.url" ng-show="auth" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span ng-bind="item.value"></span><span class="caret"></span></a>
                             <ul ng-if="!item.url" class="dropdown-menu" role="menu">
                                 <li ng-repeat="item2 in item.items">
-                                    <a  ng-if="item2.url" ng-show="auth" href="{{item2.url}}" data-toggle="collapse" data-target="#navbar"><span ng-bind="item2.value"></span></a>
+                                    <a  ng-if="item2.url" ng-show="auth" ng-href="{{item2.url}}" ng-click="menu.collapseOn()"><span ng-bind="item2.value"></span></a>
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="#/about" data-toggle="collapse" data-target="#navbar">About</a></li>
-                        <li ng-hide="auth"><a href="#/login" data-toggle="collapse" data-target="#navbar">Login</a></li>
-                        <li ng-show="auth"><a href="" ng-click="menu.logout()" data-toggle="collapse" data-target="#navbar">Logout {{auth.password.email}}</a></li>
+                        <li><a href="#/about" ng-click="menu.collapseOn()">About</a></li>
+                        <li ng-hide="auth"><a href="#/login" ng-click="menu.collapseOn()">Login</a></li>
+                        <li ng-show="auth"><a href="" ng-click="menu.logout()" >Logout {{auth.password.email}}</a></li>
                     </ul>
                 </div>
             </div>
