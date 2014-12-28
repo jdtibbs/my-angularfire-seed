@@ -28,6 +28,8 @@
 
         vm.messages = messages;
         vm.addMessage = addMessage;
+// See: http://www.johnpapa.net/route-resolve-and-controller-activate-in-angularjs/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+JohnPapa+%28JohnPapa.net%29
+// could load messages here, see route-resolve link above.
 
 // https://github.com/johnpapa/angularjs-styleguide#style-y034
 // place bindable functions below bindable members.

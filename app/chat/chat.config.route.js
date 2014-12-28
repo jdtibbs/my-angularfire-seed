@@ -27,6 +27,7 @@
             // page displays after data is resolved, no flicker!
             // 'messages' is now available for injection into the controller.
             resolve: {
+                // See: http://www.johnpapa.net/route-resolve-and-controller-activate-in-angularjs/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+JohnPapa+%28JohnPapa.net%29
                 messages: Messages
             }
         });

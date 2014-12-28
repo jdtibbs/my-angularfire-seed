@@ -33,12 +33,12 @@
                 <div id="navbar" class="navbar-collapse" ng-class="{collapse: menu.collapse}">
                     <ul class="nav navbar-nav">
                         <li><a href="#/home" ng-click="menu.toggleCollapse()">Home</a></li>
-                        <li ng-repeat="item in menu.items">    
-                            <a ng-if="item.url" ng-show="auth" ng-href="{{item.url}}" ng-click="menu.toggleCollapse()"><span ng-bind="item.value"></span></a>
-                            <a ng-if="!item.url" ng-show="auth" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span ng-bind="item.value"></span><span class="caret"></span></a>
-                            <ul ng-if="!item.url" class="dropdown-menu" role="menu">
-                                <li ng-repeat="item2 in item.items">
-                                    <a  ng-if="item2.url" ng-show="auth" ng-href="{{item2.url}}" ng-click="menu.toggleCollapse()"><span ng-bind="item2.value"></span></a>
+                        <li ng-repeat="(key, value) in menu.items">
+                            <a ng-if="value.url" ng-show="auth" ng-href="{{value.url}}" ng-click="menu.toggleCollapse()"><span ng-bind="value.name"></span></a>
+                            <a ng-if="!value.url" ng-show="auth" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span ng-bind="value.name"></span><span class="caret"></span></a>
+                            <ul ng-if="!value.url" class="dropdown-menu" role="menu">
+                                <li ng-repeat="(key2, value2) in value.submenu">
+                                    <a  ng-if="value2.url" ng-show="auth" ng-href="{{value2.url}}" ng-click="menu.toggleCollapse()"><span ng-bind="value2.name"></span></a>
                                 </li>
                             </ul>
                         </li>
@@ -124,6 +124,7 @@
         <script src="components/login/login.validate.factory.js"></script>
 
         <script src="components/menu/menu.module.js"></script>  
+        <script src="components/menu/menu.constants.js"></script>  
         <script src="components/menu/menu.controller.js"></script>  
         <script src="components/menu/menu.factory.js"></script>  
 
