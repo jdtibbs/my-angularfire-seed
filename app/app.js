@@ -3,6 +3,7 @@
 
     // Declare app level module which depends on filters, and services
     angular.module('app', [
+        'ngOrderObjectBy',
         'about.module',
         'directives.module',
         'exception.module',
