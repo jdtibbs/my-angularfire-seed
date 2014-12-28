@@ -32,7 +32,7 @@
                 </div>
                 <div id="navbar" class="navbar-collapse" ng-class="{collapse: menu.collapse}">
                     <ul class="nav navbar-nav">
-                        <li ng-repeat="(key, value) in menu.items">
+                        <li ng-repeat="value in menu.items| orderObjectBy : 'seq'">
                             <a ng-if="value.url" ng-show="auth" ng-href="{{value.url}}" ng-click="menu.toggleCollapse()"><span ng-bind="value.display"></span></a>
                             <a ng-if="!value.url" ng-show="auth" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span ng-bind="value.display"></span><span class="caret"></span></a>
                             <ul ng-if="!value.url" class="dropdown-menu" role="menu">
@@ -125,7 +125,7 @@
         <script src="components/menu/menu.constants.js"></script>  
         <script src="components/menu/menu.controller.js"></script>  
         <script src="components/menu/menu.factory.js"></script>  
-        
+
         <script src="components/utils/ngOrderObjectBy.js"></script>  
 
         <script src="home/home-controller.js"></script>     
