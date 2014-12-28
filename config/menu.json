@@ -1,0 +1,57 @@
+{
+    "home": {
+        "display": "Home",
+        "role": "user",
+        "url": "#/home",
+        "seq": "0"
+    },
+    "chat": {
+        "display": "Chat",
+        "role": "user",
+        "url": "#/chat",
+        "seq": "1"
+    },
+    "contacts": {
+        "display": "Contacts",
+        "role": "user",
+        "url": "#/contacts",
+        "seq": "2"
+    },
+    "inventory": {
+        "display": "Inventory",
+        "role": "user",
+        "url": "#/inventory",
+        "seq": "3"
+    },
+    "about": {
+        "display": "About",
+        "role": "user",
+        "url": "#/about",
+        "seq": "4"
+    },
+    "account": {
+        "display": "Account",
+        "role": "user",
+        "seq": "5",
+        "submenu": {
+            "profile": {
+                "display": "Profile",
+                "role": "user",
+                "url": "#/user/profile",
+                "seq": "0"
+            },
+            "password": {
+                "display": "Password",
+                "role": "user",
+                "url": "#/user/password",
+                "seq": "1"
+            },
+            "email": {
+                "display": "Email",
+                "role": "user",
+                "url": "#/user/email",
+                "seq": "2"
+            }
+        }
+    }
+}
