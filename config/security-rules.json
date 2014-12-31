@@ -1,39 +1,89 @@
 {
    "rules": {
-      ".read": false,
-      ".write": false,
+      // block all operations if node is not defined...this is the default!
+      // ".read": false,
+      // ".write": false,
       "syncedValue": {
          ".read": true,
-         ".write": true,
+         ".write": "auth.uid !== null",
          ".validate": "newData.isString() && newData.val().length <= 100"
+      },
+      "inventory": {
+        ".read": true,
+        // user must be valid user and logged in.
+        ".write": "auth.uid !== null",
+        "$item":{          
+          ".validate": "newData.hasChildren(['name', 'quantity'])",  
+          "name":{
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+          },
+          "quantity":{
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000"
+          },
+          // no other children allowed
+          "$other": { ".validate": false }    
+        }
+      },
+      "contacts": {
+        ".read": true,  
+          ".write": "auth.uid !== null",
+          ".indexOn":"users",
+          "$contact":{
+            // the object to write must have these children.
+            ".validate": "newData.hasChildren(['name', 'users'])",
+            // user must be valid user, logged in and match the user that created.
+            // see: https://www.firebase.com/docs/security/api/rule/data.html
+            // this is an anti-pattern.  Use .validate instead.
+            //".write": "root.child('users/' + auth.uid).exists()  && newData.child('belongsTo').val() == auth.uid"
+            "users":{
+              ".validate": "root.child('login/' + auth.uid + '/users').val()  === newData.val()"
+            },
+            "name":{
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+            },
+            // no other children allowed
+            "$other": { ".validate": false }          
+          }
       },
       "messages": {
          ".read": true,
          "$message": {
-            ".write": true,
+            ".write": "auth.uid !== null",
             ".validate": "newData.hasChildren(['text'])",
             "text": {
-               ".validate": "newData.isString() && newData.val().length <= 1000"
+               ".validate": "newData.isString() && newData.val().length <= 10"
             },
-            "$other": {
-               ".validate": false
-            }
+            // no other children allowed
+            "$other": { ".validate": false }      
          }
       },
       "users": {
-         "$user": {
-            ".read": "auth.uid === $user",
-            ".write": "auth.uid === $user && (!newData.exists() || newData.hasChildren())",
-            "name": {
-               ".validate": "newData.isString() && newData.val().length <= 2000"
-            },
-            "email": {
-               ".validate": "newData.isString() && newData.val().length <= 2000"
-            },
-            "$other": {
-               ".validate": false
-            }
-         }
+        ".read": "auth.uid !== null",
+        ".write": "auth.uid !== null"
+         //"$user": {
+        //    ".read": "auth.uid === $user",
+        //    ".write": "auth.uid === $user && (!newData.exists() || newData.hasChildren())",
+        //    ".validate": "newData.hasChildren(['email', 'name', 'businessPhone'])",
+      //      "email": {
+        //       ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+        //    },
+        //    "name": {
+        //       ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+        //    }, 
+        //    "businessPhone": {
+        //       ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+        //    },
+        //    // no other children allowed
+        //    "$other": { ".validate": false }      
+        // }
+      },
+      "login":{
+        ".read": "auth.uid !== null",
+        ".write": "auth.uid !== null"
+      },
+      "menu":{
+        ".read": "true",
+        ".write": "auth.uid !== null"
       }
    }
 }
