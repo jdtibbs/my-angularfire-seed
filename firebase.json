@@ -1,0 +1,9 @@
+{
+  "firebase": "managed-app-name",
+  "public": "public",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
