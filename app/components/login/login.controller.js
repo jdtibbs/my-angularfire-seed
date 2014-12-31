@@ -15,8 +15,9 @@
         vm.confirm = null;
         vm.createMode = false;
         vm.login = login;
+/* prevent new registration since deployed live to firebase.        
         vm.register = register;
-
+*/
         function login(email, pass) {
             vm.err = null;
             loginFactory.login(email, pass)
@@ -26,7 +27,7 @@
                         vm.err = errMessage(err);
                     });
         }
-
+/* prevent new registration since deployed live to firebase.
         function register() {
             vm.err = null;
             if (validate()) {
@@ -39,6 +40,7 @@
                         });
             }
         }
+*/        
         function validate() {
             if (!vm.email) {
                 vm.err = 'Please enter an email address';

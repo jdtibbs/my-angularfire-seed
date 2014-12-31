@@ -45,7 +45,6 @@
             getUid: function () {
                 var def = $q.defer();
                 factory.getAuth().then(function (auth) {
-                    $log.debug('auth.uid: ' + auth.uid);
                     def.resolve(auth.uid);
                 }).catch(function (error) {
                     def.reject(error);

@@ -1,5 +1,5 @@
 {
-  "firebase": "managed-app-name",
+  "firebase": "spec-managed-app-name-here",
   "public": "public",
   "ignore": [
     "firebase.json",

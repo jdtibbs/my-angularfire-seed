@@ -43,7 +43,7 @@ exports.config =
         wrapper: false,
         definition: false
     },
-    
+// autoReload config to eliminate ws connection issues in DEV.   
     plugins:
             {
                 autoReload: 
@@ -53,5 +53,5 @@ exports.config =
                     delay: 200
                 }
             }
-    
+
 }
