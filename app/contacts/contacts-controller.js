@@ -5,7 +5,7 @@ angular.module('my.contacts.controller', ['my.contacts.factory', 'ngRoute'])
                 $routeProvider.when("/contacts", {
                     // the rest is the same for ui-router and ngRoute...
                     controller: "contactsController",
-                    templateUrl: "contacts/contacts.html",
+                    templateUrl: "app/contacts/contacts.html",
                     resolve: {
                         "currentAuth": ['firebaseFactory', function (firebaseFactory) {
                                 return firebaseFactory.auth().$requireAuth();

@@ -8,7 +8,7 @@
         $routeProvider.when('/user/profile', {
             controller: 'ProfileController',
             controllerAs: 'user',
-            templateUrl: 'components/user/profile/profile.html',
+            templateUrl: 'app/components/user/profile/profile.html',
             resolve: {
                 // controller will not be loaded until $requireAuth resolves
                 // Auth refers to our $firebaseAuth wrapper in the example above
@@ -19,7 +19,7 @@
         ).when('/user/password', {
             controller: 'PasswordController',
             controllerAs: 'user',
-            templateUrl: 'components/user/password/password.html',
+            templateUrl: 'app/components/user/password/password.html',
             resolve: {
                 // controller will not be loaded until $requireAuth resolves
                 // Auth refers to our $firebaseAuth wrapper in the example above
@@ -30,7 +30,7 @@
         ).when('/user/email', {
             controller: 'EmailController',
             controllerAs: 'user',
-            templateUrl: 'components/user/email/email.html',
+            templateUrl: 'app/components/user/email/email.html',
             resolve: {
                 // controller will not be loaded until $requireAuth resolves
                 // Auth refers to our $firebaseAuth wrapper in the example above

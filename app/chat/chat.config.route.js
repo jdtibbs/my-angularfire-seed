@@ -23,7 +23,7 @@
         $routeProvider.when('/chat', {
             controller: 'ChatController',
             controllerAs: 'chat',
-            templateUrl: 'chat/chat.html',
+            templateUrl: 'app/chat/chat.html',
             // page displays after data is resolved, no flicker!
             // 'messages' is now available for injection into the controller.
             resolve: {

@@ -5,7 +5,7 @@ angular.module('my.inventoryDetail.controller', ['my.inventory.factory', 'ngRout
                 $routeProvider.when("/inventoryDetail", {
                     // the rest is the same for ui-router and ngRoute...
                     controller: "inventoryDetailController",
-                    templateUrl: "inventory/inventoryDetail.html"/*,
+                    templateUrl: "app/inventory/inventoryDetail.html"/*,
                      resolve: {
                      "currentAuth": ['firebaseFactory', function (firebaseFactory) {
                      return firebaseFactory.auth().$requireAuth();
@@ -14,7 +14,7 @@ angular.module('my.inventoryDetail.controller', ['my.inventory.factory', 'ngRout
                 }).when("/inventoryDetail/:id", {
                     // the rest is the same for ui-router and ngRoute...
                     controller: "inventoryDetailController",
-                    templateUrl: "inventory/inventoryDetail.html"/*,
+                    templateUrl: "app/inventory/inventoryDetail.html"/*,
                      resolve: {
                      "currentAuth": ['firebaseFactory', function (firebaseFactory) {
                      return firebaseFactory.auth().$requireAuth();

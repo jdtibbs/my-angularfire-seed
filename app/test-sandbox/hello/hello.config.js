@@ -10,7 +10,7 @@
         $routeProvider.when('/hello', {
             controller: 'controller',
             controllerAs: 'ctlr',
-            templateUrl: 'hello/hello.html',
+            templateUrl: 'app/hello/hello.html',
             resolve: {
                 greeting: Greeting
             }

@@ -5,7 +5,7 @@ angular.module('my.home.controller', ['firebase.module', 'ngRoute'])
                 $routeProvider.when("/home", {
                     // the rest is the same for ui-router and ngRoute...
                     controller: "homeController",
-                    templateUrl: "home/home.html",
+                    templateUrl: "app/home/home.html",
                     resolve: {
                         // controller will not be loaded until $waitForAuth resolves
                         // Auth refers to our $firebaseAuth wrapper in the example above

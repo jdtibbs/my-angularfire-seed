@@ -21,7 +21,16 @@ describe('chat.controller', function () {
             $provide.value('chatFactory', chatFactoryStub());
         });
     });
+/*
+    beforeEach(
+            module('chat.module')
+            );
 
+    beforeEach(inject(function ($provide) {
+        $provide.value('messages', chatFactoryStub().messages);
+        $provide.value('chatFactory', chatFactoryStub());
+    }));
+*/
     function chatFactoryStub() {
         var obj = jasmine.createSpyObj('chatFactory', ['add', 'messages']);
         obj.add.andCallFake(function () {
@@ -57,6 +66,27 @@ describe('chat.controller', function () {
         it('controller is created', function () {
             // expect(actual).matcherFunction(expected)
             expect(controller).toBeDefined();
+        });
+
+        it('test route', function () {
+            // testing route:
+            // http://stackoverflow.com/questions/15990102/angularjs-route-unit-testing
+            // http://plnkr.co/edit/j1o0iu?p=preview
+            // http://stackoverflow.com/questions/15322155/how-can-i-test-a-controller-with-resolve-properties-in-angularjs?rq=1
+            inject(function ($route, $location, $rootScope, $httpBackend) {
+                expect($route.current).toBeUndefined();
+
+                $httpBackend.expectGET('app/chat/chat.html').respond(200);
+                $location.path('/chat');
+                $rootScope.$digest();
+
+                expect($route.current.templateUrl).toBe('app/chat/chat.html');
+                expect($route.current.controller).toBe('ChatController');
+                expect($route.current.controllerAs).toBe('chat');
+                expect($route.current.resolve.messages).not.toBe(null);
+
+                // TODO there are more properties in $route to be tested.
+            });
         });
 
         it('add a message', function () {

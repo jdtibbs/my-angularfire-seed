@@ -11,7 +11,7 @@
         $routeProvider.when('/about', {
             //controller: 'AboutController',
             //controllerAs: 'about',
-            templateUrl: 'components/about/about.html'
+            templateUrl: 'app/components/about/about.html'
         }
         );
     }

@@ -11,7 +11,7 @@
         $routeProvider.when('/path', {
             controller: 'controller',
             controllerAs: 'ctrl',
-            templateUrl: 'path/new.html',
+            templateUrl: 'app/path/new.html',
             resolve: {
                 // controller will not be loaded until this resolveFn resolves.
                 resolve: resolveFn

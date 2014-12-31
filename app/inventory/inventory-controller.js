@@ -5,7 +5,7 @@ angular.module('my.inventory.controller', ['my.inventory.factory', 'ngRoute'])
                 $routeProvider.when("/inventory", {
                     // the rest is the same for ui-router and ngRoute...
                     controller: "inventoryController",
-                    templateUrl: "inventory/inventory.html"/*,
+                    templateUrl: "app/inventory/inventory.html"/*,
                      resolve: {
                      "currentAuth": ['firebaseFactory', function (firebaseFactory) {
                      return firebaseFactory.auth().$requireAuth();

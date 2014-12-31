@@ -25,11 +25,11 @@ describe('app.hello test', function () {
         inject(function ($route, $location, $rootScope, $httpBackend) {
             expect($route.current).toBeUndefined();
 
-            $httpBackend.expectGET('hello/hello.html').respond(200);
+            $httpBackend.expectGET('app/hello/hello.html').respond(200);
             $location.path('/hello');
             $rootScope.$digest();
 
-            expect($route.current.templateUrl).toBe('hello/hello.html');
+            expect($route.current.templateUrl).toBe('app/hello/hello.html');
             expect($route.current.controller).toBe('controller');
             expect($route.current.controllerAs).toBe('ctlr');
             expect($route.current.resolve.greeting).not.toBe(null);

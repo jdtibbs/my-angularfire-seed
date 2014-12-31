@@ -5,7 +5,7 @@ angular.module('my.contactsDetail.controller', ['my.contacts.factory', 'ngRoute'
                 $routeProvider.when("/contactsDetail", {
                     // the rest is the same for ui-router and ngRoute...
                     controller: "contactsDetailController",
-                    templateUrl: "contacts/contactsDetail.html",
+                    templateUrl: "app/contacts/contactsDetail.html",
                     resolve: {
                         "currentAuth": ['firebaseFactory', function (firebaseFactory) {
                                 return firebaseFactory.auth().$requireAuth();
@@ -14,7 +14,7 @@ angular.module('my.contactsDetail.controller', ['my.contacts.factory', 'ngRoute'
                 }).when("/contactsDetail/:id", {
                     // the rest is the same for ui-router and ngRoute...
                     controller: "contactsDetailController",
-                    templateUrl: "contacts/contactsDetail.html",
+                    templateUrl: "app/contacts/contactsDetail.html",
                     resolve: {
                         "currentAuth": ['firebaseFactory', function (firebaseFactory) {
                                 return firebaseFactory.auth().$requireAuth();
